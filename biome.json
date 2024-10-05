@@ -1,0 +1,29 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.3/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"formatter": {
+		"formatWithErrors": false,
+		"lineWidth": 120
+	},
+	"javascript": {
+		"linter": {
+			"enabled": true
+		},
+		"formatter": {
+			"semicolons": "asNeeded",
+			"quoteStyle": "single"
+		}
+	},
+	"linter": {
+		"ignore": ["./build", "./dist"],
+		"enabled": true,
+		"rules": {
+			"style": {
+				"useImportType": "off",
+				"noNonNullAssertion": "off"
+			}
+		}
+	}
+}
