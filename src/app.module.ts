@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { DatabaseModule } from './infra/database/database.module'
+import { SupabaseGuard, SupabaseModule } from './infra/auth/supabase'
+import { APP_GUARD } from '@nestjs/core'
 
 @Module({
 	imports: [
@@ -8,8 +10,14 @@ import { DatabaseModule } from './infra/database/database.module'
 			isGlobal: true,
 		}),
 		DatabaseModule,
+		SupabaseModule,
 	],
 	controllers: [],
-	providers: [],
+	providers: [
+		{
+			provide: APP_GUARD,
+			useClass: SupabaseGuard,
+		},
+	],
 })
 export class AppModule {}
