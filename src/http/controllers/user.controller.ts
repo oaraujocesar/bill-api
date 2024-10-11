@@ -1,10 +1,10 @@
 import { Response } from 'express'
 
 import { Body, Controller, Post, Res } from '@nestjs/common'
-import { CreateUserUseCase } from 'src/application/use-cases/user/create'
 import { ApiCreatedResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger'
-import { CreateUserDto } from '../dtos/create-user.dto'
 import { User } from 'src/application/entities/user'
+import { CreateUserUseCase } from 'src/application/use-cases/user/create'
+import { CreateUserDto } from '../dtos/create-user.dto'
 
 @ApiTags('Users')
 @Controller('users')

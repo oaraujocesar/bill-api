@@ -1,15 +1,14 @@
+import { HttpStatus, Inject, Injectable } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 import { User } from 'src/application/entities/user'
-import { HttpStatus, Injectable } from '@nestjs/common'
+import { UserRepository } from 'src/application/repositories/user.repository'
 import { ErrorResponse } from 'src/application/types/error-response'
 import { SuccessResponse } from 'src/application/types/success-response'
-import { UserRepository } from 'src/application/repositories/user.repository'
 
 type CreateUserRequest = {
 	name: string
 	surname: string
 	email: string
-	password: string
 }
 
 type CreateUserResponse = SuccessResponse<User> | ErrorResponse
@@ -18,7 +17,7 @@ type CreateUserResponse = SuccessResponse<User> | ErrorResponse
 export class CreateUserUseCase {
 	constructor(private readonly userRepository: UserRepository) {}
 
-	async execute({ name, surname, email, password }: CreateUserRequest): Promise<CreateUserResponse> {
+	async execute({ name, surname, email }: CreateUserRequest): Promise<CreateUserResponse> {
 		let user = await this.userRepository.getUserByEmail(email)
 		if (user) {
 			return {
@@ -31,7 +30,6 @@ export class CreateUserUseCase {
 			name,
 			surname,
 			email,
-			password: await bcrypt.hash(password, 10),
 		})
 
 		user = await this.userRepository.save(user)

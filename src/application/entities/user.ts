@@ -4,9 +4,8 @@ import { ApiProperty } from '@nestjs/swagger'
 export type UserProps = {
 	id?: string
 	name: string
-    surname: string
-    email: string
-	password: string
+	surname: string
+	email: string
 	createdAt?: Date
 	updatedAt?: Date
 }
@@ -18,14 +17,11 @@ export class User {
 	@ApiProperty()
 	name: string
 
-    @ApiProperty()
-    surname: string
-
-    @ApiProperty()
-    email: string
+	@ApiProperty()
+	surname: string
 
 	@ApiProperty()
-	password: string
+	email: string
 
 	@ApiProperty()
 	createdAt: Date
@@ -37,8 +33,7 @@ export class User {
 		this.id = props.id ?? randomUUID()
 		this.name = props.name
 		this.surname = props.surname
-        this.email = props.email
-		this.password = props.password
+		this.email = props.email
 		this.createdAt = props.createdAt ?? new Date()
 		this.updatedAt = props.updatedAt ?? new Date()
 	}
