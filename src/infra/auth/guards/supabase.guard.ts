@@ -8,6 +8,7 @@ import { SupabaseToken } from '../types/supabase-token.type'
 export class SupabaseGuard implements CanActivate {
 	private readonly logger = new Logger(SupabaseGuard.name)
 	readonly supabase: SupabaseClient
+	private readonly configService: ConfigService
 
 	constructor(configService: ConfigService) {
 		this.supabase = createClient(configService.get('SUPABASE_URL'), configService.get('SUPABASE_KEY'), {
@@ -16,11 +17,17 @@ export class SupabaseGuard implements CanActivate {
 				detectSessionInUrl: false,
 			},
 		})
+
+		this.configService = configService
 	}
 
 	async canActivate(context: ExecutionContext) {
 		const request = context.switchToHttp().getRequest<Request>()
 		const token = this.extractTokenFromRequest(request)
+
+		if (this.configService.get<string>('NODE_ENV') === 'development') {
+			return true
+		}
 
 		const {
 			data: { user },
