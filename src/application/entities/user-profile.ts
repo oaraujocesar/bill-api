@@ -1,25 +1,25 @@
 import { ulid } from 'ulidx'
 
 export type UserProfileProps = {
-	id?: string
+	id?: number
 	serial?: string
 	name: string
 	surname: string
 	userId: string
 	birthDate: Date
-	createdAt: Date
-	updatedAt: Date
+	createdAt?: Date
+	updatedAt?: Date
 }
 
 export class UserProfile {
-	id?: string
-	serial?: string
+	id?: number
+	serial: string
 	name: string
 	surname: string
 	userId: string
 	birthDate: Date
-	createdAt: Date
-	updatedAt: Date
+	createdAt?: Date
+	updatedAt?: Date
 
 	constructor(props: UserProfileProps) {
 		this.id = props.id
@@ -28,8 +28,8 @@ export class UserProfile {
 		this.surname = props.surname
 		this.userId = props.userId
 		this.birthDate = props.birthDate
-		this.createdAt = props.createdAt
-		this.updatedAt = props.updatedAt
+		this.createdAt = props.createdAt ?? new Date()
+		this.updatedAt = props.updatedAt ?? new Date()
 	}
 
 	static create(props: UserProfileProps): UserProfile {

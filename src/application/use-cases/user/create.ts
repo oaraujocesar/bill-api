@@ -1,6 +1,5 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common'
-import * as bcrypt from 'bcrypt'
-import { User } from 'src/application/entities/user'
+import { HttpStatus, Injectable } from '@nestjs/common'
+import { UserProfile } from 'src/application/entities/user-profile'
 import { UserRepository } from 'src/application/repositories/user.repository'
 import { ErrorResponse } from 'src/application/types/error-response'
 import { SuccessResponse } from 'src/application/types/success-response'
@@ -8,34 +7,27 @@ import { SuccessResponse } from 'src/application/types/success-response'
 type CreateUserRequest = {
 	name: string
 	surname: string
-	email: string
+	birthDate: Date
 }
 
-type CreateUserResponse = SuccessResponse<User> | ErrorResponse
+type CreateUserResponse = SuccessResponse<string> | ErrorResponse
 
 @Injectable()
 export class CreateUserUseCase {
 	constructor(private readonly userRepository: UserRepository) {}
 
-	async execute({ name, surname, email }: CreateUserRequest): Promise<CreateUserResponse> {
-		let user = await this.userRepository.getUserByEmail(email)
-		if (user) {
-			return {
-				status: HttpStatus.INTERNAL_SERVER_ERROR,
-				data: { message: 'BL01' },
-			}
-		}
-
-		user = User.create({
-			name,
-			surname,
-			email,
-		})
-
-		user = await this.userRepository.save(user)
+	async execute({ name, surname, birthDate }: CreateUserRequest, userId: string): Promise<CreateUserResponse> {
+		const userProfile = await this.userRepository.saveProfile(
+			UserProfile.create({
+				name,
+				surname,
+				userId,
+				birthDate,
+			}),
+		)
 
 		return {
-			data: user,
+			data: 'user',
 			status: HttpStatus.CREATED,
 		}
 	}

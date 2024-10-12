@@ -1,28 +1,25 @@
-import { Inject, Injectable } from '@nestjs/common'
-import { eq } from 'drizzle-orm'
+import { Inject, Injectable, Logger } from '@nestjs/common'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
-import { User } from 'src/application/entities/user'
+import { UserProfile } from 'src/application/entities/user-profile'
 import { UserRepository } from 'src/application/repositories/user.repository'
 import { DRIZZLE } from '../drizzle.module'
+import { UserProfileMapper } from '../mapper/user-profile-mapper'
 import * as schema from '../schema'
 
 @Injectable()
 export class UserDrizzleRepository implements UserRepository {
+	private readonly logger = new Logger(UserDrizzleRepository.name)
+
 	constructor(@Inject(DRIZZLE) private readonly database: NodePgDatabase<typeof schema>) {}
 
-	async getUserByEmail(email: string): Promise<User | null> {
-		const user = await this.database.query.user.findFirst({
-			where: eq(schema.user.email, email),
-		})
+	async saveProfile(userProfileEntity: UserProfile): Promise<UserProfile> {
+		const userProfileDrizzle = UserProfileMapper.toDrizzle(userProfileEntity)
+		try {
+			const [result] = await this.database.insert(schema.userProfile).values(userProfileDrizzle).returning().execute()
 
-		return User.create({
-			id: 'user.id',
-			email: user.email,
-			name: user.name,
-			surname: user.surname,
-		})
-	}
-	save(user: User): Promise<User> {
-		throw new Error('Method not implemented.')
+			return UserProfileMapper.toDomain(result)
+		} catch (error) {
+			this.logger.error(error)
+		}
 	}
 }
