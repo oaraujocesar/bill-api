@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { UserRepository } from 'src/application/repositories/user.repository'
+import { USER_REPOSITORY } from 'src/shared/tokens'
 import { DrizzleModule } from './drizzle/drizzle.module'
 import { UserDrizzleRepository } from './drizzle/repositories/user.drizzle.repository'
 
@@ -7,10 +7,10 @@ import { UserDrizzleRepository } from './drizzle/repositories/user.drizzle.repos
 	imports: [DrizzleModule],
 	providers: [
 		{
-			provide: UserRepository,
+			provide: USER_REPOSITORY,
 			useClass: UserDrizzleRepository,
 		},
 	],
-	exports: [UserRepository],
+	exports: [USER_REPOSITORY],
 })
 export class DatabaseModule {}

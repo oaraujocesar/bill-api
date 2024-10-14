@@ -11,7 +11,6 @@ type DrizzleResultType = {
 	updatedAt: Date
 }
 
-// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export class UserProfileMapper {
 	static toDrizzle(userProfile: UserProfile) {
 		return {
