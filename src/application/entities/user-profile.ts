@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger'
 import { ulid } from 'ulidx'
 
 export type UserProfileProps = {
@@ -12,13 +13,21 @@ export type UserProfileProps = {
 }
 
 export class UserProfile {
+	@ApiProperty()
 	id?: number
+	@ApiProperty()
 	serial: string
+	@ApiProperty()
 	name: string
+	@ApiProperty()
 	surname: string
+	@ApiProperty()
 	userId: string
+	@ApiProperty()
 	birthDate: Date
+	@ApiProperty()
 	createdAt?: Date
+	@ApiProperty()
 	updatedAt?: Date
 
 	constructor(props: UserProfileProps) {
