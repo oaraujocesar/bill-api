@@ -8,7 +8,7 @@ import { USER_REPOSITORY } from 'src/shared/tokens'
 type CreateUserRequest = {
 	name: string
 	surname: string
-	birthDate: Date
+	birthDate: string
 }
 
 type CreateUserResponse = SuccessResponse<UserProfile> | ErrorResponse
@@ -34,7 +34,7 @@ export class CreateUserUseCase {
 				name,
 				surname,
 				userId: user.id,
-				birthDate,
+				birthDate: new Date(birthDate),
 			}),
 		)
 

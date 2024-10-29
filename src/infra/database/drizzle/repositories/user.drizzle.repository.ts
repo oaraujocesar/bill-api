@@ -35,7 +35,8 @@ export class UserDrizzleRepository implements UserRepository {
 
 			return UserProfileMapper.toDomain(result)
 		} catch (error) {
-			throw new InternalServerErrorException(error)
+			this.logger.error(error)
+			throw new InternalServerErrorException()
 		}
 	}
 }

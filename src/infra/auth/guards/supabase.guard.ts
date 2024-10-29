@@ -26,9 +26,22 @@ export class SupabaseGuard implements CanActivate {
 		const request = context.switchToHttp().getRequest<RequestWithUser>()
 		const token = this.extractTokenFromRequest(request)
 
-		// if (this.configService.get<string>('NODE_ENV') === 'development') {
-		// 	return true
-		// }
+		if (this.configService.get<string>('NODE_ENV') === 'development') {
+			let user = this.configService.get('LOCAL_USER')
+			try {
+				user = JSON.parse(user)
+			} catch (error) {
+				this.logger.error(error)
+				throw new UnauthorizedException('Local user not found')
+			}
+
+			request.user = {
+				id: user.id,
+				email: user.email,
+			}
+
+			return true
+		}
 
 		const {
 			data: { user },

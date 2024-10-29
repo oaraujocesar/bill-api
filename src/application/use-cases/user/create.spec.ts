@@ -23,7 +23,7 @@ describe('Create User Profile use case', () => {
 		const dto: CreateUserDto = {
 			name: faker.person.firstName(),
 			surname: faker.person.lastName(),
-			birthDate: faker.date.past(),
+			birthDate: faker.date.past().toISOString(),
 		}
 
 		const userId = faker.string.uuid()
@@ -40,7 +40,7 @@ describe('Create User Profile use case', () => {
 				name: dto.name,
 				surname: dto.surname,
 				userId,
-				birthDate: dto.birthDate,
+				birthDate: new Date(dto.birthDate),
 			}),
 		)
 
@@ -48,5 +48,22 @@ describe('Create User Profile use case', () => {
 
 		expect(data).toBeInstanceOf(UserProfile)
 		expect(status).toBe(HttpStatus.CREATED)
+	})
+
+	it('should fail if user not found', async () => {
+		const dto: CreateUserDto = {
+			name: faker.person.firstName(),
+			surname: faker.person.lastName(),
+			birthDate: faker.date.past().toISOString(),
+		}
+
+		userRepository.findById.mockResolvedValue(null)
+
+		const { data, status } = await useCase.execute(dto, faker.string.uuid())
+
+		expect(data).toEqual({
+			message: 'user not found',
+		})
+		expect(status).toBe(HttpStatus.NOT_FOUND)
 	})
 })
