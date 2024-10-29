@@ -1,41 +1,72 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common'
-import * as bcrypt from 'bcrypt'
-import { User } from 'src/application/entities/user'
+import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
+import { UserProfile } from 'src/application/entities/user-profile'
 import { UserRepository } from 'src/application/repositories/user.repository'
 import { ErrorResponse } from 'src/application/types/error-response'
 import { SuccessResponse } from 'src/application/types/success-response'
+import { USER_REPOSITORY } from 'src/shared/tokens'
 
 type CreateUserRequest = {
 	name: string
 	surname: string
-	email: string
+	birthDate: string
 }
 
-type CreateUserResponse = SuccessResponse<User> | ErrorResponse
+type CreateUserResponse = SuccessResponse<UserProfile> | ErrorResponse
 
 @Injectable()
 export class CreateUserUseCase {
-	constructor(private readonly userRepository: UserRepository) {}
+	private readonly logger = new Logger(CreateUserUseCase.name)
 
-	async execute({ name, surname, email }: CreateUserRequest): Promise<CreateUserResponse> {
-		let user = await this.userRepository.getUserByEmail(email)
-		if (user) {
+	constructor(@Inject(USER_REPOSITORY) private readonly userRepository: UserRepository) {}
+
+	async execute({ name, surname, birthDate }: CreateUserRequest, userId: string): Promise<CreateUserResponse> {
+		this.logger.debug('execution started')
+
+		const user = await this.userRepository.findById(userId)
+
+		if (!user) {
+			this.logger.debug(`user ${userId} not found`)
+
 			return {
-				status: HttpStatus.INTERNAL_SERVER_ERROR,
-				data: { message: 'BL01' },
+				data: {
+					message: 'user is not able to create profile',
+					details: {
+						code: 'BILL-101',
+					},
+				},
+				status: HttpStatus.UNAUTHORIZED,
 			}
 		}
 
-		user = User.create({
-			name,
-			surname,
-			email,
-		})
+		let userProfile = await this.userRepository.findProfileByUserId(userId)
 
-		user = await this.userRepository.save(user)
+		if (userProfile) {
+			this.logger.debug(`user ${userId} tried to create a new profile`)
+
+			return {
+				data: {
+					message: 'user is not able to create profile',
+					details: {
+						code: 'BILL-102',
+					},
+				},
+				status: HttpStatus.UNAUTHORIZED,
+			}
+		}
+
+		userProfile = await this.userRepository.saveProfile(
+			UserProfile.create({
+				name,
+				surname,
+				userId: user.id,
+				birthDate: new Date(birthDate),
+			}),
+		)
+
+		this.logger.debug('execution finished successfully')
 
 		return {
-			data: user,
+			data: userProfile,
 			status: HttpStatus.CREATED,
 		}
 	}

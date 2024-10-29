@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, Logger, UnauthorizedExceptio
 import { ConfigService } from '@nestjs/config'
 import { SupabaseClient, createClient } from '@supabase/supabase-js'
 import { Request } from 'express'
+import { RequestWithUser } from 'src/http/types/authenticated-request'
 import { SupabaseToken } from '../types/supabase-token.type'
 
 @Injectable()
@@ -22,10 +23,23 @@ export class SupabaseGuard implements CanActivate {
 	}
 
 	async canActivate(context: ExecutionContext) {
-		const request = context.switchToHttp().getRequest<Request>()
+		const request = context.switchToHttp().getRequest<RequestWithUser>()
 		const token = this.extractTokenFromRequest(request)
 
 		if (this.configService.get<string>('NODE_ENV') === 'development') {
+			let user = this.configService.get('LOCAL_USER')
+			try {
+				user = JSON.parse(user)
+			} catch (error) {
+				this.logger.error(error)
+				throw new UnauthorizedException('Local user not found')
+			}
+
+			request.user = {
+				id: user.id,
+				email: user.email,
+			}
+
 			return true
 		}
 
@@ -36,6 +50,10 @@ export class SupabaseGuard implements CanActivate {
 		if (error) {
 			this.logger.error('Supabase error', error)
 			throw new UnauthorizedException(error)
+		}
+		request.user = {
+			id: user.id,
+			email: user.email,
 		}
 
 		this.logger.debug(`Supabase user: ${user.email}`)

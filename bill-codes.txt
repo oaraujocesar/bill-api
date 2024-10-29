@@ -1,0 +1,6 @@
+100 - Erros de login
+BILL-101: usuário logado mas não está no schema auth
+BILL-102: usuário logado mas está tentando criar um novo profile
+
+500 - Erros de server
+BILL-501: Usuário está tentando inserir dados com unique constraint

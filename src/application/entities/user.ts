@@ -1,13 +1,12 @@
-import { randomUUID } from 'node:crypto'
 import { ApiProperty } from '@nestjs/swagger'
+import { UserProfile } from './user-profile'
 
 export type UserProps = {
-	id?: string
-	name: string
-	surname: string
+	id: string
 	email: string
-	createdAt?: Date
-	updatedAt?: Date
+	emailConfirmedAt: Date
+	isSuperAdmin: boolean
+	profile?: UserProfile
 }
 
 export class User {
@@ -15,27 +14,23 @@ export class User {
 	id: string
 
 	@ApiProperty()
-	name: string
-
-	@ApiProperty()
-	surname: string
-
-	@ApiProperty()
 	email: string
 
 	@ApiProperty()
-	createdAt: Date
+	emailConfirmedAt: Date
 
 	@ApiProperty()
-	updatedAt: Date
+	isSuperAdmin: boolean
+
+	@ApiProperty()
+	profile?: UserProfile
 
 	constructor(props: UserProps) {
-		this.id = props.id ?? randomUUID()
-		this.name = props.name
-		this.surname = props.surname
+		this.id = props.id
 		this.email = props.email
-		this.createdAt = props.createdAt ?? new Date()
-		this.updatedAt = props.updatedAt ?? new Date()
+		this.emailConfirmedAt = props.emailConfirmedAt
+		this.isSuperAdmin = props.isSuperAdmin
+		this.profile = props.profile
 	}
 
 	static create(props: UserProps): User {
