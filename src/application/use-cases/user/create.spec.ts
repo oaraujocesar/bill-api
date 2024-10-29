@@ -64,9 +64,12 @@ describe('Create User Profile use case', () => {
 		const { data, status } = await useCase.execute(dto, faker.string.uuid())
 
 		expect(data).toEqual({
-			message: 'user not found',
+			message: 'user is not able to create profile',
+			details: {
+				code: 'BILL-101',
+			},
 		})
-		expect(status).toBe(HttpStatus.NOT_FOUND)
+		expect(status).toBe(HttpStatus.UNAUTHORIZED)
 		expect(userRepository.saveProfile).not.toHaveBeenCalled()
 	})
 
@@ -99,9 +102,12 @@ describe('Create User Profile use case', () => {
 		const { data, status } = await useCase.execute(dto, userId)
 
 		expect(data).toEqual({
-			message: 'user profile already exists',
+			message: 'user is not able to create profile',
+			details: {
+				code: 'BILL-102',
+			},
 		})
-		expect(status).toBe(HttpStatus.CONFLICT)
+		expect(status).toBe(HttpStatus.UNAUTHORIZED)
 		expect(userRepository.saveProfile).not.toHaveBeenCalled()
 	})
 })

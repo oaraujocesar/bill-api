@@ -25,26 +25,32 @@ export class CreateUserUseCase {
 		const user = await this.userRepository.findById(userId)
 
 		if (!user) {
-			this.logger.debug('user not found')
+			this.logger.debug(`user ${userId} not found`)
 
 			return {
 				data: {
-					message: 'user not found',
+					message: 'user is not able to create profile',
+					details: {
+						code: 'BILL-101',
+					},
 				},
-				status: HttpStatus.NOT_FOUND,
+				status: HttpStatus.UNAUTHORIZED,
 			}
 		}
 
 		let userProfile = await this.userRepository.findProfileByUserId(userId)
 
 		if (userProfile) {
-			this.logger.debug('user profile already exists')
+			this.logger.debug(`user ${userId} tried to create a new profile`)
 
 			return {
 				data: {
-					message: 'user profile already exists',
+					message: 'user is not able to create profile',
+					details: {
+						code: 'BILL-102',
+					},
 				},
-				status: HttpStatus.CONFLICT,
+				status: HttpStatus.UNAUTHORIZED,
 			}
 		}
 

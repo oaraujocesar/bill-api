@@ -1,4 +1,4 @@
-import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
+import { HttpStatus, Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { User } from 'src/application/entities/user'
@@ -49,7 +49,13 @@ export class UserDrizzleRepository implements UserRepository {
 			return UserProfileMapper.toDomain(result)
 		} catch (error) {
 			this.logger.error(error)
-			throw new InternalServerErrorException()
+			throw new InternalServerErrorException({
+				message: 'Internal Server Error',
+				details: {
+					code: 'BILL-501',
+				},
+				statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+			})
 		}
 	}
 }
