@@ -8,6 +8,8 @@ import { CreateUserDto } from 'src/http/dtos/create-user.dto'
 import { USER_REPOSITORY } from 'src/shared/tokens'
 import { CreateUserUseCase } from './create'
 
+jest.mock('@nestjs/common/services/logger.service')
+
 describe('Create User Profile use case', () => {
 	let useCase: CreateUserUseCase
 	let userRepository: jest.Mocked<UserRepository>
@@ -65,5 +67,41 @@ describe('Create User Profile use case', () => {
 			message: 'user not found',
 		})
 		expect(status).toBe(HttpStatus.NOT_FOUND)
+		expect(userRepository.saveProfile).not.toHaveBeenCalled()
+	})
+
+	it('should fail if user profile already exists', async () => {
+		const dto: CreateUserDto = {
+			name: faker.person.firstName(),
+			surname: faker.person.lastName(),
+			birthDate: faker.date.past().toISOString(),
+		}
+
+		const userId = faker.string.uuid()
+		userRepository.findById.mockResolvedValue(
+			User.create({
+				id: userId,
+				email: faker.internet.email(),
+				emailConfirmedAt: faker.date.past(),
+				isSuperAdmin: faker.datatype.boolean(),
+			}),
+		)
+
+		userRepository.findProfileByUserId.mockResolvedValue(
+			UserProfile.create({
+				name: dto.name,
+				surname: dto.surname,
+				userId,
+				birthDate: new Date(dto.birthDate),
+			}),
+		)
+
+		const { data, status } = await useCase.execute(dto, userId)
+
+		expect(data).toEqual({
+			message: 'user profile already exists',
+		})
+		expect(status).toBe(HttpStatus.CONFLICT)
+		expect(userRepository.saveProfile).not.toHaveBeenCalled()
 	})
 })

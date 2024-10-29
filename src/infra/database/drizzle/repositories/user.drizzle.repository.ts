@@ -15,6 +15,19 @@ export class UserDrizzleRepository implements UserRepository {
 
 	constructor(@Inject(DRIZZLE) private readonly database: NodePgDatabase<typeof schema>) {}
 
+	async findProfileByUserId(userId: string): Promise<UserProfile | null> {
+		try {
+			const result = await this.database.query.userProfile.findFirst({
+				where: eq(schema.userProfile.userId, userId),
+			})
+
+			return result ? UserProfileMapper.toDomain(result) : null
+		} catch (error) {
+			this.logger.error(error)
+			throw new InternalServerErrorException()
+		}
+	}
+
 	async findById(id: string): Promise<User | null> {
 		try {
 			const result = await this.database.query.user.findFirst({

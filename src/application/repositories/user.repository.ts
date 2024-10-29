@@ -4,4 +4,5 @@ import { UserProfile } from '../entities/user-profile'
 export interface UserRepository {
 	saveProfile(userProfile: UserProfile): Promise<UserProfile>
 	findById(userId: string): Promise<User | null>
+	findProfileByUserId(userId: string): Promise<UserProfile | null>
 }

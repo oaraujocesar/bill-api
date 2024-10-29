@@ -18,6 +18,7 @@ const userProfile = pgTable(
 	},
 	(table) => ({
 		serialIndex: uniqueIndex('serial_index').on(table.serial),
+		userIdIndex: uniqueIndex('user_id_index').on(table.userId),
 	}),
 )
 
