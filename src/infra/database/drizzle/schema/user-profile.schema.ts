@@ -17,8 +17,8 @@ const userProfile = pgTable(
 		updatedAt: timestamp('updated_at').defaultNow().notNull(),
 	},
 	(table) => ({
-		serialIndex: uniqueIndex('serial_index').on(table.serial),
-		userIdIndex: uniqueIndex('user_id_index').on(table.userId),
+		serialIndex: uniqueIndex('profile_serial_index').on(table.serial),
+		userIdIndex: uniqueIndex('profile_user_id_index').on(table.userId),
 	}),
 )
 
