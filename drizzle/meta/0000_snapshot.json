@@ -1,5 +1,5 @@
 {
-  "id": "d08ae787-29f4-4dc7-b236-d2bfe1f2f91e",
+  "id": "cd440bcc-2a9f-4dd9-b2e2-71cd172ab3a1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -30,7 +30,8 @@
           "name": "balance",
           "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "0.00"
         },
         "user_id": {
           "name": "user_id",

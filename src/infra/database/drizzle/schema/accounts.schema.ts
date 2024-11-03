@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import { decimal, pgTable, serial, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core'
 import user from './user.schema'
 
@@ -8,7 +8,7 @@ const account = pgTable(
 		id: serial('id').primaryKey(),
 		serial: varchar('serial', { length: 26 }).notNull(),
 		name: varchar('name').notNull(),
-		balance: decimal('balance', { precision: 10, scale: 2 }).notNull(),
+		balance: decimal('balance', { precision: 10, scale: 2 }).default(sql`0.00`).notNull(),
 		userId: uuid('user_id')
 			.references(() => user.id)
 			.notNull(),

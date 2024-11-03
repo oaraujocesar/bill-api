@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS "account" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"serial" varchar(26) NOT NULL,
 	"name" varchar NOT NULL,
-	"balance" numeric(10, 2) NOT NULL,
+	"balance" numeric(10, 2) DEFAULT 0.00 NOT NULL,
 	"user_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
