@@ -2,10 +2,9 @@ import { Response } from 'express'
 
 import { Body, Controller, Logger, Post, Req, Res } from '@nestjs/common'
 import { ApiCreatedResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger'
-import { User } from 'src/application/entities/user'
 import { UserProfile } from 'src/application/entities/user-profile'
 import { CreateUserUseCase } from 'src/application/use-cases/user/create'
-import { CreateUserDto } from '../dtos/create-user.dto'
+import { CreateUserDto } from '../dtos/user/create-user.dto'
 import { RequestWithUser } from '../types/authenticated-request'
 
 @ApiTags('Users')
