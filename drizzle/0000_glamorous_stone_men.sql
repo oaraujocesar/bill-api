@@ -41,6 +41,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "account_serial_index" ON "account" USING btree ("serial");--> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "account_user_id_index" ON "account" USING btree ("user_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "account_user_id_index" ON "account" USING btree ("user_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "profile_serial_index" ON "user_profile" USING btree ("serial");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "profile_user_id_index" ON "user_profile" USING btree ("user_id");

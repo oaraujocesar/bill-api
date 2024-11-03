@@ -1,5 +1,5 @@
 import { relations, sql } from 'drizzle-orm'
-import { decimal, pgTable, serial, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core'
+import { decimal, index, pgTable, serial, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core'
 import user from './user.schema'
 
 const account = pgTable(
@@ -18,7 +18,7 @@ const account = pgTable(
 	},
 	(table) => ({
 		serialIndex: uniqueIndex('account_serial_index').on(table.serial),
-		userIdIndex: uniqueIndex('account_user_id_index').on(table.userId),
+		userIdIndex: index('account_user_id_index').on(table.userId),
 	}),
 )
 
