@@ -47,7 +47,7 @@ describe('Soft delete Account use case', () => {
 
 		const { status } = await useCase.execute(serial)
 
-		expect(status).toBe(HttpStatus.OK)
+		expect(status).toBe(HttpStatus.NO_CONTENT)
 	})
 
 	it('should throw an error if account is not found when deleting', async () => {
