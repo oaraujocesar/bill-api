@@ -36,7 +36,7 @@ export class DeleteAccountUseCase {
 		this.logger.debug('account deleted successfully')
 
 		return {
-			status: 200,
+			status: HttpStatus.NO_CONTENT,
 		}
 	}
 }
