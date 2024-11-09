@@ -53,8 +53,15 @@ describe('Soft delete Account use case', () => {
 	it('should throw an error if account is not found when deleting', async () => {
 		const serial = faker.string.ulid()
 
-		const { status } = await useCase.execute(serial)
+		const { data, status } = await useCase.execute(serial)
 
 		expect(status).toBe(HttpStatus.NOT_FOUND)
+
+		expect(data).toEqual({
+			message: `account with serial ${serial} was not found.`,
+			details: {
+				code: 'BILL-404',
+			},
+		})
 	})
 })
