@@ -4,7 +4,7 @@ import { HttpStatus } from '@nestjs/common'
 import { User } from 'src/application/entities/user'
 import { UserProfile } from 'src/application/entities/user-profile'
 import { UserRepository } from 'src/application/repositories/user.repository'
-import { CreateUserDto } from 'src/http/dtos/create-user.dto'
+import { CreateUserDto } from 'src/http/dtos/user/create-user.dto'
 import { USER_REPOSITORY } from 'src/shared/tokens'
 import { CreateUserUseCase } from './create'
 

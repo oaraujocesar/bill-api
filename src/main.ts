@@ -2,8 +2,8 @@ import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import * as cookieParser from 'cookie-parser'
-import * as expressBasicAuth from 'express-basic-auth'
+import cookieParser from 'cookie-parser'
+import expressBasicAuth from 'express-basic-auth'
 import { AppModule } from './app.module'
 
 async function bootstrap() {

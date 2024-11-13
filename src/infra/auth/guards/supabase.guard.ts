@@ -24,10 +24,10 @@ export class SupabaseGuard implements CanActivate {
 
 	async canActivate(context: ExecutionContext) {
 		const request = context.switchToHttp().getRequest<RequestWithUser>()
-		const token = this.extractTokenFromRequest(request)
 
 		if (this.configService.get<string>('NODE_ENV') === 'development') {
 			let user = this.configService.get('LOCAL_USER')
+
 			try {
 				user = JSON.parse(user)
 			} catch (error) {
@@ -42,6 +42,8 @@ export class SupabaseGuard implements CanActivate {
 
 			return true
 		}
+
+		const token = this.extractTokenFromRequest(request)
 
 		const {
 			data: { user },
