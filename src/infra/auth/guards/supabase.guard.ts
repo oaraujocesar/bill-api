@@ -1,54 +1,35 @@
 import { CanActivate, ExecutionContext, Injectable, Logger, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { Reflector } from '@nestjs/core'
 import { SupabaseClient, createClient } from '@supabase/supabase-js'
 import { Request } from 'express'
 import { RequestWithUser } from 'src/http/types/authenticated-request'
+import { SupabaseService } from 'src/shared/services/supabase.service'
 import { SupabaseToken } from '../types/supabase-token.type'
 
 @Injectable()
 export class SupabaseGuard implements CanActivate {
 	private readonly logger = new Logger(SupabaseGuard.name)
-	readonly supabase: SupabaseClient
-	private readonly configService: ConfigService
 
-	constructor(configService: ConfigService) {
-		this.supabase = createClient(configService.get('SUPABASE_URL'), configService.get('SUPABASE_KEY'), {
-			auth: {
-				autoRefreshToken: true,
-				detectSessionInUrl: false,
-			},
-		})
-
-		this.configService = configService
-	}
+	constructor(
+		private readonly reflector: Reflector,
+		private readonly supabase: SupabaseService,
+	) {}
 
 	async canActivate(context: ExecutionContext) {
-		const request = context.switchToHttp().getRequest<RequestWithUser>()
-
-		if (this.configService.get<string>('NODE_ENV') === 'development') {
-			let user = this.configService.get('LOCAL_USER')
-
-			try {
-				user = JSON.parse(user)
-			} catch (error) {
-				this.logger.error(error)
-				throw new UnauthorizedException('Local user not found')
-			}
-
-			request.user = {
-				id: user.id,
-				email: user.email,
-			}
-
+		const isPublic = this.reflector.get<boolean>('isPublic', context.getHandler())
+		if (isPublic) {
 			return true
 		}
+
+		const request = context.switchToHttp().getRequest<RequestWithUser>()
 
 		const token = this.extractTokenFromRequest(request)
 
 		const {
 			data: { user },
 			error,
-		} = await this.supabase.auth.getUser(token.access_token)
+		} = await this.supabase.client.auth.getUser(token.access_token)
 		if (error) {
 			this.logger.error('Supabase error', error)
 			throw new UnauthorizedException(error)
