@@ -2,6 +2,7 @@ import { Body, Controller, Logger, Post, Res } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 import { SigninUseCase } from 'src/application/use-cases/auth/signin'
+import { SignupDoc } from '../decorators/doc/auth/signup-headers.doc'
 import { Public } from '../decorators/public.decorator'
 import { SignupDto } from '../dtos/auth/signup.dto'
 
@@ -13,6 +14,7 @@ export class AuthController {
 	constructor(private readonly signinUseCase: SigninUseCase) {}
 
 	@Post('signup')
+	@SignupDoc()
 	@Public()
 	async signup(@Body() body: SignupDto, @Res() response: Response) {
 		this.logger.debug('Signup called')
