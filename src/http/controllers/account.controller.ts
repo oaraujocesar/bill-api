@@ -3,7 +3,6 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 import { CreateAccountUseCase } from 'src/application/use-cases/account/create'
 import { DeleteAccountUseCase } from 'src/application/use-cases/account/delete'
-import { ULID } from 'ulidx'
 import { CreateAccountDto } from '../dtos/account/create-account.dto'
 import { RequestWithUser } from '../types/authenticated-request'
 

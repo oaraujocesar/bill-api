@@ -1,7 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable, Logger, UnauthorizedException } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { Reflector } from '@nestjs/core'
-import { SupabaseClient, createClient } from '@supabase/supabase-js'
 import { Request } from 'express'
 import { RequestWithUser } from 'src/http/types/authenticated-request'
 import { SupabaseService } from 'src/shared/services/supabase.service'
