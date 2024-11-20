@@ -27,7 +27,7 @@ export class SupabaseGuard implements CanActivate {
 		const {
 			data: { user },
 			error,
-		} = await this.supabase.client.auth.getUser(token.access_token)
+		} = await this.supabase.auth.getUser(token.access_token)
 		if (error) {
 			this.logger.error('Supabase error', error)
 			throw new UnauthorizedException(error)
@@ -43,7 +43,7 @@ export class SupabaseGuard implements CanActivate {
 	}
 
 	private extractTokenFromRequest(request: Request): SupabaseToken {
-		const tokenInCookie = request.cookies['sb-xzsemyschgzwsaixcblq-auth-token']
+		const tokenInCookie = request.cookies['bill-auth-token']
 		const tokenInBearer = request.headers?.authorization?.replace('Bearer ', '')
 
 		if (!tokenInCookie && !tokenInBearer) {
