@@ -6,7 +6,7 @@ import { SupabaseService } from 'src/shared/services/supabase.service'
 import { USER_REPOSITORY } from 'src/shared/tokens'
 import { UseCaseResponse, buildResponse } from 'src/shared/utils/build-response'
 
-type SignupRequest = {
+export type SignupRequest = {
 	email: string
 	password: string
 	name: string
@@ -15,15 +15,15 @@ type SignupRequest = {
 }
 
 @Injectable()
-export class SigninUseCase {
-	private readonly logger = new Logger(SigninUseCase.name)
+export class SignupUseCase {
+	private readonly logger = new Logger(SignupUseCase.name)
 
 	constructor(
 		private readonly supabase: SupabaseService,
 		@Inject(USER_REPOSITORY) private readonly userRepository: UserRepository,
 	) {}
 
-	async execute({ email, password, name, surname, birthDate }: SignupRequest): Promise<UseCaseResponse<void>> {
+	async execute({ email, password, name, surname, birthDate }: SignupRequest): Promise<UseCaseResponse<User>> {
 		this.logger.debug('execution started')
 
 		let user = await this.userRepository.findByEmail(email)
@@ -36,7 +36,7 @@ export class SigninUseCase {
 			userProfile = await this.userRepository.findProfileByUserId(user.id)
 
 			if (userProfile) {
-				this.logger.error(`user ${email} already exists and has a profile`)
+				this.logger.debug(`user ${email} already exists and has a profile`)
 
 				return buildResponse({
 					isError: true,
@@ -68,7 +68,7 @@ export class SigninUseCase {
 			})
 		}
 
-		const { data, error } = await this.supabase.client.auth.signUp({
+		const { data, error } = await this.supabase.auth.signUp({
 			email,
 			password,
 		})
@@ -92,7 +92,7 @@ export class SigninUseCase {
 			isSuperAdmin: false,
 		})
 
-		this.logger.debug('user created on supabase')
+		this.logger.log('user created on supabase')
 
 		userProfile = UserProfile.create({
 			name,
@@ -114,35 +114,5 @@ export class SigninUseCase {
 			message: 'User created successfully',
 			data: user,
 		})
-
-		// const { data, error } = await this.supabase.client.auth.signUp({
-		// 	email,
-		// 	password,
-		// })
-		// if (error) {
-		// 	this.logger.error(error)
-		// 	return buildResponse({
-		// 		isError: true,
-		// 		details: {
-		// 			code: 'BILL-201',
-		// 		},
-		// 		status: HttpStatus.BAD_REQUEST,
-		// 		message: 'Error creating user on supabase',
-		// 		data: null,
-		// 	})
-		// }
-
-		// const userProfile = UserProfile.create({
-		// 	name,
-		// 	surname,
-		// 	userId: data.user.id,
-		// 	birthDate: new Date(birthDate),
-		// })
-
-		// await this.userRepository.saveProfile(userProfile)
-
-		// this.logger.debug('user profile created')
-
-		// this.logger.debug('execution completed')
 	}
 }

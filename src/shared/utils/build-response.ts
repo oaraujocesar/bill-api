@@ -13,7 +13,7 @@ type BuildResponseWithError<T> = BuildResponse<T> & {
 }
 
 export type UseCaseResponse<T> = {
-	data: { data: T; message: string } | { details: Record<string, string> }
+	data: { data: T; message: string } | { details: Record<string, string>; message: string }
 	status: HttpStatus
 }
 
