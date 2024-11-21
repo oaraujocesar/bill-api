@@ -5,6 +5,7 @@ BILL-102: usuário logado mas está tentando criar um novo profile
 200 - Erros do supabase
 BILL-201: usuário já existe conta no supabase e já tem profile
 BILL-202: algum erro de criação do usuário no supabase
+BILL-203: error de signin não mapeado
 
 400 - Erros de cliente
 BILL-404: recurso não encontrado
