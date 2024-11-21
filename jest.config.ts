@@ -6,7 +6,7 @@ const config: Config = {
 	transform: {
 		'^.+\\.(t|j)s$': '@swc/jest',
 	},
-	collectCoverageFrom: ['src/**/*.(t|j)s'],
+	collectCoverageFrom: ['src/application/**/*.(t|j)s', 'src/shared/**/*.(t|j)s'],
 	coverageDirectory: './coverage',
 	testEnvironment: 'node',
 	resetMocks: true,

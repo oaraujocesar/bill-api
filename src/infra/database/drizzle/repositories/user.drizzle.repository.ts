@@ -15,6 +15,16 @@ export class UserDrizzleRepository implements UserRepository {
 
 	constructor(@Inject(DRIZZLE) private readonly database: NodePgDatabase<typeof schema>) {}
 
+	async findByEmail(email: string): Promise<User | null> {
+		const result = await this.database.query.user.findFirst({
+			where: eq(schema.user.email, email),
+		})
+
+		if (!result) return null
+
+		return UserMapper.toDomain(result)
+	}
+
 	async findProfileByUserId(userId: string): Promise<UserProfile | null> {
 		try {
 			const result = await this.database.query.userProfile.findFirst({
