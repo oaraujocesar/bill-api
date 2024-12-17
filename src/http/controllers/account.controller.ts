@@ -3,7 +3,6 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 import { CreateAccountUseCase } from 'src/application/use-cases/account/create'
 import { DeleteAccountUseCase } from 'src/application/use-cases/account/delete'
-import { ULID } from 'ulidx'
 import { CreateAccountDto } from '../dtos/account/create-account.dto'
 import { RequestWithUser } from '../types/authenticated-request'
 
@@ -22,9 +21,9 @@ export class AccountController {
 	async createAccount(@Body() body: CreateAccountDto, @Res() response: Response, @Req() request: RequestWithUser) {
 		this.logger.debug(`[Create Account]: called with body ${JSON.stringify(body)}`)
 
-		const { data, status } = await this.createAccountUseCase.execute(body, request.user.id)
+		const { data, statusCode, message } = await this.createAccountUseCase.execute(body, request.user.id)
 
-		return response.status(status).json(data)
+		return response.status(statusCode).json({ data, message })
 	}
 
 	@Delete(':serial')
@@ -32,8 +31,8 @@ export class AccountController {
 	async deleteAccount(@Param('serial') serial: string, @Res() response: Response) {
 		this.logger.debug(`[Delete Account]: called for serial: ${serial}`)
 
-		const { data, status } = await this.deleteAccountUseCase.execute(serial)
+		const { data, statusCode, message } = await this.deleteAccountUseCase.execute(serial)
 
-		return response.status(status).json(data)
+		return response.status(statusCode).json({ data, message })
 	}
 }

@@ -20,7 +20,7 @@
     }
   },
   "linter": {
-    "ignore": ["./build", "./dist"],
+    "ignore": ["./build", "./dist", "./drizzle"],
     "enabled": true,
     "rules": {
       "style": {
@@ -29,6 +29,9 @@
       },
       "complexity": {
         "noStaticOnlyClass": "off"
+      },
+      "correctness": {
+        "noUnusedImports": "error"
       }
     }
   }
