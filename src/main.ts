@@ -28,6 +28,11 @@ async function bootstrap() {
 		.setTitle('Bill API')
 		.setDescription('The bill API description')
 		.setVersion('0.1')
+		.addBearerAuth({
+			type: 'http',
+			scheme: 'bearer',
+			bearerFormat: 'JWT',
+		})
 		.build()
 
 	const documentFactory = () => SwaggerModule.createDocument(app, swagger)
