@@ -3,7 +3,6 @@ import { Reflector } from '@nestjs/core'
 import { Request } from 'express'
 import { RequestWithUser } from 'src/http/types/authenticated-request'
 import { SupabaseService } from 'src/shared/services/supabase.service'
-import { SupabaseToken } from '../types/supabase-token.type'
 
 @Injectable()
 export class SupabaseGuard implements CanActivate {
@@ -27,7 +26,7 @@ export class SupabaseGuard implements CanActivate {
 		const {
 			data: { user },
 			error,
-		} = await this.supabase.auth.getUser(token.access_token)
+		} = await this.supabase.auth.getUser(token)
 		if (error) {
 			this.logger.error('Supabase error', error)
 			throw new UnauthorizedException(error)
@@ -42,7 +41,7 @@ export class SupabaseGuard implements CanActivate {
 		return true
 	}
 
-	private extractTokenFromRequest(request: Request): SupabaseToken {
+	private extractTokenFromRequest(request: Request): string {
 		const tokenInCookie = request.cookies['bill-auth-token']
 		const tokenInBearer = request.headers?.authorization?.replace('Bearer ', '')
 
@@ -50,8 +49,6 @@ export class SupabaseGuard implements CanActivate {
 			throw new UnauthorizedException()
 		}
 
-		const token = tokenInCookie || tokenInBearer
-
-		return JSON.parse(Buffer.from(token.replace('base64-', ''), 'base64').toString())
+		return tokenInCookie || tokenInBearer
 	}
 }
