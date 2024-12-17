@@ -34,9 +34,10 @@ describe('Create Account use case', () => {
 			}),
 		)
 
-		const { data, status } = await useCase.execute(dto, userId)
+		const { data, statusCode, message } = await useCase.execute(dto, userId)
 
 		expect(data).toBeInstanceOf(Account)
-		expect(status).toBe(HttpStatus.CREATED)
+		expect(statusCode).toBe(HttpStatus.CREATED)
+		expect(message).toBe('Account created successfully!')
 	})
 })

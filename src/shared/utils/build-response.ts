@@ -1,44 +1,22 @@
 import { HttpStatus } from '@nestjs/common'
 
-type BuildResponse<T> = {
-	data: T
-	status: HttpStatus
-	isError: boolean
+export type ResponseData<T> = T | undefined
+
+export type ResponseErrors = Array<Record<string, string>> | undefined
+
+export type ResponseBody<T> = {
+	statusCode: HttpStatus
 	message: string
-	details?: Record<string, string>
+	data: ResponseData<T>
+	errors: ResponseErrors
 }
 
-type BuildResponseWithError<T> = BuildResponse<T> & {
-	details: Record<string, string>
-}
-
-export type UseCaseResponse<T> = {
-	data: { data?: T; message: string; details?: Record<string, string> }
-	status: HttpStatus
-}
-
-export const buildResponse = ({
-	data,
-	status,
-	isError,
-	details,
-	message,
-}: BuildResponseWithError<typeof data> | BuildResponse<typeof data>): UseCaseResponse<typeof data> => {
-	if (isError) {
-		return {
-			data: {
-				message,
-				details,
-			},
-			status,
-		}
-	}
-
+export function buildResponse<T>(
+	config: Omit<ResponseBody<T>, 'data' | 'errors'> & { data?: ResponseData<T>; errors?: ResponseErrors },
+): ResponseBody<T> {
 	return {
-		data: {
-			data,
-			message,
-		},
-		status,
+		...config,
+		data: config.data,
+		errors: config.errors,
 	}
 }

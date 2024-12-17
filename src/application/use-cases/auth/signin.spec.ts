@@ -43,11 +43,11 @@ describe('Signin use case', () => {
 			},
 		})
 
-		const { status, data } = await useCase.execute(dto)
+		const { statusCode, data, message } = await useCase.execute(dto)
 
-		expect(status).toBe(HttpStatus.OK)
-		expect(data.message).toEqual('User signed in successfully')
-		expect(data.data).toEqual({
+		expect(statusCode).toBe(HttpStatus.OK)
+		expect(message).toEqual('User signed in successfully!')
+		expect(data).toEqual({
 			access_token: expect.any(String),
 			refresh_token: expect.any(String),
 			expires_in: expect.any(Number),
@@ -68,10 +68,10 @@ describe('Signin use case', () => {
 			},
 		})
 
-		const { status, data } = await useCase.execute(dto)
+		const { statusCode, message } = await useCase.execute(dto)
 
-		expect(status).toBe(HttpStatus.BAD_REQUEST)
-		expect(data.message).toEqual('Invalid credentials')
+		expect(statusCode).toBe(HttpStatus.BAD_REQUEST)
+		expect(message).toEqual('Invalid credentials!')
 	})
 
 	it('should fail and return a different error from invalid credentials', async () => {
@@ -87,10 +87,10 @@ describe('Signin use case', () => {
 			},
 		})
 
-		const { status, data } = await useCase.execute(dto)
+		const { statusCode, errors, message } = await useCase.execute(dto)
 
-		expect(status).toBe(HttpStatus.BAD_REQUEST)
-		expect(data.message).toEqual('It was not possible to sign in')
-		expect(data.details).toEqual({ code: 'BILL-203' })
+		expect(statusCode).toBe(HttpStatus.BAD_REQUEST)
+		expect(message).toEqual('It was not possible to sign in!')
+		expect(errors).toEqual([{ code: 'BILL-203' }])
 	})
 })

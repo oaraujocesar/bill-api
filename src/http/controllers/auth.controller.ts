@@ -25,25 +25,25 @@ export class AuthController {
 	async signin(@Res() response: Response, @Body() body: SigninDto) {
 		this.logger.debug('Signin called')
 
-		const { data, status } = await this.signinUseCase.execute(body)
+		const { data, statusCode, message } = await this.signinUseCase.execute(body)
 
-		if (status === HttpStatus.BAD_REQUEST) {
-			return response.status(status).json(data)
+		if (statusCode === HttpStatus.BAD_REQUEST) {
+			return response.status(statusCode).json({ data, message })
 		}
 
 		return response
-			.status(status)
-			.cookie('billio-refresh-token', data.data.refresh_token, {
+			.status(statusCode)
+			.cookie('billio-refresh-token', data.refresh_token, {
 				httpOnly: true,
 				secure: true,
-				expires: new Date(data.data.expires_in),
+				expires: new Date(data.expires_in),
 			})
-			.cookie('billio-access-token', data.data.access_token, {
+			.cookie('billio-access-token', data.access_token, {
 				httpOnly: true,
 				secure: true,
-				expires: new Date(data.data.expires_in),
+				expires: new Date(data.expires_in),
 			})
-			.json(data)
+			.json({ data, message })
 	}
 
 	@Post('signup')
@@ -52,8 +52,8 @@ export class AuthController {
 	async signup(@Body() body: SignupDto, @Res() response: Response) {
 		this.logger.debug('Signup called')
 
-		const { data, status } = await this.signupUseCase.execute(body)
+		const { data, statusCode, message } = await this.signupUseCase.execute(body)
 
-		return response.status(status).json(data)
+		return response.status(statusCode).json({ data, message })
 	}
 }

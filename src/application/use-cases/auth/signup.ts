@@ -4,7 +4,7 @@ import { UserProfile } from 'src/application/entities/user-profile'
 import { UserRepository } from 'src/application/repositories/user.repository'
 import { SupabaseService } from 'src/shared/services/supabase.service'
 import { USER_REPOSITORY } from 'src/shared/tokens'
-import { UseCaseResponse, buildResponse } from 'src/shared/utils/build-response'
+import { ResponseBody, buildResponse } from 'src/shared/utils/build-response'
 
 export type SignupRequest = {
 	email: string
@@ -23,7 +23,7 @@ export class SignupUseCase {
 		@Inject(USER_REPOSITORY) private readonly userRepository: UserRepository,
 	) {}
 
-	async execute({ email, password, name, surname, birthDate }: SignupRequest): Promise<UseCaseResponse<User>> {
+	async execute({ email, password, name, surname, birthDate }: SignupRequest): Promise<ResponseBody<undefined>> {
 		this.logger.debug('execution started')
 
 		let user = await this.userRepository.findByEmail(email)
@@ -39,13 +39,9 @@ export class SignupUseCase {
 				this.logger.debug(`user ${email} already exists and has a profile`)
 
 				return buildResponse({
-					isError: true,
-					details: {
-						code: 'BILL-201',
-					},
-					status: HttpStatus.BAD_REQUEST,
-					message: 'It was not possible to create the user',
-					data: null,
+					errors: [{ code: 'BILL-201' }],
+					statusCode: HttpStatus.BAD_REQUEST,
+					message: 'It was not possible to create the user!',
 				})
 			}
 
@@ -60,11 +56,8 @@ export class SignupUseCase {
 			user.profile = savedUserProfile
 
 			return buildResponse({
-				isError: false,
-				details: null,
-				status: HttpStatus.CREATED,
-				message: 'User created successfully',
-				data: user,
+				statusCode: HttpStatus.CREATED,
+				message: 'User created successfully!',
 			})
 		}
 
@@ -75,13 +68,9 @@ export class SignupUseCase {
 		if (error) {
 			this.logger.error(error)
 			return buildResponse({
-				isError: true,
-				details: {
-					code: 'BILL-202',
-				},
-				status: HttpStatus.BAD_REQUEST,
-				message: 'It was not possible to create the user',
-				data: null,
+				errors: [{ code: 'BILL-202' }],
+				statusCode: HttpStatus.BAD_REQUEST,
+				message: 'It was not possible to create user!',
 			})
 		}
 
@@ -108,11 +97,8 @@ export class SignupUseCase {
 		this.logger.debug('execution completed')
 
 		return buildResponse({
-			isError: false,
-			details: null,
-			status: HttpStatus.CREATED,
-			message: 'User created successfully',
-			data: user,
+			statusCode: HttpStatus.CREATED,
+			message: 'User created successfully!',
 		})
 	}
 }

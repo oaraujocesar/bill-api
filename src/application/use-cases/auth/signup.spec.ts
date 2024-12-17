@@ -56,20 +56,10 @@ describe('Signin use case', () => {
 			},
 		})
 
-		const { status, data } = await useCase.execute(dto)
+		const { statusCode, message } = await useCase.execute(dto)
 
-		expect(status).toBe(HttpStatus.CREATED)
-		expect(data.message).toBe('User created successfully')
-		if ('data' in data) {
-			expect(data.data).toBeInstanceOf(User)
-			expect(data.data.email).toBe(dto.email)
-			expect(data.data.isSuperAdmin).toBe(false)
-			expect(data.data.emailConfirmedAt).toBe(null)
-			expect(data.data.profile).toBeInstanceOf(UserProfile)
-			expect(data.data.profile.name).toBe(dto.name)
-			expect(data.data.profile.surname).toBe(dto.surname)
-			expect(data.data.profile.birthDate).toBeInstanceOf(Date)
-		}
+		expect(statusCode).toBe(HttpStatus.CREATED)
+		expect(message).toBe('User created successfully!')
 		expect(supabase.auth.signUp).toHaveBeenCalledWith({ email: dto.email, password: dto.password })
 		expect(userRepository.findByEmail).toHaveBeenCalledWith(dto.email)
 		expect(userRepository.saveProfile).toHaveBeenCalledTimes(1)
@@ -102,20 +92,12 @@ describe('Signin use case', () => {
 			}),
 		)
 
-		const { status, data } = await useCase.execute(dto)
+		const { statusCode, message } = await useCase.execute(dto)
 
-		expect(status).toBe(HttpStatus.CREATED)
-		expect(data.message).toBe('User created successfully')
-		if ('data' in data) {
-			expect(data.data).toBeInstanceOf(User)
-			expect(data.data.email).toBe(dto.email)
-			expect(data.data.isSuperAdmin).toBe(user.isSuperAdmin)
-			expect(data.data.emailConfirmedAt).toBeInstanceOf(Date)
-			expect(data.data.profile).toBeInstanceOf(UserProfile)
-			expect(data.data.profile.name).toBe(dto.name)
-			expect(data.data.profile.surname).toBe(dto.surname)
-			expect(data.data.profile.birthDate).toBeInstanceOf(Date)
-		}
+		expect(statusCode).toBe(HttpStatus.CREATED)
+		expect(message).toBe('User created successfully!')
+		expect(userRepository.findByEmail).toHaveBeenCalledWith(dto.email)
+		expect(userRepository.saveProfile).toHaveBeenCalledTimes(1)
 	})
 
 	it('should fail if user already exists and has a profile', async () => {
@@ -146,12 +128,9 @@ describe('Signin use case', () => {
 		userRepository.findByEmail.mockResolvedValue(User.create(user))
 		userRepository.findProfileByUserId.mockResolvedValue(UserProfile.create(userProfile))
 
-		const { status, data } = await useCase.execute(dto)
+		const { statusCode, message } = await useCase.execute(dto)
 
-		expect(status).toBe(HttpStatus.BAD_REQUEST)
-		expect(data.message).toBe('It was not possible to create the user')
-		if ('details' in data) {
-			expect(data.details.code).toBe('BILL-201')
-		}
+		expect(statusCode).toBe(HttpStatus.BAD_REQUEST)
+		expect(message).toBe('It was not possible to create the user!')
 	})
 })

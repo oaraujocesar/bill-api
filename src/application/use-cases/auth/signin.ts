@@ -2,7 +2,7 @@ import { HttpStatus, Injectable, Logger } from '@nestjs/common'
 import { Session } from '@supabase/supabase-js'
 import { SupabaseErrors } from 'src/shared/enums/supabase-errors.enum'
 import { SupabaseService } from 'src/shared/services/supabase.service'
-import { UseCaseResponse, buildResponse } from 'src/shared/utils/build-response'
+import { ResponseBody, buildResponse } from 'src/shared/utils/build-response'
 
 export type SigninRequest = {
 	email: string
@@ -15,7 +15,7 @@ export class SigninUseCase {
 
 	constructor(private readonly supabase: SupabaseService) {}
 
-	async execute({ email, password }: SigninRequest): Promise<UseCaseResponse<Omit<Session, 'user'>>> {
+	async execute({ email, password }: SigninRequest): Promise<ResponseBody<Omit<Session, 'user'>>> {
 		this.logger.debug('execution started')
 
 		const { data, error } = await this.supabase.auth.signInWithPassword({
@@ -28,33 +28,26 @@ export class SigninUseCase {
 
 			if (error.code === SupabaseErrors.INVALID_CREDENTIALS) {
 				return buildResponse({
-					isError: true,
-					message: 'Invalid credentials',
-					data: null,
-					status: HttpStatus.BAD_REQUEST,
+					message: 'Invalid credentials!',
+					statusCode: HttpStatus.BAD_REQUEST,
 				})
 			}
 
 			this.logger.error(error)
 
 			return buildResponse({
-				isError: true,
-				details: {
-					code: 'BILL-203',
-				},
-				message: 'It was not possible to sign in',
-				data: null,
-				status: HttpStatus.BAD_REQUEST,
+				errors: [{ code: 'BILL-203' }],
+				message: 'It was not possible to sign in!',
+				statusCode: HttpStatus.BAD_REQUEST,
 			})
 		}
 
 		const { user, ...session } = data.session
 
 		return buildResponse({
-			isError: false,
-			message: 'User signed in successfully',
+			message: 'User signed in successfully!',
 			data: session,
-			status: HttpStatus.OK,
+			statusCode: HttpStatus.OK,
 		})
 	}
 }
