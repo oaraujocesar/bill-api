@@ -105,6 +105,6 @@ export function SignupDoc() {
 				},
 			},
 		}),
-		BadRequestResponse(),
+		BadRequestResponse({ errorMessage: 'User already exists' }),
 	)
 }
