@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Logger, Param, Post, Req, Res } from '@nestjs/common'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 import { CreateAccountUseCase } from 'src/application/use-cases/account/create'
 import { DeleteAccountUseCase } from 'src/application/use-cases/account/delete'
@@ -7,6 +7,7 @@ import { CreateAccountDto } from '../dtos/account/create-account.dto'
 import { RequestWithUser } from '../types/authenticated-request'
 
 @ApiTags('Accounts')
+@ApiBearerAuth()
 @Controller('accounts')
 export class AccountController {
 	private readonly logger = new Logger(AccountController.name)

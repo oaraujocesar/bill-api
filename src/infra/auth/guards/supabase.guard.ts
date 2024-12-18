@@ -1,4 +1,11 @@
-import { CanActivate, ExecutionContext, Injectable, Logger, UnauthorizedException } from '@nestjs/common'
+import {
+	CanActivate,
+	ExecutionContext,
+	ForbiddenException,
+	Injectable,
+	Logger,
+	UnauthorizedException,
+} from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { Request } from 'express'
 import { RequestWithUser } from 'src/http/types/authenticated-request'
@@ -29,7 +36,7 @@ export class SupabaseGuard implements CanActivate {
 		} = await this.supabase.auth.getUser(token)
 		if (error) {
 			this.logger.error('Supabase error', error)
-			throw new UnauthorizedException(error)
+			throw new ForbiddenException()
 		}
 		request.user = {
 			id: user.id,
