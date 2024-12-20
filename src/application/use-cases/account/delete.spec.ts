@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker'
 import { HttpStatus } from '@nestjs/common'
 import { Account } from 'src/application/entities/account'
 import { AccountRepository } from 'src/application/repositories/account.repository'
-import { CreateAccountDto } from 'src/http/dtos/account/create-account.dto'
+import { CreateAccountDto } from 'src/infra/http/dtos/account/create-account.dto'
 import { ACCOUNT_REPOSITORY } from 'src/shared/tokens'
 import { DeleteAccountUseCase } from './delete'
 

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { Request } from 'express'
-import { RequestWithUser } from 'src/http/types/authenticated-request'
+import { RequestWithUser } from 'src/infra/http/types/authenticated-request'
 import { SupabaseService } from 'src/shared/services/supabase.service'
 
 @Injectable()
@@ -42,8 +42,6 @@ export class SupabaseGuard implements CanActivate {
 			id: user.id,
 			email: user.email,
 		}
-
-		this.logger.debug(`Supabase user: ${user.email}`)
 
 		return true
 	}
