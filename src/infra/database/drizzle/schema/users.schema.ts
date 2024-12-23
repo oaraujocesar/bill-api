@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm'
 import { boolean, pgSchema, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
-import account from './accounts.schema'
-import userProfile from './user-profile.schema'
+import accounts from './accounts.schema'
+import usersProfile from './users-profile.schema'
 
 const authSchema = pgSchema('auth')
 
@@ -12,9 +12,9 @@ const user = authSchema.table('users', {
 	isSuperAdmin: boolean('is_super_admin').default(false),
 })
 
-export const userRelations = relations(user, ({ one, many }) => ({
-	profile: one(userProfile),
-	accounts: many(account),
+export const usersRelations = relations(user, ({ one, many }) => ({
+	profile: one(usersProfile),
+	accounts: many(accounts),
 }))
 
 export default user

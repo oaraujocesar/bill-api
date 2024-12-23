@@ -16,8 +16,8 @@ export class UserDrizzleRepository implements UserRepository {
 	constructor(@Inject(DRIZZLE) private readonly database: NodePgDatabase<typeof schema>) {}
 
 	async findByEmail(email: string): Promise<User | null> {
-		const result = await this.database.query.user.findFirst({
-			where: eq(schema.user.email, email),
+		const result = await this.database.query.users.findFirst({
+			where: eq(schema.users.email, email),
 		})
 
 		if (!result) return null
@@ -27,8 +27,8 @@ export class UserDrizzleRepository implements UserRepository {
 
 	async findProfileByUserId(userId: string): Promise<UserProfile | null> {
 		try {
-			const result = await this.database.query.userProfile.findFirst({
-				where: eq(schema.userProfile.userId, userId),
+			const result = await this.database.query.usersProfile.findFirst({
+				where: eq(schema.usersProfile.userId, userId),
 			})
 
 			return result ? UserProfileMapper.toDomain(result) : null
@@ -40,8 +40,8 @@ export class UserDrizzleRepository implements UserRepository {
 
 	async findById(id: string): Promise<User | null> {
 		try {
-			const result = await this.database.query.user.findFirst({
-				where: eq(schema.user.id, id),
+			const result = await this.database.query.users.findFirst({
+				where: eq(schema.users.id, id),
 			})
 
 			return result ? UserMapper.toDomain(result) : null
@@ -54,7 +54,7 @@ export class UserDrizzleRepository implements UserRepository {
 	async saveProfile(userProfileEntity: UserProfile): Promise<UserProfile> {
 		const userProfileDrizzle = UserProfileMapper.toDrizzle(userProfileEntity)
 		try {
-			const [result] = await this.database.insert(schema.userProfile).values(userProfileDrizzle).returning().execute()
+			const [result] = await this.database.insert(schema.usersProfile).values(userProfileDrizzle).returning().execute()
 
 			return UserProfileMapper.toDomain(result)
 		} catch (error) {

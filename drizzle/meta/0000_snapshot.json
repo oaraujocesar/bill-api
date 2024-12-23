@@ -1,11 +1,11 @@
 {
-  "id": "d0ab58c4-bf09-40fa-a71e-b127a5f718ff",
+  "id": "7da64430-d362-49a2-8409-dd14f92e824c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.account": {
-      "name": "account",
+    "public.accounts": {
+      "name": "accounts",
       "schema": "",
       "columns": {
         "id": {
@@ -93,9 +93,9 @@
         }
       },
       "foreignKeys": {
-        "account_user_id_users_id_fk": {
-          "name": "account_user_id_users_id_fk",
-          "tableFrom": "account",
+        "accounts_user_id_users_id_fk": {
+          "name": "accounts_user_id_users_id_fk",
+          "tableFrom": "accounts",
           "tableTo": "users",
           "schemaTo": "auth",
           "columnsFrom": [
@@ -109,7 +109,10 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "auth.users": {
       "name": "users",
@@ -152,10 +155,13 @@
             "email"
           ]
         }
-      }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
-    "public.user_profile": {
-      "name": "user_profile",
+    "public.users_profile": {
+      "name": "users_profile",
       "schema": "",
       "columns": {
         "id": {
@@ -242,9 +248,9 @@
         }
       },
       "foreignKeys": {
-        "user_profile_user_id_users_id_fk": {
-          "name": "user_profile_user_id_users_id_fk",
-          "tableFrom": "user_profile",
+        "users_profile_user_id_users_id_fk": {
+          "name": "users_profile_user_id_users_id_fk",
+          "tableFrom": "users_profile",
           "tableTo": "users",
           "schemaTo": "auth",
           "columnsFrom": [
@@ -258,12 +264,18 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
   "enums": {},
   "schemas": {},
   "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},
