@@ -1,10 +1,13 @@
-import { Body, Controller, Delete, Logger, Param, Post, Req, Res } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Logger, Param, Post, Req, Res } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 import { CreateAccountUseCase } from 'src/application/use-cases/account/create'
 import { DeleteAccountUseCase } from 'src/application/use-cases/account/delete'
+import { ListAccountsUseCase } from 'src/application/use-cases/account/list-all'
+import { ListAccountsDoc } from '../decorators/doc/accounts/list-accounts-headers.doc'
+import { User } from '../decorators/user.decorator'
 import { CreateAccountDto } from '../dtos/account/create-account.dto'
-import { RequestWithUser } from '../types/authenticated-request'
+import { RequestWithUser, UserAuthenticated } from '../types/authenticated-request'
 
 @ApiTags('Accounts')
 @ApiBearerAuth()
@@ -15,7 +18,18 @@ export class AccountController {
 	constructor(
 		private readonly createAccountUseCase: CreateAccountUseCase,
 		private readonly deleteAccountUseCase: DeleteAccountUseCase,
+		private readonly listAccountsUseCase: ListAccountsUseCase,
 	) {}
+
+	@Get()
+	@ListAccountsDoc()
+	async listAccounts(@Res() response: Response, @User() user: UserAuthenticated) {
+		this.logger.debug('[List Accounts]: called')
+
+		const { data, statusCode, message } = await this.listAccountsUseCase.execute(user)
+
+		return response.status(statusCode).json({ data, message })
+	}
 
 	@Post()
 	@ApiOperation({ summary: 'Creates a bank account' })
