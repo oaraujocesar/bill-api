@@ -26,6 +26,6 @@ export class BaseEntity {
 		this.serial = props.serial ?? ulid()
 		this.createdAt = props.createdAt ?? new Date()
 		this.updatedAt = props.updatedAt ?? new Date()
-		this.deletedAt = props.updatedAt
+		this.deletedAt = props.deletedAt
 	}
 }
