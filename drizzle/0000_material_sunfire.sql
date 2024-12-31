@@ -14,14 +14,14 @@ CREATE TABLE "cards" (
 	"serial" varchar(26) NOT NULL,
 	"name" varchar NOT NULL,
 	"limit" numeric(10, 2) DEFAULT 0.00 NOT NULL,
-	"due_date" date NOT NULL,
+	"due_date" integer NOT NULL,
 	"user_id" uuid NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"deleted_at" timestamp
 );
 --> statement-breakpoint
-CREATE TABLE "auth"."users" (
+CREATE TABLE IF NOT EXISTS "auth"."users" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"email" varchar NOT NULL,
 	"email_confirmed_at" timestamp,
