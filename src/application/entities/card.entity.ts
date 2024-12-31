@@ -22,7 +22,7 @@ export class Card extends BaseEntity {
 	name: string
 
 	@ApiProperty()
-	private _limit: number
+	limit: number
 
 	@ApiProperty()
 	dueDate: number
@@ -43,7 +43,7 @@ export class Card extends BaseEntity {
 		})
 
 		this.name = props.name
-		this._limit = props.limit
+		this.limit = props.limit
 		this.dueDate = props.dueDate
 		this.userId = props.userId
 		this.user = props.user
@@ -51,9 +51,5 @@ export class Card extends BaseEntity {
 
 	static create(props: CardProps) {
 		return new Card(props)
-	}
-
-	get limit(): number {
-		return Number(this._limit.toFixed(2))
 	}
 }

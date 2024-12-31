@@ -20,7 +20,6 @@ describe('Card Entity', () => {
 		expect(card).toEqual(
 			expect.objectContaining({
 				...input,
-				_limit: input.limit,
 				user: undefined,
 			}),
 		)
