@@ -1,9 +1,9 @@
 import { relations, sql } from 'drizzle-orm'
 import { decimal, index, pgTable, serial, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core'
-import user from './user.schema'
+import user from './users.schema'
 
-const account = pgTable(
-	'account',
+const accounts = pgTable(
+	'accounts',
 	{
 		id: serial('id').primaryKey(),
 		serial: varchar('serial', { length: 26 }).notNull(),
@@ -16,14 +16,11 @@ const account = pgTable(
 		updatedAt: timestamp('updated_at').defaultNow().notNull(),
 		deletedAt: timestamp('deleted_at'),
 	},
-	(table) => ({
-		serialIndex: uniqueIndex('account_serial_index').on(table.serial),
-		userIdIndex: index('account_user_id_index').on(table.userId),
-	}),
+	(table) => [uniqueIndex('account_serial_index').on(table.serial), index('account_user_id_index').on(table.userId)],
 )
 
-export const accountRelations = relations(account, ({ one }) => ({
-	user: one(user, { fields: [account.userId], references: [user.id] }),
+export const accountsRelations = relations(accounts, ({ one }) => ({
+	user: one(user, { fields: [accounts.userId], references: [user.id] }),
 }))
 
-export default account
+export default accounts

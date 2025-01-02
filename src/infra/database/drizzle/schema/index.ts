@@ -1,3 +1,3 @@
-export { default as user, userRelations } from './user.schema'
-export { default as userProfile, userProfileRelations } from './user-profile.schema'
-export { default as account, accountRelations } from './accounts.schema'
+export { default as users, usersRelations } from './users.schema'
+export { default as usersProfile, usersProfileRelations } from './users-profile.schema'
+export { default as accounts, accountsRelations } from './accounts.schema'

@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common'
-import { ApiBadRequestResponse, ApiBody, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
+import { ApiBody, ApiOkResponse, ApiOperation } from '@nestjs/swagger'
 import { BadRequestResponse } from '../shared/bad-request-response.decorator'
 
 export function SigninDoc() {
@@ -61,18 +61,6 @@ export function SigninDoc() {
 				},
 			},
 		}),
-		BadRequestResponse(),
-		ApiBadRequestResponse({
-			description: 'Bad request',
-			schema: {
-				type: 'object',
-				properties: {
-					message: {
-						type: 'string',
-						example: 'Invalid credentials',
-					},
-				},
-			},
-		}),
+		BadRequestResponse({ errorMessage: 'Invalid credentials' }),
 	)
 }
