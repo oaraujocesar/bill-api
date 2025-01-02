@@ -46,11 +46,11 @@ export class AuthController {
 		return response
 			.status(statusCode)
 			.cookie('billio-refresh-token', data.refresh_token, {
-				httpOnly: true,
-				secure: true,
+				httpOnly: false,
+				secure: false,
 				expires: new Date(data.expires_in),
 			})
-			.cookie('billio-access-token', data.access_token, {
+			.cookie('bill-auth-token', data.access_token, {
 				httpOnly: true,
 				secure: true,
 				expires: new Date(data.expires_in),
