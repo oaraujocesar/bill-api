@@ -1,11 +1,13 @@
 import { Body, Controller, HttpStatus, Logger, Post, Res } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
+import { RefreshTokenUseCase } from 'src/application/use-cases/auth/refresh-token.use-case'
 import { SigninUseCase } from 'src/application/use-cases/auth/signin'
 import { SignupUseCase } from 'src/application/use-cases/auth/signup'
 import { SigninDoc } from '../decorators/doc/auth/signin-headers.doc'
 import { SignupDoc } from '../decorators/doc/auth/signup-headers.doc'
 import { Public } from '../decorators/public.decorator'
+import { RefreshTokenDto } from '../dtos/auth/refresh-token.dto'
 import { SigninDto } from '../dtos/auth/signin.dto'
 import { SignupDto } from '../dtos/auth/signup.dto'
 
@@ -17,7 +19,17 @@ export class AuthController {
 	constructor(
 		private readonly signupUseCase: SignupUseCase,
 		private readonly signinUseCase: SigninUseCase,
+		private readonly refreshTokenUseCase: RefreshTokenUseCase,
 	) {}
+
+	@Post('refresh-token')
+	@ApiBearerAuth()
+	async refreshToken(@Body() body: RefreshTokenDto, @Res() response: Response) {
+		this.logger.debug('Refresh token called')
+		const { statusCode, data, message } = await this.refreshTokenUseCase.execute(body)
+
+		return response.status(statusCode).json({ data, message })
+	}
 
 	@Post('signin')
 	@SigninDoc()
@@ -34,11 +46,11 @@ export class AuthController {
 		return response
 			.status(statusCode)
 			.cookie('billio-refresh-token', data.refresh_token, {
-				httpOnly: true,
-				secure: true,
+				httpOnly: false,
+				secure: false,
 				expires: new Date(data.expires_in),
 			})
-			.cookie('billio-access-token', data.access_token, {
+			.cookie('bill-auth-token', data.access_token, {
 				httpOnly: true,
 				secure: true,
 				expires: new Date(data.expires_in),
