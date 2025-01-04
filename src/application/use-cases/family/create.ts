@@ -1,7 +1,5 @@
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
-import { } from 'src/application/entities/account'
 import { Family } from 'src/application/entities/family.entity'
-import { } from 'src/application/repositories/account.repository'
 import { FamilyRepository } from 'src/application/repositories/family.repository'
 import { FAMILY_REPOSITORY } from 'src/shared/tokens'
 import { ResponseBody, buildResponse } from 'src/shared/utils/build-response'

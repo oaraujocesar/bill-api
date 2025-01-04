@@ -7,7 +7,7 @@ import { FamilyRepository } from 'src/application/repositories/family.repository
 import { Family } from 'src/application/entities/family.entity'
 import { FamilyMapper } from '../mapper/family-mapper'
 import families from '../schema/family.schema'
-import { eq } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 
 @Injectable()
 export class FamilyDrizzleRepository implements FamilyRepository {
@@ -29,7 +29,8 @@ export class FamilyDrizzleRepository implements FamilyRepository {
 
   async delete(serial: ULID): Promise<void> {
     try {
-      await this.database.delete(families).where(eq(families.serial, serial)).execute()
+      // @ts-expect-error - For some reason the types are not working properly
+      await this.database.update(families).set({ deletedAt: sql`NOW()` }).where(eq(families.serial, serial)).execute()
     } catch (error) {
       this.logger.error(error)
       throw new InternalServerErrorException()

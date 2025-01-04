@@ -11,7 +11,7 @@ import { CreateFamilyMemberDto } from '../dtos/family-member/create-family.dto';
 
 @ApiTags('FamilyMember')
 @ApiBearerAuth()
-@Controller('family-member')
+@Controller('family-members')
 export class FamilyMemberController {
   private readonly logger = new Logger(FamilyMemberController.name)
 

@@ -29,7 +29,8 @@ export class FamilyMemberDrizzleRepository implements FamilyMemberRepository {
 
   async delete(serial: ULID): Promise<void> {
     try {
-      await this.database.delete(familyMembers).where(eq(familyMembers.serial, serial)).execute()
+      // @ts-expect-error - For some reason the types are not working properly
+      await this.database.update(familyMembers).set({ deletedAt: sql`NOW()` }).where(eq(familyMembers.serial, serial)).execute()
     } catch (error) {
       this.logger.error(error)
       throw new InternalServerErrorException()
@@ -50,15 +51,15 @@ export class FamilyMemberDrizzleRepository implements FamilyMemberRepository {
   }
 
   async listByFamilyId(familyId: number): Promise<FamilyMember[]> {
-      try {
-        const result = await this.database.query.familyMembers.findMany({
-          where: eq(familyMembers.familyId, familyId),
-        })
+    try {
+      const result = await this.database.query.familyMembers.findMany({
+        where: eq(familyMembers.familyId, familyId),
+      })
 
-        return result.map(FamilyMemberMapper.toDomain)
-      } catch (error) {
-        this.logger.error(error)
-        throw new InternalServerErrorException()
-      }
+      return result.map(FamilyMemberMapper.toDomain)
+    } catch (error) {
+      this.logger.error(error)
+      throw new InternalServerErrorException()
+    }
   }
 }
