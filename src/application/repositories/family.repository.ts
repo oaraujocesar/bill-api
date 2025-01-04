@@ -1,5 +1,4 @@
 import { ULID } from 'ulidx'
-import { } from '../entities/account'
 import { Family } from '../entities/family.entity'
 
 export interface FamilyRepository {
