@@ -1,3 +1,4 @@
+export { default as families, familiesRelations } from './family.schema'
 export { default as users, usersRelations } from './users.schema'
 export { default as usersProfile, usersProfileRelations } from './users-profile.schema'
 export { default as accounts, accountsRelations } from './accounts.schema'
