@@ -20,7 +20,6 @@ export class FamilyMemberMapper {
 			createdAt: familyMember.createdAt,
 			updatedAt: familyMember.updatedAt,
 			deletedAt: familyMember.deletedAt,
-
 		}
 	}
 
