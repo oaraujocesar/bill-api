@@ -38,6 +38,31 @@ The API will be available at `http://localhost:3333`.
 
 ## Local Development Tools
 
+### Test Containers
+
+Enables reliable integration testing with isolated database instances.
+
+**Installation:**
+
+```bash
+brew install atomicjar/tap/testcontainers-desktop
+```
+
+**Key Features:**
+
+- Isolated test environments
+- Parallel test execution
+- Automatic database cleanup
+- Consistent testing across platforms
+
+**Usage:**
+
+```bash
+npm run test:e2e
+```
+
+Learn more about [TestContainers](https://testcontainers.com/).
+
 ### Supabase Dashboard
 
 - Access local dashboard: `http://localhost:54323`
