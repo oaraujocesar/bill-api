@@ -7,6 +7,8 @@ import { CARD_REPOSITORY } from 'src/shared/tokens'
 import { ResponseBody } from 'src/shared/utils/build-response'
 import { ListCardsUseCase } from './list.use-case'
 
+jest.mock('@nestjs/common/services/logger.service')
+
 describe('List cards use case', () => {
 	let useCase: ListCardsUseCase
 	let cardRepository: jest.Mocked<CardRepository>
