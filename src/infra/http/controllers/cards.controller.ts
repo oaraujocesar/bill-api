@@ -4,6 +4,7 @@ import { Response } from 'express'
 import { CreateCardUseCase } from 'src/application/use-cases/card/create.use-case'
 import { ListCardsUseCase } from 'src/application/use-cases/card/list.use-case'
 import { CreateCardDoc } from '../decorators/doc/cards/create.doc'
+import { ListCardsDoc } from '../decorators/doc/cards/list.doc'
 import { User } from '../decorators/user.decorator'
 import { CreateCardDto } from '../dtos/cards/create.dto'
 import { UserAuthenticated } from '../types/authenticated-request'
@@ -21,6 +22,7 @@ export class CardsController {
 	private readonly logger = new Logger(CardsController.name)
 
 	@Get()
+	@ListCardsDoc()
 	async getCards(@User() user: UserAuthenticated, @Res() response: Response) {
 		this.logger.debug('List cards controller executed')
 		const { data, message, statusCode } = await this.listCardsUseCase.execute(user.id)

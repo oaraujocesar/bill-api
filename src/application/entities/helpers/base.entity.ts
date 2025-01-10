@@ -10,7 +10,6 @@ type BaseEntityProps = {
 }
 
 export class BaseEntity {
-	@ApiProperty()
 	id?: number
 	@ApiProperty()
 	serial: string
