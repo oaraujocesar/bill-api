@@ -8,7 +8,6 @@ describe('Family entity', () => {
 			id: faker.number.int(),
 			serial: faker.string.ulid(),
 			name: faker.string.alpha({ length: 10 }),
-			userId: faker.string.ulid(),
 			createdAt: faker.date.anytime(),
 			updatedAt: faker.date.anytime(),
 			deletedAt: null,
@@ -27,7 +26,6 @@ describe('Family entity', () => {
 	it('should generate serial and timestamps', () => {
 		const input = {
 			name: faker.person.firstName(),
-			userId: faker.string.uuid(),
 		}
 
 		const family = Family.create(input)

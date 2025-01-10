@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { ULID } from 'ulidx'
-import { BaseEntity } from './helpers/base.entity'
 
 type FamilyMemberProps = {
 	id?: number
@@ -13,7 +12,10 @@ type FamilyMemberProps = {
 	deletedAt?: Date
 }
 
-export class FamilyMember extends BaseEntity {
+export class FamilyMember {
+	@ApiProperty()
+	id: number
+
 	@ApiProperty()
 	userId: string
 
@@ -23,18 +25,15 @@ export class FamilyMember extends BaseEntity {
 	@ApiProperty()
 	isOwner: boolean
 
-	constructor(props: FamilyMemberProps) {
-		super({
-			id: props.id,
-			serial: props.serial,
-			createdAt: props.createdAt,
-			updatedAt: props.updatedAt,
-			deletedAt: props.deletedAt,
-		})
+	@ApiProperty()
+	createdAt: Date
 
+	constructor(props: FamilyMemberProps) {
+		this.id = props.id
 		this.familyId = props.familyId
 		this.userId = props.userId
 		this.isOwner = props.isOwner
+		this.createdAt = props.createdAt ?? new Date()
 	}
 
 	static create(props: FamilyMemberProps) {

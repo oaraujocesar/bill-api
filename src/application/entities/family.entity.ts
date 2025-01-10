@@ -7,7 +7,6 @@ type FamilyProps = {
 	id?: number
 	name: string
 	serial?: ULID
-	userId: string
 	createdAt?: Date
 	updatedAt?: Date
 	deletedAt?: Date
@@ -17,12 +16,6 @@ type FamilyProps = {
 export class Family extends BaseEntity {
 	@ApiProperty()
 	name: string
-
-	@ApiProperty()
-	userId: string
-
-	@ApiProperty()
-	user?: User
 
 	constructor(props: FamilyProps) {
 		super({
@@ -34,8 +27,6 @@ export class Family extends BaseEntity {
 		})
 
 		this.name = props.name
-		this.userId = props.userId
-		this.user = props.user
 	}
 
 	static create(props: FamilyProps) {

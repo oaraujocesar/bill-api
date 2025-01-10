@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common'
-import { ApiOkResponse, ApiOperation, ApiParam, ApiProperty } from '@nestjs/swagger'
+import { ApiOperation, ApiParam, ApiProperty } from '@nestjs/swagger'
 import { Family } from 'src/application/entities/family.entity'
 import { BadRequestResponse } from '../shared/bad-request-response.decorator'
 
@@ -14,20 +14,15 @@ class OkResponse {
 	message: string
 }
 
-export function ShowFamilyDoc() {
+export function DeleteFamilyDoc() {
 	return applyDecorators(
 		ApiOperation({
-			summary: 'show family details',
-			description: 'Show details for a non deleted family',
+			summary: 'deletes family details',
 		}),
 		ApiParam({
 			name: 'serial',
 			description: 'Serial of the family',
 			type: String,
-		}),
-		ApiOkResponse({
-			description: 'Family found.',
-			type: OkResponse,
 		}),
 		BadRequestResponse({ errorMessage: 'Family not found.' }),
 	)

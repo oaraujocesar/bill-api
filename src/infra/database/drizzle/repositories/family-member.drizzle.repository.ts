@@ -14,18 +14,6 @@ export class FamilyMemberDrizzleRepository implements FamilyMemberRepository {
   private readonly logger = new Logger(FamilyMemberDrizzleRepository.name)
 
   constructor(@Inject(DRIZZLE) private readonly database: NodePgDatabase<typeof schema>) { }
-  async findBySerial(serial: string): Promise<FamilyMember | null> {
-    try {
-      const result = await this.database.query.familyMembers.findFirst({
-        where: eq(familyMembers.serial, serial),
-      })
-
-      return result ? FamilyMemberMapper.toDomain(result) : null
-    } catch (error) {
-      this.logger.error(error)
-      throw new InternalServerErrorException()
-    }
-  }
 
   async delete(serial: ULID): Promise<void> {
     try {

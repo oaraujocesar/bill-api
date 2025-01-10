@@ -4,7 +4,6 @@ export type DrizzleResultType = {
 	id: number
 	name: string
 	serial: string
-	userId: string
 	createdAt: Date
 	updatedAt: Date
 	deletedAt: Date
@@ -16,11 +15,9 @@ export class FamilyMapper {
 			id: family.id,
 			name: family.name,
 			serial: family.serial,
-			userId: family.userId,
 			createdAt: family.createdAt,
 			updatedAt: family.updatedAt,
 			deletedAt: family.deletedAt,
-
 		}
 	}
 
@@ -29,7 +26,6 @@ export class FamilyMapper {
 			name: family.name,
 			id: family.id,
 			serial: family.serial,
-			userId: family.userId,
 			createdAt: family.createdAt,
 			updatedAt: family.updatedAt,
 			deletedAt: family.deletedAt,

@@ -29,6 +29,27 @@
       "when": 1736293885941,
       "tag": "0003_young_hedge_knight",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1736381099872,
+      "tag": "0004_fine_donald_blake",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1736383859642,
+      "tag": "0005_jazzy_microbe",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1736472589771,
+      "tag": "0006_glossy_puppet_master",
+      "breakpoints": true
     }
   ]
 }
