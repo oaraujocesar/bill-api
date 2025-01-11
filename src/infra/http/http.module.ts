@@ -6,6 +6,7 @@ import { RefreshTokenUseCase } from 'src/application/use-cases/auth/refresh-toke
 import { SigninUseCase } from 'src/application/use-cases/auth/signin'
 import { SignupUseCase } from 'src/application/use-cases/auth/signup'
 import { CreateCardUseCase } from 'src/application/use-cases/card/create.use-case'
+import { ListCardsUseCase } from 'src/application/use-cases/card/list.use-case'
 import { DatabaseModule } from 'src/infra/database/database.module'
 import { SupabaseService } from 'src/shared/services/supabase.service'
 import { AccountController } from './controllers/account.controller'
@@ -24,6 +25,7 @@ import { CardsController } from './controllers/cards.controller'
 		ListAccountsUseCase,
 		CreateCardUseCase,
 		RefreshTokenUseCase,
+		ListCardsUseCase,
 	],
 })
 export class HttpModule {}
