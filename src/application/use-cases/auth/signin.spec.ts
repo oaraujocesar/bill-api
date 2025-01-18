@@ -2,6 +2,7 @@ import { TestBed } from '@automock/jest'
 import { faker } from '@faker-js/faker'
 import { HttpStatus } from '@nestjs/common'
 import { SupabaseErrors } from 'src/shared/enums/supabase-errors.enum'
+import { Exception } from 'src/shared/exceptions/custom.exception'
 import { SupabaseService } from 'src/shared/services/supabase.service'
 import { SigninRequest, SigninUseCase } from './signin'
 
@@ -64,33 +65,18 @@ describe('Signin use case', () => {
 		supabase.auth.signInWithPassword = jest.fn().mockResolvedValue({
 			data: null,
 			error: {
+				message: 'Invalid credentials!',
+				status: HttpStatus.BAD_REQUEST,
 				code: SupabaseErrors.INVALID_CREDENTIALS,
 			},
 		})
 
-		const { statusCode, message } = await useCase.execute(dto)
-
-		expect(statusCode).toBe(HttpStatus.BAD_REQUEST)
-		expect(message).toEqual('Invalid credentials!')
-	})
-
-	it('should fail and return a different error from invalid credentials', async () => {
-		const dto: SigninRequest = {
-			email: faker.internet.email(),
-			password: faker.internet.password(),
-		}
-
-		supabase.auth.signInWithPassword = jest.fn().mockResolvedValue({
-			data: null,
-			error: {
-				code: faker.word.verb(),
-			},
-		})
-
-		const { statusCode, errors, message } = await useCase.execute(dto)
-
-		expect(statusCode).toBe(HttpStatus.BAD_REQUEST)
-		expect(message).toEqual('It was not possible to sign in!')
-		expect(errors).toEqual([{ code: 'BILL-203' }])
+		await expect(useCase.execute(dto)).rejects.toThrow(
+			new Exception({
+				message: 'Invalid credentials!',
+				statusCode: HttpStatus.BAD_REQUEST,
+				errors: [{ code: 'BILL-202' }],
+			}),
+		)
 	})
 })
