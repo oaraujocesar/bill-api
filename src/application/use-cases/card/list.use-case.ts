@@ -16,7 +16,7 @@ export class ListCardsUseCase implements BaseUseCase {
 		const cards = await this.cardRepository.listCardsByUserId(userId)
 		this.logger.debug(`Found ${cards.length} cards for user ${userId}`)
 		if (!cards.length) {
-			return buildResponse({ message: 'No cards found!', statusCode: HttpStatus.OK })
+			return buildResponse({ message: 'No cards found!', statusCode: HttpStatus.NO_CONTENT })
 		}
 
 		return buildResponse({ data: cards, message: 'Users cards.', statusCode: HttpStatus.OK })
