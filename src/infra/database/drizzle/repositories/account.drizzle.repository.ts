@@ -24,7 +24,7 @@ export class AccountDrizzleRepository implements AccountRepository {
 
 			return result.map(AccountMapper.toDomain)
 		} catch (error) {
-			this.logger.error(error)
+			this.logger.error(error.stack)
 			throw new InternalServerErrorException()
 		}
 	}
@@ -37,7 +37,7 @@ export class AccountDrizzleRepository implements AccountRepository {
 
 			return result ? AccountMapper.toDomain(result) : null
 		} catch (error) {
-			this.logger.error(error)
+			this.logger.error(error.stack)
 			throw new InternalServerErrorException()
 		}
 	}
@@ -47,7 +47,7 @@ export class AccountDrizzleRepository implements AccountRepository {
 			// @ts-expect-error - For some reason the types are not working properly
 			await this.database.update(accounts).set({ deletedAt: sql`NOW()` }).where(eq(accounts.serial, serial))
 		} catch (error) {
-			this.logger.error(error)
+			this.logger.error(error.stack)
 			throw new InternalServerErrorException()
 		}
 	}
@@ -60,7 +60,7 @@ export class AccountDrizzleRepository implements AccountRepository {
 
 			return AccountMapper.toDomain(savedAccount)
 		} catch (error) {
-			this.logger.error(error)
+			this.logger.error(error.stack)
 			throw new InternalServerErrorException()
 		}
 	}
