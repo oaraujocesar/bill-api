@@ -1,9 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { ULID } from 'ulidx'
 
 type FamilyMemberProps = {
 	id?: number
-	serial?: ULID
 	familyId: number
 	isOwner?: boolean
 	userId: string

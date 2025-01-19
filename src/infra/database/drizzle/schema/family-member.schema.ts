@@ -10,7 +10,7 @@ const familyMembers = pgTable(
 		familyId: serial('family_id')
 			.references(() => family.id)
 			.notNull(),
-		isOwner: boolean('is_owner'),
+		isOwner: boolean('is_owner').default(false),
 		userId: uuid('user_id')
 			.references(() => user.id)
 			.notNull(),

@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { ULID } from 'ulidx'
 import { BaseEntity } from './helpers/base.entity'
-import { User } from './user'
 
 type FamilyProps = {
 	id?: number
@@ -10,7 +9,6 @@ type FamilyProps = {
 	createdAt?: Date
 	updatedAt?: Date
 	deletedAt?: Date
-	user?: User
 }
 
 export class Family extends BaseEntity {

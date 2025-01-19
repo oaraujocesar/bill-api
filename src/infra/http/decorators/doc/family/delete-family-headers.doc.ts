@@ -1,18 +1,6 @@
 import { applyDecorators } from '@nestjs/common'
-import { ApiOperation, ApiParam, ApiProperty } from '@nestjs/swagger'
-import { Family } from 'src/application/entities/family.entity'
+import { ApiOperation, ApiParam } from '@nestjs/swagger'
 import { BadRequestResponse } from '../shared/bad-request-response.decorator'
-
-class OkResponse {
-	@ApiProperty({ type: Family })
-	data: Family
-
-	@ApiProperty()
-	statusCode: number
-
-	@ApiProperty()
-	message: string
-}
 
 export function DeleteFamilyDoc() {
 	return applyDecorators(
