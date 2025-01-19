@@ -60,6 +60,6 @@ describe('List cards use case', () => {
 		expect(data).toBeUndefined()
 		expect(errors).toBeUndefined()
 		expect(message).toEqual('No cards found!')
-		expect(statusCode).toEqual(HttpStatus.OK)
+		expect(statusCode).toEqual(HttpStatus.NO_CONTENT)
 	})
 })

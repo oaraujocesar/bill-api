@@ -1,5 +1,6 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common'
 import { BaseUseCase } from 'src/application/interfaces/use-case.interface'
+import { Exception } from 'src/shared/exceptions/custom.exception'
 import { SupabaseService } from 'src/shared/services/supabase.service'
 import { buildResponse } from 'src/shared/utils/build-response'
 
@@ -19,11 +20,10 @@ export class RefreshTokenUseCase implements BaseUseCase {
 			error,
 		} = await this.supabase.auth.refreshSession({ refresh_token: refreshToken })
 		if (error) {
-			this.logger.error(error.stack)
-
-			return buildResponse({
+			throw new Exception({
+				message: 'Failed to refresh token',
 				statusCode: HttpStatus.UNAUTHORIZED,
-				message: 'It was not possible to refresh token.',
+				error,
 			})
 		}
 		this.logger.debug(`Token refreshed for token ${refreshToken}`)

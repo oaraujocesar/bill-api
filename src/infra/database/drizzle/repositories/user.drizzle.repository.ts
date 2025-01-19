@@ -4,6 +4,7 @@ import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { User } from 'src/application/entities/user'
 import { UserProfile } from 'src/application/entities/user-profile'
 import { UserRepository } from 'src/application/repositories/user.repository'
+import { Exception } from 'src/shared/exceptions/custom.exception'
 import { DRIZZLE } from '../drizzle.module'
 import { UserMapper } from '../mapper/user-mapper'
 import { UserProfileMapper } from '../mapper/user-profile-mapper'
@@ -16,13 +17,18 @@ export class UserDrizzleRepository implements UserRepository {
 	constructor(@Inject(DRIZZLE) private readonly database: NodePgDatabase<typeof schema>) {}
 
 	async findByEmail(email: string): Promise<User | null> {
-		const result = await this.database.query.users.findFirst({
-			where: eq(schema.users.email, email),
-		})
+		try {
+			const result = await this.database.query.users.findFirst({
+				where: eq(schema.users.email, email),
+			})
 
-		if (!result) return null
+			if (!result) return null
 
-		return UserMapper.toDomain(result)
+			return UserMapper.toDomain(result)
+		} catch (error) {
+			this.logger.error(error.stack)
+			throw new InternalServerErrorException()
+		}
 	}
 
 	async findProfileByUserId(userId: string): Promise<UserProfile | null> {
@@ -33,7 +39,7 @@ export class UserDrizzleRepository implements UserRepository {
 
 			return result ? UserProfileMapper.toDomain(result) : null
 		} catch (error) {
-			this.logger.error(error)
+			this.logger.error(error.stack)
 			throw new InternalServerErrorException()
 		}
 	}
@@ -46,7 +52,7 @@ export class UserDrizzleRepository implements UserRepository {
 
 			return result ? UserMapper.toDomain(result) : null
 		} catch (error) {
-			this.logger.error(error)
+			this.logger.error(error.stack)
 			throw new InternalServerErrorException()
 		}
 	}
@@ -58,12 +64,10 @@ export class UserDrizzleRepository implements UserRepository {
 
 			return UserProfileMapper.toDomain(result)
 		} catch (error) {
-			this.logger.error(error)
-			throw new InternalServerErrorException({
+			throw new Exception({
+				error,
+				errors: [{ code: 'BILL-501' }],
 				message: 'Internal Server Error',
-				details: {
-					code: 'BILL-501',
-				},
 				statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
 			})
 		}

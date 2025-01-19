@@ -1,6 +1,6 @@
 import { HttpStatus, Injectable, Logger } from '@nestjs/common'
 import { Session } from '@supabase/supabase-js'
-import { SupabaseErrors } from 'src/shared/enums/supabase-errors.enum'
+import { Exception } from 'src/shared/exceptions/custom.exception'
 import { SupabaseService } from 'src/shared/services/supabase.service'
 import { ResponseBody, buildResponse } from 'src/shared/utils/build-response'
 
@@ -22,23 +22,12 @@ export class SigninUseCase {
 			email,
 			password,
 		})
-
 		if (error) {
-			this.logger.debug(`Supabase error: ${error.message}`)
-
-			if (error.code === SupabaseErrors.INVALID_CREDENTIALS) {
-				return buildResponse({
-					message: 'Invalid credentials!',
-					statusCode: HttpStatus.BAD_REQUEST,
-				})
-			}
-
-			this.logger.error(error)
-
-			return buildResponse({
-				errors: [{ code: 'BILL-203' }],
-				message: 'It was not possible to sign in!',
-				statusCode: HttpStatus.BAD_REQUEST,
+			throw new Exception({
+				error,
+				message: error.message,
+				statusCode: error.status,
+				errors: [{ code: error.code }],
 			})
 		}
 
