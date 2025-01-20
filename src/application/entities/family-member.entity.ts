@@ -6,8 +6,6 @@ type FamilyMemberProps = {
 	isOwner?: boolean
 	userId: string
 	createdAt?: Date
-	updatedAt?: Date
-	deletedAt?: Date
 }
 
 export class FamilyMember {
