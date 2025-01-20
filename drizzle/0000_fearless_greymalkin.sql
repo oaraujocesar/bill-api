@@ -31,7 +31,7 @@ CREATE TABLE "categories" (
 	"deleted_at" timestamp
 );
 --> statement-breakpoint
-CREATE TABLE "auth"."users" (
+CREATE TABLE IF NOT EXISTS "auth"."users" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"email" varchar NOT NULL,
 	"email_confirmed_at" timestamp,
