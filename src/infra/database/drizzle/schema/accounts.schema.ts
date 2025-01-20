@@ -1,5 +1,6 @@
 import { relations, sql } from 'drizzle-orm'
-import { decimal, index, pgTable, serial, timestamp, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core'
+import { decimal, index, pgTable, serial, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core'
+import { timestamps } from '../helpers/columns.helpers'
 import user from './users.schema'
 
 const accounts = pgTable(
@@ -12,9 +13,7 @@ const accounts = pgTable(
 		userId: uuid('user_id')
 			.references(() => user.id, { onDelete: 'cascade' })
 			.notNull(),
-		createdAt: timestamp('created_at').defaultNow().notNull(),
-		updatedAt: timestamp('updated_at').defaultNow().notNull(),
-		deletedAt: timestamp('deleted_at'),
+		...timestamps,
 	},
 	(table) => [uniqueIndex('account_serial_index').on(table.serial), index('account_user_id_index').on(table.userId)],
 )

@@ -14,7 +14,10 @@ const usersProfile = pgTable(
 			.references(() => user.id, { onDelete: 'cascade' })
 			.notNull(),
 		createdAt: timestamp('created_at').defaultNow().notNull(),
-		updatedAt: timestamp('updated_at').defaultNow().notNull(),
+		updatedAt: timestamp('updated_at')
+			.$onUpdateFn(() => new Date())
+			.defaultNow()
+			.notNull(),
 	},
 	(table) => [
 		uniqueIndex('profile_serial_index').on(table.serial),

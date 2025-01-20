@@ -4,8 +4,8 @@ CREATE TABLE "accounts" (
 	"name" varchar NOT NULL,
 	"balance" numeric(10, 2) DEFAULT 0.00 NOT NULL,
 	"user_id" uuid NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"deleted_at" timestamp
 );
 --> statement-breakpoint
@@ -25,7 +25,7 @@ CREATE TABLE "categories" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar NOT NULL,
 	"icon_name" varchar NOT NULL,
-	"user_id" uuid NOT NULL,
+	"user_id" uuid,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"deleted_at" timestamp

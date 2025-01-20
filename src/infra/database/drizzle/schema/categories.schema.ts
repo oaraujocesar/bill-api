@@ -7,9 +7,7 @@ const categories = pgTable('categories', {
 	id: serial().primaryKey(),
 	name: varchar().notNull(),
 	iconName: varchar().notNull(),
-	userId: uuid()
-		.references(() => user.id, { onDelete: 'cascade' })
-		.notNull(),
+	userId: uuid().references(() => user.id, { onDelete: 'cascade' }),
 	...timestamps,
 })
 
