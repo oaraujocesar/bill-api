@@ -7,15 +7,17 @@ import { SigninUseCase } from 'src/application/use-cases/auth/signin'
 import { SignupUseCase } from 'src/application/use-cases/auth/signup'
 import { CreateCardUseCase } from 'src/application/use-cases/card/create.use-case'
 import { ListCardsUseCase } from 'src/application/use-cases/card/list.use-case'
+import { CreateCategoriesUseCase } from 'src/application/use-cases/category/create.use-case'
 import { DatabaseModule } from 'src/infra/database/database.module'
 import { SupabaseService } from 'src/shared/services/supabase.service'
 import { AccountController } from './controllers/account.controller'
 import { AuthController } from './controllers/auth.controller'
 import { CardsController } from './controllers/cards.controller'
+import { CategoriesController } from './controllers/categories.controller'
 
 @Module({
 	imports: [DatabaseModule],
-	controllers: [AuthController, AccountController, CardsController],
+	controllers: [AuthController, AccountController, CardsController, CategoriesController],
 	providers: [
 		SigninUseCase,
 		SignupUseCase,
@@ -26,6 +28,7 @@ import { CardsController } from './controllers/cards.controller'
 		CreateCardUseCase,
 		RefreshTokenUseCase,
 		ListCardsUseCase,
+		CreateCategoriesUseCase,
 	],
 })
 export class HttpModule {}

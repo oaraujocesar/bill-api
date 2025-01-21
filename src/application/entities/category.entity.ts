@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { BaseEntity } from './helpers/base.entity'
 
 export type CategoryProps = {
 	id?: number
@@ -8,10 +7,9 @@ export type CategoryProps = {
 	userId: string
 	createdAt?: Date
 	updatedAt?: Date
-	deletedAt?: Date
 }
 
-export class Category extends BaseEntity {
+export class Category {
 	@ApiProperty()
 	id: number
 
@@ -24,12 +22,19 @@ export class Category extends BaseEntity {
 	@ApiProperty()
 	userId: string
 
+	@ApiProperty()
+	createdAt: Date
+
+	@ApiProperty()
+	updatedAt: Date
+
 	constructor(props: CategoryProps) {
-		super({ createdAt: props.createdAt, updatedAt: props.updatedAt, deletedAt: props.deletedAt })
 		this.id = props.id
 		this.name = props.name
 		this.iconName = props.iconName
 		this.userId = props.userId
+		this.createdAt = props.createdAt ?? new Date()
+		this.updatedAt = props.updatedAt ?? new Date()
 	}
 
 	static create(props: CategoryProps): Category {

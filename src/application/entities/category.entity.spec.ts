@@ -10,7 +10,6 @@ describe('Category Entity', () => {
 			userId: faker.string.uuid(),
 			createdAt: new Date(),
 			updatedAt: new Date(),
-			deletedAt: new Date(),
 		}
 		const category = Category.create(input)
 		expect(category).toEqual(
