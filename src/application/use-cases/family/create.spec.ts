@@ -1,11 +1,11 @@
 import { TestBed } from '@automock/jest'
 import { faker } from '@faker-js/faker'
 import { HttpStatus } from '@nestjs/common'
-import { FAMILY_REPOSITORY } from 'src/shared/tokens';
-import { CreateFamilyUseCase } from './create'
-import { FamilyRepository } from 'src/application/repositories/family.repository'
 import { Family } from 'src/application/entities/family.entity'
-import { CreateFamilyDto } from 'src/infra/http/dtos/family/create-family.dto';
+import { FamilyRepository } from 'src/application/repositories/family.repository'
+import { CreateFamilyDto } from 'src/infra/http/dtos/family/create-family.dto'
+import { FAMILY_REPOSITORY } from 'src/shared/tokens'
+import { CreateFamilyUseCase } from './create'
 
 jest.mock('@nestjs/common/services/logger.service')
 
@@ -26,10 +26,9 @@ describe('Create Family use case', () => {
 		}
 
 		const userId = faker.string.uuid()
-		familyRepository.save.mockResolvedValue(
+		familyRepository.create.mockResolvedValue(
 			Family.create({
 				name: dto.name,
-				userId,
 			}),
 		)
 

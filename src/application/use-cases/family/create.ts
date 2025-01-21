@@ -17,10 +17,7 @@ export class CreateFamilyUseCase {
 	async execute({ name }: CreateFamilyRequest, userId: string): Promise<ResponseBody<Family>> {
 		this.logger.debug('execution started')
 
-		let family = Family.create({ name })
-
-		family = await this.familyRepository.create(userId, family)
-		family.id = undefined
+		const family = await this.familyRepository.create(userId, Family.create({ name }))
 
 		this.logger.debug(`family created ${JSON.stringify(family)}.`)
 

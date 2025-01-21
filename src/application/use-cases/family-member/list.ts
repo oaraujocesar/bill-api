@@ -1,17 +1,17 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common'
 import { FamilyMember } from 'src/application/entities/family-member.entity'
-import { } from 'src/application/repositories/account.repository'
+import {} from 'src/application/repositories/account.repository'
 import { FamilyMemberRepository } from 'src/application/repositories/family-member.repository'
-import { } from 'src/infra/http/types/authenticated-request'
+import {} from 'src/infra/http/types/authenticated-request'
 import { FAMILY_MEMBER_REPOSITORY } from 'src/shared/tokens'
 import { ResponseBody, buildResponse } from 'src/shared/utils/build-response'
 
 @Injectable()
 export class ListFamilyMembersUseCase {
-	constructor(@Inject(FAMILY_MEMBER_REPOSITORY) private readonly familyMemberRepository: FamilyMemberRepository) { }
+	constructor(@Inject(FAMILY_MEMBER_REPOSITORY) private readonly familyMemberRepository: FamilyMemberRepository) {}
 
-	async execute(familyId: number): Promise<ResponseBody<FamilyMember[]>> {
-		const familyMembers = await this.familyMemberRepository.listByFamilyId(familyId)
+	async execute(familySerial: string): Promise<ResponseBody<FamilyMember[]>> {
+		const familyMembers = await this.familyMemberRepository.listByFamilySerial(familySerial)
 
 		if (!familyMembers.length) {
 			return buildResponse({

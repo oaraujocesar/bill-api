@@ -8,6 +8,7 @@ import { CreateFamilyMemberDoc } from '../decorators/doc/family-member/create-fa
 import { DeleteFamilyMemberDoc } from '../decorators/doc/family-member/delete-family-member-headers.doc'
 import { ListFamilyMembersDoc } from '../decorators/doc/family-member/list-family-members-headers.doc'
 import { CreateFamilyMemberDto } from '../dtos/family-member/create-family.dto'
+import { FamilyMemberViewModel } from '../view-models/family-member.view-model'
 
 @ApiTags('FamilyMember')
 @ApiBearerAuth()
@@ -24,21 +25,25 @@ export class FamilyMemberController {
 	@Get('/members')
 	@ListFamilyMembersDoc()
 	@ApiOperation({ summary: 'List all family members' })
-	async listFamilyMembers(@Param('familySerial') familyId: number, @Res() response: Response) {
-		this.logger.debug('[List Family Members]: called.')
+	async listFamilyMembers(@Param('familySerial') familySerial: string, @Res() response: Response) {
+		this.logger.debug('[listFamilyMembers]: called.')
 
-		const { data, statusCode, message } = await this.listFamilyMembersUseCase.execute(familyId)
+		const { data, statusCode, message } = await this.listFamilyMembersUseCase.execute(familySerial)
 
-		return response.status(statusCode).json({ data, message })
+		return response.status(statusCode).json({ data: data.map(FamilyMemberViewModel.toHTTP), message })
 	}
 
 	@Post('/members')
 	@CreateFamilyMemberDoc()
 	@ApiOperation({ summary: 'Creates a family member' })
-	async createFamilyMember(@Body() body: CreateFamilyMemberDto, @Res() response: Response) {
-		this.logger.debug(`[Create Family Member]: called with body ${JSON.stringify(body)}.`)
+	async createFamilyMember(
+		@Res() response: Response,
+		@Body() body: CreateFamilyMemberDto,
+		@Param('familySerial') familySerial: string,
+	) {
+		this.logger.debug(`[createFamilyMember]: called with body ${JSON.stringify(body)}.`)
 
-		const { data, statusCode, message } = await this.createFamilyMemberUseCase.execute(body)
+		const { data, statusCode, message } = await this.createFamilyMemberUseCase.execute({ ...body, familySerial })
 
 		return response.status(statusCode).json({ data, message })
 	}
@@ -47,7 +52,7 @@ export class FamilyMemberController {
 	@DeleteFamilyMemberDoc()
 	@ApiOperation({ summary: 'Deletes a family member' })
 	async deleteFamilyMember(@Param('serial') serial: string, @Res() response: Response) {
-		this.logger.debug(`[Delete Family Member]: called for serial: ${serial}.`)
+		this.logger.debug(`[deleteFamilyMember]: called for serial: ${serial}.`)
 
 		const { data, statusCode, message } = await this.deleteFamilyMemberUseCase.execute(serial)
 

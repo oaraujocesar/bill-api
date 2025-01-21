@@ -1,10 +1,10 @@
 import { TestBed } from '@automock/jest'
 import { faker } from '@faker-js/faker'
 import { HttpStatus } from '@nestjs/common'
+import { FamilyMember } from 'src/application/entities/family-member.entity'
+import { FamilyMemberRepository } from 'src/application/repositories/family-member.repository'
 import { FAMILY_MEMBER_REPOSITORY } from 'src/shared/tokens'
 import { ListFamilyMembersUseCase } from './list'
-import { FamilyMemberRepository } from 'src/application/repositories/family-member.repository'
-import { FamilyMember } from 'src/application/entities/family-member.entity'
 
 jest.mock('@nestjs/common/services/logger.service')
 
@@ -21,41 +21,40 @@ describe('List all non deleted accounts use case', () => {
 
 	it('should list all family members', async () => {
 		const familyId = faker.number.int()
+		const familySerial = faker.string.ulid()
 		const familyMembers: FamilyMember[] = [
 			FamilyMember.create({
 				familyId,
-				serial: faker.string.ulid(),
 				userId: faker.string.uuid(),
 			}),
 			FamilyMember.create({
 				familyId,
-				serial: faker.string.ulid(),
 				userId: faker.string.uuid(),
 			}),
 		]
 
-		familyMemberRepository.listByFamilyId.mockResolvedValue(familyMembers)
+		familyMemberRepository.listByFamilySerial.mockResolvedValue(familyMembers)
 
-		const { statusCode, message, data } = await useCase.execute(familyId)
+		const { statusCode, message, data } = await useCase.execute(familySerial)
 
 		expect(statusCode).toBe(HttpStatus.OK)
 		expect(message).toBe('Family Members found.')
 		expect(data).toEqual(familyMembers)
-		expect(familyMemberRepository.listByFamilyId).toHaveBeenCalledTimes(1)
-		expect(familyMemberRepository.listByFamilyId).toHaveBeenCalledWith(familyId)
+		expect(familyMemberRepository.listByFamilySerial).toHaveBeenCalledTimes(1)
+		expect(familyMemberRepository.listByFamilySerial).toHaveBeenCalledWith(familySerial)
 	})
 
 	it('should show an empty array', async () => {
-		const familyId = faker.number.int()
+		const familyId = faker.string.ulid()
 
-		familyMemberRepository.listByFamilyId.mockResolvedValue([])
+		familyMemberRepository.listByFamilySerial.mockResolvedValue([])
 
 		const { statusCode, message, data } = await useCase.execute(familyId)
 
 		expect(statusCode).toBe(HttpStatus.NO_CONTENT)
 		expect(message).toBe('No Family Members found.')
 		expect(data).toBeUndefined()
-		expect(familyMemberRepository.listByFamilyId).toHaveBeenCalledTimes(1)
-		expect(familyMemberRepository.listByFamilyId).toHaveBeenCalledWith(familyId)
+		expect(familyMemberRepository.listByFamilySerial).toHaveBeenCalledTimes(1)
+		expect(familyMemberRepository.listByFamilySerial).toHaveBeenCalledWith(familyId)
 	})
 })

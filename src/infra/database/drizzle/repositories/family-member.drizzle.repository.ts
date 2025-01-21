@@ -1,5 +1,5 @@
 import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { FamilyMember } from 'src/application/entities/family-member.entity'
 import { FamilyMemberRepository } from 'src/application/repositories/family-member.repository'
@@ -7,12 +7,26 @@ import { DRIZZLE } from '../drizzle.module'
 import { FamilyMemberMapper } from '../mapper/family-member-mapper'
 import * as schema from '../schema'
 import familyMembers from '../schema/family-member.schema'
+import families from '../schema/family.schema'
 
 @Injectable()
 export class FamilyMemberDrizzleRepository implements FamilyMemberRepository {
 	private readonly logger = new Logger(FamilyMemberDrizzleRepository.name)
 
 	constructor(@Inject(DRIZZLE) private readonly database: NodePgDatabase<typeof schema>) {}
+
+	async findByUserAndFamilyId(userId: string, familyId: number): Promise<FamilyMember> {
+		try {
+			const result = await this.database.query.familyMembers.findFirst({
+				where: and(eq(familyMembers.userId, userId), eq(familyMembers.familyId, familyId)),
+			})
+
+			return result ? FamilyMemberMapper.toDomain({ familyMembers: result }) : null
+		} catch (error) {
+			this.logger.error(error)
+			throw new InternalServerErrorException()
+		}
+	}
 
 	async delete(userId: string): Promise<void> {
 		try {
@@ -33,35 +47,27 @@ export class FamilyMemberDrizzleRepository implements FamilyMemberRepository {
 				.returning()
 				.execute()
 
-			return FamilyMemberMapper.toDomain(savedFamilyMember)
+			return FamilyMemberMapper.toDomain({ familyMembers: savedFamilyMember })
 		} catch (error) {
 			this.logger.error(error)
 			throw new InternalServerErrorException()
 		}
 	}
 
-	async findByUserId(userId: string): Promise<FamilyMember> {
+	async listByFamilySerial(familySerial: string): Promise<FamilyMember[]> {
 		try {
-			const result = await this.database.query.familyMembers.findFirst({
-				where: eq(familyMembers.userId, userId),
-			})
+			const result = await this.database
+				.select({ familyMembers, userProfile: schema.usersProfile })
+				.from(families)
+				.leftJoin(familyMembers, eq(families.id, familyMembers.familyId))
+				.leftJoin(schema.users, eq(familyMembers.userId, schema.users.id))
+				.leftJoin(schema.usersProfile, eq(schema.users.id, schema.usersProfile.userId))
+				.where(eq(families.serial, familySerial))
+				.execute()
 
-			return FamilyMemberMapper.toDomain(result)
+			return result.map(({ familyMembers, userProfile }) => FamilyMemberMapper.toDomain({ familyMembers, userProfile }))
 		} catch (error) {
-			this.logger.error(error)
-			throw new InternalServerErrorException()
-		}
-	}
-
-	async listByFamilyId(familyId: number): Promise<FamilyMember[]> {
-		try {
-			const result = await this.database.query.familyMembers.findMany({
-				where: eq(familyMembers.familyId, familyId),
-			})
-
-			return result.map(FamilyMemberMapper.toDomain)
-		} catch (error) {
-			this.logger.error(error)
+			this.logger.error(error.stack)
 			throw new InternalServerErrorException()
 		}
 	}

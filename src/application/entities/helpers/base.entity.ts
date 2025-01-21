@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Exclude } from 'class-transformer'
 import { ULID, ulid } from 'ulidx'
 
 type BaseEntityProps = {
@@ -10,6 +11,8 @@ type BaseEntityProps = {
 }
 
 export class BaseEntity {
+	@Exclude()
+	@ApiProperty()
 	id?: number
 	@ApiProperty()
 	serial: string

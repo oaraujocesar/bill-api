@@ -15,12 +15,9 @@ describe('Family entity', () => {
 
 		const family = Family.create(input)
 
-		expect(family).toEqual(
-			expect.objectContaining({
-				...input,
-				user: undefined,
-			}),
-		)
+		expect(family).toMatchObject({
+			...input,
+		})
 	})
 
 	it('should generate serial and timestamps', () => {
