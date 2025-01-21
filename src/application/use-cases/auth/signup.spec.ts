@@ -4,6 +4,7 @@ import { HttpStatus } from '@nestjs/common'
 import { User } from 'src/application/entities/user'
 import { UserProfile } from 'src/application/entities/user-profile'
 import { UserRepository } from 'src/application/repositories/user.repository'
+import { Exception } from 'src/shared/exceptions/custom.exception'
 import { SupabaseService } from 'src/shared/services/supabase.service'
 import { USER_REPOSITORY } from 'src/shared/tokens'
 import { SignupRequest, SignupUseCase } from './signup'
@@ -100,7 +101,7 @@ describe('Signin use case', () => {
 		expect(userRepository.saveProfile).toHaveBeenCalledTimes(1)
 	})
 
-	it('should fail if user already exists and has a profile', async () => {
+	it('should throw if user already exists and has a profile', async () => {
 		const dto: SignupRequest = {
 			email: faker.internet.email(),
 			password: faker.internet.password(),
@@ -128,9 +129,8 @@ describe('Signin use case', () => {
 		userRepository.findByEmail.mockResolvedValue(User.create(user))
 		userRepository.findProfileByUserId.mockResolvedValue(UserProfile.create(userProfile))
 
-		const { statusCode, message } = await useCase.execute(dto)
-
-		expect(statusCode).toBe(HttpStatus.BAD_REQUEST)
-		expect(message).toBe('It was not possible to create the user!')
+		await expect(useCase.execute(dto)).rejects.toThrow(
+			new Exception({ message: 'It was not possible to create the user!', statusCode: HttpStatus.BAD_REQUEST }),
+		)
 	})
 })

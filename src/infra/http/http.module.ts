@@ -6,6 +6,7 @@ import { RefreshTokenUseCase } from 'src/application/use-cases/auth/refresh-toke
 import { SigninUseCase } from 'src/application/use-cases/auth/signin'
 import { SignupUseCase } from 'src/application/use-cases/auth/signup'
 import { CreateCardUseCase } from 'src/application/use-cases/card/create.use-case'
+import { ListCardsUseCase } from 'src/application/use-cases/card/list.use-case'
 import { CreateFamilyMemberUseCase } from 'src/application/use-cases/family-member/create'
 import { DeleteFamilyMemberUseCase } from 'src/application/use-cases/family-member/delete'
 import { ListFamilyMembersUseCase } from 'src/application/use-cases/family-member/list'
@@ -38,6 +39,7 @@ import { FamilyController } from './controllers/family.controller'
 		CreateFamilyMemberUseCase,
 		ListFamilyMembersUseCase,
 		DeleteFamilyMemberUseCase,
+		ListCardsUseCase,
 	],
 })
 export class HttpModule {}

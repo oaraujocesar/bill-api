@@ -14,11 +14,11 @@ export function SignupDoc() {
 				properties: {
 					email: {
 						type: 'string',
-						example: 'mzH8a@example.com',
+						example: 'admin@billio.com.br',
 					},
 					password: {
 						type: 'string',
-						example: 'password',
+						example: 'Mnbvcxz1!',
 					},
 					name: {
 						type: 'string',

@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import expressBasicAuth from 'express-basic-auth'
 import { AppModule } from './app.module'
 import { SupabaseGuard } from './infra/auth/guards/supabase.guard'
+import { HttpExceptionFilter } from './infra/http/filters/http-exception.filter'
 import { SupabaseService } from './shared/services/supabase.service'
 
 async function bootstrap() {
@@ -23,6 +24,8 @@ async function bootstrap() {
 	app.useGlobalGuards(new SupabaseGuard(reflector, supabase))
 
 	app.useGlobalPipes(new ValidationPipe())
+
+	app.useGlobalFilters(new HttpExceptionFilter())
 
 	const swagger = new DocumentBuilder()
 		.setTitle('Bill API')

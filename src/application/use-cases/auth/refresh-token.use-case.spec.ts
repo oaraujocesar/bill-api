@@ -1,6 +1,7 @@
 import { TestBed } from '@automock/jest'
 import { faker } from '@faker-js/faker'
 import { HttpStatus } from '@nestjs/common'
+import { Exception } from 'src/shared/exceptions/custom.exception'
 import { SupabaseService } from 'src/shared/services/supabase.service'
 import { RefreshTokenUseCase, RefreshTokenUseCaseInput } from './refresh-token.use-case'
 
@@ -68,11 +69,11 @@ describe('RefreshTokenUseCase', () => {
 			error: 'Is invalid token',
 		})
 
-		const { data, errors, message, statusCode } = await useCase.execute(dto)
-
-		expect(statusCode).toBe(HttpStatus.UNAUTHORIZED)
-		expect(data).toBeUndefined()
-		expect(errors).toBeUndefined()
-		expect(message).toEqual('It was not possible to refresh token.')
+		await expect(useCase.execute(dto)).rejects.toThrow(
+			new Exception({
+				message: 'Failed to refresh token',
+				statusCode: HttpStatus.UNAUTHORIZED,
+			}),
+		)
 	})
 })

@@ -1,4 +1,3 @@
-import { UUID } from 'node:crypto'
 import { ApiProperty } from '@nestjs/swagger'
 import { ULID } from 'ulidx'
 import { BaseEntity } from './helpers/base.entity'
@@ -10,7 +9,7 @@ type CardProps = {
 	serial?: ULID
 	limit: number
 	dueDate: number
-	userId: UUID | string
+	userId: string
 	user?: User
 	createdAt?: Date
 	updatedAt?: Date
@@ -28,9 +27,8 @@ export class Card extends BaseEntity {
 	dueDate: number
 
 	@ApiProperty()
-	userId: UUID | string
+	userId: string
 
-	@ApiProperty()
 	user?: User
 
 	constructor(props: CardProps) {
