@@ -2,7 +2,7 @@ import { HttpStatus } from '@nestjs/common'
 
 export type ResponseData<T> = T | undefined
 
-export type ResponseErrors = Array<Record<string, string>> | undefined
+export type ResponseErrors = Array<Record<string, string>> | Array<string> | undefined
 
 export type ResponseBody<T> = {
 	statusCode: HttpStatus

@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common'
-import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiProperty } from '@nestjs/swagger'
+import { ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiProperty } from '@nestjs/swagger'
 import { Card } from 'src/application/entities/card.entity'
 
 class CardOkResponse {
@@ -20,9 +20,8 @@ export function ListCardsDoc() {
 			description: 'Cards listed successfully',
 			type: CardOkResponse,
 		}),
-		ApiNotFoundResponse({
+		ApiNoContentResponse({
 			description: 'No cards found',
-			schema: { type: 'object', properties: { message: { type: 'string', example: 'Cards not found!' } } },
 		}),
 	)
 }

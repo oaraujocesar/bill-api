@@ -1,31 +1,47 @@
 import { HttpStatus } from '@nestjs/common'
 import { ApiBadRequestResponse } from '@nestjs/swagger'
+import { SchemaObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface'
 
 export const BadRequestResponse = ({
 	errorMessage,
 	errors,
-}: { errorMessage: string; errors?: Record<string, string>[] }) => {
-	let errorsProperties: { [key: string]: { type: string; example: string } } = {}
+}: {
+	errorMessage?: string
+	errors?: Record<string, string>[] | Array<string>
+} = {}) => {
+	let errorsProperties: { [key: string]: SchemaObject } = {}
 
 	if (errors) {
-		errorsProperties = errors.reduce((acc: Record<string, { type: string; example: string }>, error) => {
+		errorsProperties = errors.reduce((acc: Record<string, SchemaObject>, error) => {
 			const [key, value] = Object.entries(error)[0]
-			acc[key] = Object.assign({}, { type: 'string', example: value })
+			acc[key] = {
+				type: 'string',
+				example: value,
+			} as SchemaObject
 			return acc
 		}, {})
 	}
 
-	const errorsDetails = errors
-		? {
-				errors: {
-					type: 'array',
-					items: {
-						type: 'object',
-						properties: errorsProperties,
-					},
-				},
-			}
-		: {}
+	const errorsDetails: { errors: SchemaObject } = {
+		errors: {},
+	}
+
+	if (errors?.at(0) && typeof errors.at(0) === 'object') {
+		errorsDetails.errors = {
+			type: 'array',
+			items: {
+				type: 'object',
+				properties: errorsProperties,
+			},
+		}
+	}
+
+	if (errors?.at(0) && typeof errors.at(0) === 'string') {
+		errorsDetails.errors.items = {
+			type: 'string',
+			example: errors.at(0),
+		} as SchemaObject
+	}
 
 	return ApiBadRequestResponse({
 		description: 'Bad request',
@@ -35,11 +51,11 @@ export const BadRequestResponse = ({
 				message: {
 					type: 'string',
 					example: errorMessage,
-				},
+				} as SchemaObject,
 				statusCode: {
 					type: 'number',
 					example: HttpStatus.BAD_REQUEST,
-				},
+				} as SchemaObject,
 				...errorsDetails,
 			},
 		},

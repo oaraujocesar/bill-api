@@ -1,7 +1,6 @@
 import { applyDecorators } from '@nestjs/common'
-import { ApiOkResponse, ApiOperation, ApiProperty } from '@nestjs/swagger'
+import { ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiProperty } from '@nestjs/swagger'
 import { Account } from 'src/application/entities/account'
-import { BadRequestResponse } from '../shared/bad-request-response.decorator'
 
 class OkResponse {
 	@ApiProperty({ type: [Account] })
@@ -24,6 +23,6 @@ export function ListAccountsDoc() {
 			description: 'List of accounts',
 			type: OkResponse,
 		}),
-		BadRequestResponse({ errorMessage: 'User not found' }),
+		ApiNoContentResponse({ description: 'No accounts found' }),
 	)
 }
