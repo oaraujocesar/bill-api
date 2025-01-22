@@ -48,7 +48,7 @@ CREATE TABLE "family_members" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "auth"."users" (
+CREATE TABLE IF NOT EXISTS "auth"."users" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"email" varchar NOT NULL,
 	"email_confirmed_at" timestamp,

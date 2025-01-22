@@ -43,6 +43,13 @@ import { UserDrizzleRepository } from './drizzle/repositories/user.drizzle.repos
 			useClass: FamilyMemberDrizzleRepository,
 		},
 	],
-	exports: [USER_REPOSITORY, ACCOUNT_REPOSITORY, CARD_REPOSITORY, FAMILY_REPOSITORY, FAMILY_MEMBER_REPOSITORY],
+	exports: [
+		USER_REPOSITORY,
+		ACCOUNT_REPOSITORY,
+		CARD_REPOSITORY,
+		FAMILY_REPOSITORY,
+		FAMILY_MEMBER_REPOSITORY,
+		CATEGORY_REPOSITORY,
+	],
 })
 export class DatabaseModule {}
