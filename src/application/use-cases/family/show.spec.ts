@@ -1,11 +1,10 @@
 import { TestBed } from '@automock/jest'
 import { faker } from '@faker-js/faker'
 import { HttpStatus } from '@nestjs/common'
-import { UserAuthenticated } from 'src/infra/http/types/authenticated-request'
+import { Family } from 'src/application/entities/family.entity'
+import { FamilyRepository } from 'src/application/repositories/family.repository'
 import { FAMILY_REPOSITORY } from 'src/shared/tokens'
 import { ShowFamilyUseCase } from './show'
-import { FamilyRepository } from 'src/application/repositories/family.repository'
-import { Family } from 'src/application/entities/family.entity'
 
 jest.mock('@nestjs/common/services/logger.service')
 
@@ -21,17 +20,10 @@ describe('show non deleted family use case', () => {
 	})
 
 	it('should show family', async () => {
-		const userId = faker.string.uuid()
-		const user: UserAuthenticated = {
-			id: userId,
-		}
-
 		const family: Family = Family.create({
 			name: faker.company.name(),
-			userId,
 			serial: faker.string.ulid(),
-		});
-
+		})
 
 		familyRepository.findBySerial.mockResolvedValue(family)
 

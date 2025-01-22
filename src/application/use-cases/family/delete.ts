@@ -1,14 +1,15 @@
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
-import { ULID } from 'ulidx'
+import { FamilyRepository } from 'src/application/repositories/family.repository'
+import { Exception } from 'src/shared/exceptions/custom.exception'
 import { FAMILY_REPOSITORY } from 'src/shared/tokens'
 import { ResponseBody, buildResponse } from 'src/shared/utils/build-response'
-import { FamilyRepository } from 'src/application/repositories/family.repository'
+import { ULID } from 'ulidx'
 
 @Injectable()
 export class DeleteFamilyUseCase {
 	private readonly logger = new Logger(DeleteFamilyUseCase.name)
 
-	constructor(@Inject(FAMILY_REPOSITORY) private readonly familyRepository: FamilyRepository) { }
+	constructor(@Inject(FAMILY_REPOSITORY) private readonly familyRepository: FamilyRepository) {}
 
 	async execute(serial: ULID): Promise<ResponseBody<undefined>> {
 		this.logger.debug('execution started')
@@ -17,10 +18,9 @@ export class DeleteFamilyUseCase {
 		if (!family) {
 			this.logger.debug(`family with serial ${serial} not found`)
 
-			return buildResponse({
-				message: 'It was not possible to delete the family!',
+			throw new Exception({
 				statusCode: HttpStatus.NOT_FOUND,
-				errors: [{ code: 'BILL-204' }],
+				message: 'Family not found!',
 			})
 		}
 

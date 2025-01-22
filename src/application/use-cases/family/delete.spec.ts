@@ -1,11 +1,12 @@
 import { TestBed } from '@automock/jest'
 import { faker } from '@faker-js/faker'
 import { HttpStatus } from '@nestjs/common'
+import { Family } from 'src/application/entities/family.entity'
+import { FamilyRepository } from 'src/application/repositories/family.repository'
+import { CreateFamilyDto } from 'src/infra/http/dtos/family/create-family.dto'
+import { Exception } from 'src/shared/exceptions/custom.exception'
 import { FAMILY_REPOSITORY } from 'src/shared/tokens'
 import { DeleteFamilyUseCase } from './delete'
-import { FamilyRepository } from 'src/application/repositories/family.repository'
-import { Family } from 'src/application/entities/family.entity'
-import { CreateFamilyDto } from 'src/infra/http/dtos/family/create-family.dto'
 
 jest.mock('@nestjs/common/services/logger.service')
 
@@ -24,13 +25,11 @@ describe('Soft delete Family use case', () => {
 		const dto: CreateFamilyDto = {
 			name: faker.company.name(),
 		}
-		const userId = faker.string.uuid()
 		const serial = faker.string.ulid()
 
 		familyRepository.save.mockResolvedValue(
 			Family.create({
 				name: dto.name,
-				userId,
 				serial,
 			}),
 		)
@@ -38,7 +37,6 @@ describe('Soft delete Family use case', () => {
 		familyRepository.findBySerial.mockResolvedValue(
 			Family.create({
 				name: dto.name,
-				userId,
 				serial,
 			}),
 		)
@@ -52,10 +50,11 @@ describe('Soft delete Family use case', () => {
 	it('should throw an error if family is not found when deleting', async () => {
 		const serial = faker.string.ulid()
 
-		const { message, statusCode, errors } = await useCase.execute(serial)
-
-		expect(statusCode).toBe(HttpStatus.NOT_FOUND)
-		expect(message).toBe('It was not possible to delete the family!')
-		expect(errors).toEqual([{ code: 'BILL-204' }])
+		await expect(useCase.execute(serial)).rejects.toThrow(
+			new Exception({
+				statusCode: HttpStatus.NOT_FOUND,
+				message: 'Family not found!',
+			}),
+		)
 	})
 })

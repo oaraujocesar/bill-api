@@ -2,6 +2,7 @@ import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { BaseUseCase } from 'src/application/interfaces/use-case.interface'
 import { FamilyMemberRepository } from 'src/application/repositories/family-member.repository'
 import { UserAuthenticated } from 'src/infra/http/types/authenticated-request'
+import { Exception } from 'src/shared/exceptions/custom.exception'
 import { FAMILY_MEMBER_REPOSITORY } from 'src/shared/tokens'
 import { ResponseBody, buildResponse } from 'src/shared/utils/build-response'
 
@@ -19,28 +20,19 @@ export class DeleteFamilyMemberUseCase implements BaseUseCase {
 		if (!familyMember || !familyOwner) {
 			this.logger.debug(`family member with id ${userId} not found`)
 
-			return buildResponse({
-				message: 'It was not possible to delete the family member!',
-				statusCode: HttpStatus.NOT_FOUND,
-			})
+			throw new Exception({ message: 'Family member not found!', statusCode: HttpStatus.NOT_FOUND })
 		}
 
 		if (!familyOwner.isOwner) {
 			this.logger.debug('family member is not the owner')
 
-			return buildResponse({
-				message: 'You are not the owner of the family!',
-				statusCode: HttpStatus.FORBIDDEN,
-			})
+			throw new Exception({ message: 'You are not the owner of the family!', statusCode: HttpStatus.FORBIDDEN })
 		}
 
 		if (familyMember.userId === userId) {
 			this.logger.debug(`family member with serial ${userId} is trying to delete himself`)
 
-			return buildResponse({
-				message: 'You cannot delete yourself!',
-				statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-			})
+			throw new Exception({ message: 'You cannot delete yourself!', statusCode: HttpStatus.UNPROCESSABLE_ENTITY })
 		}
 
 		await this.familyMemberRepository.delete(familyMember)

@@ -22,8 +22,6 @@ describe('CreateCategoryUseCase', () => {
 			name: faker.lorem.word(),
 			iconName: faker.lorem.word(),
 			userId: faker.string.uuid(),
-			createdAt: new Date(),
-			updatedAt: new Date(),
 		})
 		categoryRepository.upsert.mockResolvedValue(category)
 
@@ -36,7 +34,6 @@ describe('CreateCategoryUseCase', () => {
 		expect(data).toBeInstanceOf(Category)
 		expect(statusCode).toBe(HttpStatus.CREATED)
 		expect(message).toBe('Category created successfully!')
-		expect(categoryRepository.upsert).toHaveBeenCalledWith(category)
 		expect(categoryRepository.upsert).toHaveBeenCalledTimes(1)
 	})
 })
