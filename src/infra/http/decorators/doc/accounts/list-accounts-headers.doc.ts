@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common'
 import { ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiProperty } from '@nestjs/swagger'
-import { Account } from 'src/application/entities/account'
+import { Account } from 'src/application/entities/account.entity'
 
 class OkResponse {
 	@ApiProperty({ type: [Account] })

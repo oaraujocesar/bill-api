@@ -1,9 +1,18 @@
 import { Module } from '@nestjs/common'
-import { ACCOUNT_REPOSITORY, CARD_REPOSITORY, CATEGORY_REPOSITORY, USER_REPOSITORY } from 'src/shared/tokens'
+import { CATEGORY_REPOSITORY } from 'src/shared/tokens'
+import {
+	ACCOUNT_REPOSITORY,
+	CARD_REPOSITORY,
+	FAMILY_MEMBER_REPOSITORY,
+	FAMILY_REPOSITORY,
+	USER_REPOSITORY,
+} from 'src/shared/tokens'
 import { DrizzleModule } from './drizzle/drizzle.module'
 import { AccountDrizzleRepository } from './drizzle/repositories/account.drizzle.repository'
 import { CardDrizzleRepository } from './drizzle/repositories/card.drizzle.repository'
 import { CategoryDrizzleRepository } from './drizzle/repositories/category.drizzle.repository'
+import { FamilyMemberDrizzleRepository } from './drizzle/repositories/family-member.drizzle.repository'
+import { FamilyDrizzleRepository } from './drizzle/repositories/family.drizzle.repository'
 import { UserDrizzleRepository } from './drizzle/repositories/user.drizzle.repository'
 
 @Module({
@@ -25,7 +34,15 @@ import { UserDrizzleRepository } from './drizzle/repositories/user.drizzle.repos
 			provide: CATEGORY_REPOSITORY,
 			useClass: CategoryDrizzleRepository,
 		},
+		{
+			provide: FAMILY_REPOSITORY,
+			useClass: FamilyDrizzleRepository,
+		},
+		{
+			provide: FAMILY_MEMBER_REPOSITORY,
+			useClass: FamilyMemberDrizzleRepository,
+		},
 	],
-	exports: [USER_REPOSITORY, ACCOUNT_REPOSITORY, CARD_REPOSITORY, CATEGORY_REPOSITORY],
+	exports: [USER_REPOSITORY, ACCOUNT_REPOSITORY, CARD_REPOSITORY, FAMILY_REPOSITORY, FAMILY_MEMBER_REPOSITORY],
 })
 export class DatabaseModule {}

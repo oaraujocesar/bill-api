@@ -3,6 +3,7 @@ import { boolean, pgSchema, timestamp, uuid, varchar } from 'drizzle-orm/pg-core
 import accounts from './accounts.schema'
 import cards from './cards.schema'
 import categories from './categories.schema'
+import familyMembers from './family-member.schema'
 import usersProfile from './users-profile.schema'
 
 const authSchema = pgSchema('auth')
@@ -19,6 +20,7 @@ export const usersRelations = relations(user, ({ one, many }) => ({
 	accounts: many(accounts),
 	cards: many(cards),
 	categories: many(categories),
+	familyMembers: many(familyMembers),
 }))
 
 export default user
