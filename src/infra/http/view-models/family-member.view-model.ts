@@ -5,6 +5,7 @@ export class FamilyMemberViewModel {
 		return {
 			name: familyMember.userProfile.name,
 			surname: familyMember.userProfile.surname,
+			is_owner: familyMember.isOwner,
 			created_at: familyMember.createdAt,
 		}
 	}
