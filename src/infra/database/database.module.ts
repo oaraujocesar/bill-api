@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { CATEGORY_REPOSITORY } from 'src/shared/tokens'
 import {
 	ACCOUNT_REPOSITORY,
 	CARD_REPOSITORY,
@@ -9,6 +10,7 @@ import {
 import { DrizzleModule } from './drizzle/drizzle.module'
 import { AccountDrizzleRepository } from './drizzle/repositories/account.drizzle.repository'
 import { CardDrizzleRepository } from './drizzle/repositories/card.drizzle.repository'
+import { CategoryDrizzleRepository } from './drizzle/repositories/category.drizzle.repository'
 import { FamilyMemberDrizzleRepository } from './drizzle/repositories/family-member.drizzle.repository'
 import { FamilyDrizzleRepository } from './drizzle/repositories/family.drizzle.repository'
 import { UserDrizzleRepository } from './drizzle/repositories/user.drizzle.repository'
@@ -27,6 +29,10 @@ import { UserDrizzleRepository } from './drizzle/repositories/user.drizzle.repos
 		{
 			provide: CARD_REPOSITORY,
 			useClass: CardDrizzleRepository,
+		},
+		{
+			provide: CATEGORY_REPOSITORY,
+			useClass: CategoryDrizzleRepository,
 		},
 		{
 			provide: FAMILY_REPOSITORY,

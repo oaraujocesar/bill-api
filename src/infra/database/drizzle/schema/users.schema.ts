@@ -2,6 +2,7 @@ import { relations } from 'drizzle-orm'
 import { boolean, pgSchema, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
 import accounts from './accounts.schema'
 import cards from './cards.schema'
+import categories from './categories.schema'
 import familyMembers from './family-member.schema'
 import usersProfile from './users-profile.schema'
 
@@ -18,6 +19,7 @@ export const usersRelations = relations(user, ({ one, many }) => ({
 	profile: one(usersProfile),
 	accounts: many(accounts),
 	cards: many(cards),
+	categories: many(categories),
 	familyMembers: many(familyMembers),
 }))
 

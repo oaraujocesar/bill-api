@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common'
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common'
 import { Response } from 'express'
 import { buildResponse } from 'src/shared/utils/build-response'
 
@@ -8,6 +8,18 @@ export class HttpExceptionFilter implements ExceptionFilter {
 		const ctx = host.switchToHttp()
 		const response = ctx.getResponse<Response>()
 		const status = exception.getStatus()
+
+		if (status === HttpStatus.BAD_REQUEST) {
+			const exceptionResponse = exception.getResponse() as { message: string[] }
+
+			return response.status(status).json(
+				buildResponse({
+					message: 'Validation failed',
+					statusCode: status,
+					errors: exceptionResponse.message,
+				}),
+			)
+		}
 
 		response.status(status).json(
 			buildResponse({

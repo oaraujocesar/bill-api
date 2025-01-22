@@ -12,7 +12,7 @@ const cards = pgTable(
 		limit: decimal('limit', { precision: 10, scale: 2 }).default(sql`0.00`).notNull(),
 		dueDate: integer().notNull(),
 		userId: uuid()
-			.references(() => user.id)
+			.references(() => user.id, { onDelete: 'cascade' })
 			.notNull(),
 		...timestamps,
 	},

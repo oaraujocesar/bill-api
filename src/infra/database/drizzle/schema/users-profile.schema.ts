@@ -11,10 +11,13 @@ const usersProfile = pgTable(
 		surname: varchar('surname').notNull(),
 		birthDate: date('birth_date').notNull(),
 		userId: uuid('user_id')
-			.references(() => user.id)
+			.references(() => user.id, { onDelete: 'cascade' })
 			.notNull(),
 		createdAt: timestamp('created_at').defaultNow().notNull(),
-		updatedAt: timestamp('updated_at').defaultNow().notNull(),
+		updatedAt: timestamp('updated_at')
+			.$onUpdateFn(() => new Date())
+			.defaultNow()
+			.notNull(),
 	},
 	(table) => [
 		uniqueIndex('profile_serial_index').on(table.serial),
