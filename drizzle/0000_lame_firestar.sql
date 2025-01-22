@@ -21,7 +21,6 @@ CREATE TABLE "cards" (
 	"deleted_at" timestamp
 );
 --> statement-breakpoint
-<<<<<<<< HEAD:drizzle/0000_faulty_klaw.sql
 CREATE TABLE "categories" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" varchar NOT NULL,
@@ -32,7 +31,6 @@ CREATE TABLE "categories" (
 	"deleted_at" timestamp
 );
 --> statement-breakpoint
-========
 CREATE TABLE "families" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"serial" varchar(26) NOT NULL,
@@ -50,8 +48,7 @@ CREATE TABLE "family_members" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
->>>>>>>> main:drizzle/0000_fancy_vertigo.sql
-CREATE TABLE IF NOT EXISTS "auth"."users" (
+CREATE TABLE "auth"."users" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"email" varchar NOT NULL,
 	"email_confirmed_at" timestamp,
@@ -70,18 +67,12 @@ CREATE TABLE "users_profile" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-<<<<<<<< HEAD:drizzle/0000_faulty_klaw.sql
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "cards" ADD CONSTRAINT "cards_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "categories" ADD CONSTRAINT "categories_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "users_profile" ADD CONSTRAINT "users_profile_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-========
-ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "cards" ADD CONSTRAINT "cards_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "family_members" ADD CONSTRAINT "family_members_family_id_families_id_fk" FOREIGN KEY ("family_id") REFERENCES "public"."families"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "family_members" ADD CONSTRAINT "family_members_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "users_profile" ADD CONSTRAINT "users_profile_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
->>>>>>>> main:drizzle/0000_fancy_vertigo.sql
+ALTER TABLE "users_profile" ADD CONSTRAINT "users_profile_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 CREATE UNIQUE INDEX "account_serial_index" ON "accounts" USING btree ("serial");--> statement-breakpoint
 CREATE INDEX "account_user_id_index" ON "accounts" USING btree ("user_id");--> statement-breakpoint
 CREATE UNIQUE INDEX "card_serial_index" ON "cards" USING btree ("serial");--> statement-breakpoint
