@@ -6,7 +6,7 @@ import { ListCardsUseCase } from 'src/application/use-cases/card/list.use-case'
 import { CreateCardDoc } from '../decorators/doc/cards/create.doc'
 import { ListCardsDoc } from '../decorators/doc/cards/list.doc'
 import { User } from '../decorators/user.decorator'
-import { CreateCardDto } from '../dtos/cards/create.dto'
+import { CreateCardDto } from '../dtos/card/create.dto'
 import { UserAuthenticated } from '../types/authenticated-request'
 import { CardViewModel } from '../view-models/card.view-model'
 
