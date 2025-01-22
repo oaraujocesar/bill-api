@@ -19,29 +19,37 @@ import { SupabaseService } from 'src/shared/services/supabase.service'
 import { AccountController } from './controllers/account.controller'
 import { AuthController } from './controllers/auth.controller'
 import { CardsController } from './controllers/cards.controller'
+import { CategoriesController } from './controllers/categories.controller'
 import { FamilyMemberController } from './controllers/family-member.controller'
 import { FamilyController } from './controllers/family.controller'
 
 @Module({
 	imports: [DatabaseModule],
-	controllers: [AuthController, AccountController, CardsController, FamilyController, FamilyMemberController],
+	controllers: [
+		AuthController,
+		CardsController,
+		FamilyController,
+		AccountController,
+		CategoriesController,
+		FamilyMemberController,
+	],
 	providers: [
 		SigninUseCase,
 		SignupUseCase,
 		SupabaseService,
-		CreateAccountUseCase,
-		DeleteAccountUseCase,
-		ListAccountsUseCase,
+		ListCardsUseCase,
 		CreateCardUseCase,
-		RefreshTokenUseCase,
 		ShowFamilyUseCase,
+		ListAccountsUseCase,
+		RefreshTokenUseCase,
 		CreateFamilyUseCase,
 		DeleteFamilyUseCase,
-		CreateFamilyMemberUseCase,
-		ListFamilyMembersUseCase,
-		DeleteFamilyMemberUseCase,
-		ListCardsUseCase,
+		DeleteAccountUseCase,
+		CreateAccountUseCase,
 		CreateCategoriesUseCase,
+		ListFamilyMembersUseCase,
+		CreateFamilyMemberUseCase,
+		DeleteFamilyMemberUseCase,
 	],
 })
 export class HttpModule {}

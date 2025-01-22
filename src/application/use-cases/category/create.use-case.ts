@@ -28,7 +28,7 @@ export class CreateCategoriesUseCase implements BaseUseCase {
 		return buildResponse({
 			data: savedCategory,
 			statusCode: HttpStatus.CREATED,
-			message: 'Category created successfully',
+			message: 'Category created successfully!',
 		})
 	}
 }

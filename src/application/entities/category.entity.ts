@@ -4,7 +4,7 @@ export type CategoryProps = {
 	id?: number
 	name: string
 	iconName: string
-	userId: string
+	userId?: string
 	createdAt?: Date
 	updatedAt?: Date
 }
@@ -20,7 +20,7 @@ export class Category {
 	iconName: string
 
 	@ApiProperty()
-	userId: string
+	userId?: string
 
 	@ApiProperty()
 	createdAt: Date
