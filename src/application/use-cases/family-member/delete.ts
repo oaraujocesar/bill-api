@@ -23,7 +23,7 @@ export class DeleteFamilyMemberUseCase {
 			})
 		}
 
-		await this.familyMemberRepository.delete(userId)
+		await this.familyMemberRepository.delete(familyMember)
 		this.logger.debug('family member deleted successfully')
 
 		return buildResponse({

@@ -1,11 +1,10 @@
 import { TestBed } from '@automock/jest'
 import { faker } from '@faker-js/faker'
 import { HttpStatus } from '@nestjs/common'
+import { FamilyMember } from 'src/application/entities/family-member.entity'
+import { FamilyMemberRepository } from 'src/application/repositories/family-member.repository'
 import { FAMILY_MEMBER_REPOSITORY } from 'src/shared/tokens'
 import { DeleteFamilyMemberUseCase } from './delete'
-import { FamilyMemberRepository } from 'src/application/repositories/family-member.repository'
-import { FamilyMember } from 'src/application/entities/family-member.entity'
-import { CreateFamilyMemberDto } from 'src/infra/http/dtos/family-member/create-family.dto'
 
 jest.mock('@nestjs/common/services/logger.service')
 
@@ -20,40 +19,34 @@ describe('Soft delete Family Member use case', () => {
 		familyMemberRepository = unitRef.get<FamilyMemberRepository>(FAMILY_MEMBER_REPOSITORY)
 	})
 
-	it('should delete family', async () => {
-		const dto: CreateFamilyMemberDto = {
-			familyId: faker.number.int(),
+	it('should delete family member', async () => {
+		const familyMember = FamilyMember.create({
 			userId: faker.string.uuid(),
-		}
-		const serial = faker.string.uuid()
+			familyId: faker.number.int(10),
+		})
 
-		familyMemberRepository.save.mockResolvedValue(
-			FamilyMember.create({
-				...dto,
-				serial
-			}),
-		)
+		familyMemberRepository.findByUserId.mockResolvedValue(familyMember)
+		familyMemberRepository.delete.mockResolvedValue()
 
-		familyMemberRepository.findBySerial.mockResolvedValue(
-			FamilyMember.create({
-				...dto,
-				serial
-			}),
-		)
-
-		const { statusCode, message } = await useCase.execute(serial)
+		const { statusCode, message } = await useCase.execute(familyMember.userId)
 
 		expect(statusCode).toBe(HttpStatus.NO_CONTENT)
 		expect(message).toBe('Family member deleted successfully!')
+		expect(familyMemberRepository.delete).toHaveBeenCalledWith(familyMember)
+		expect(familyMemberRepository.findByUserId).toHaveBeenCalledWith(familyMember.userId)
+		expect(familyMemberRepository.delete).toHaveBeenCalledTimes(1)
+		expect(familyMemberRepository.findByUserId).toHaveBeenCalledTimes(1)
 	})
 
 	it('should throw an error if family member is not found when deleting', async () => {
-		const serial = faker.string.ulid()
+		const userId = faker.string.uuid()
 
-		const { message, statusCode, errors } = await useCase.execute(serial)
+		const { message, statusCode, errors } = await useCase.execute(userId)
 
 		expect(statusCode).toBe(HttpStatus.NOT_FOUND)
 		expect(message).toBe('It was not possible to delete the family member!')
 		expect(errors).toEqual([{ code: 'BILL-204' }])
+		expect(familyMemberRepository.findByUserId).toHaveBeenCalledWith(userId)
+		expect(familyMemberRepository.findByUserId).toHaveBeenCalledTimes(1)
 	})
 })

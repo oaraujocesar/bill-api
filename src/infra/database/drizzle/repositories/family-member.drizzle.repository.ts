@@ -15,6 +15,19 @@ export class FamilyMemberDrizzleRepository implements FamilyMemberRepository {
 
 	constructor(@Inject(DRIZZLE) private readonly database: NodePgDatabase<typeof schema>) {}
 
+	async findByUserId(userId: string): Promise<FamilyMember> {
+		try {
+			const result = await this.database.query.familyMembers.findFirst({
+				where: eq(familyMembers.userId, userId),
+			})
+
+			return result ? FamilyMemberMapper.toDomain({ familyMembers: result }) : null
+		} catch (error) {
+			this.logger.error(error)
+			throw new InternalServerErrorException()
+		}
+	}
+
 	async findByUserAndFamilyId(userId: string, familyId: number): Promise<FamilyMember> {
 		try {
 			const result = await this.database.query.familyMembers.findFirst({
@@ -28,9 +41,9 @@ export class FamilyMemberDrizzleRepository implements FamilyMemberRepository {
 		}
 	}
 
-	async delete(userId: string): Promise<void> {
+	async delete(familyMember: FamilyMember): Promise<void> {
 		try {
-			await this.database.delete(familyMembers).where(eq(familyMembers.userId, userId)).execute()
+			await this.database.delete(familyMembers).where(eq(familyMembers.userId, familyMember.userId)).execute()
 		} catch (error) {
 			this.logger.error(error)
 			throw new InternalServerErrorException()
