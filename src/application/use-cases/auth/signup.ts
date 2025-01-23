@@ -1,6 +1,6 @@
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
-import { User } from 'src/application/entities/user'
-import { UserProfile } from 'src/application/entities/user-profile'
+import { UserProfile } from 'src/application/entities/user-profile.entity'
+import { User } from 'src/application/entities/user.entity'
 import { UserRepository } from 'src/application/repositories/user.repository'
 import { Exception } from 'src/shared/exceptions/custom.exception'
 import { SupabaseService } from 'src/shared/services/supabase.service'

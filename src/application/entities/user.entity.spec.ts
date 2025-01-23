@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import { User } from './user'
+import { User } from './user.entity'
 
 describe('User entity', () => {
 	it('should create user', () => {

@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker/.'
+import { DateTime } from 'luxon'
 import { FamilyMember } from './family-member.entity'
 
 describe('Family Member entity', () => {
@@ -13,7 +14,15 @@ describe('Family Member entity', () => {
 
 		const familyMember = FamilyMember.create(input)
 
-		expect(familyMember).toEqual(expect.objectContaining(input))
+		expect(familyMember).toEqual(
+			expect.objectContaining({
+				id: input.id,
+				familyId: input.familyId,
+				userId: input.userId,
+				isOwner: input.isOwner,
+				createdAt: expect.any(DateTime),
+			}),
+		)
 	})
 
 	it('should generate serial and timestamps', () => {
@@ -28,7 +37,7 @@ describe('Family Member entity', () => {
 		expect(familyMember).toEqual(
 			expect.objectContaining({
 				...input,
-				createdAt: expect.any(Date),
+				createdAt: expect.any(DateTime),
 			}),
 		)
 	})

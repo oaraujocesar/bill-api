@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { ulid } from 'ulidx'
+import { BaseEntity } from './helpers/base.entity'
 
 export type UserProfileProps = {
 	id?: number
@@ -12,33 +12,30 @@ export type UserProfileProps = {
 	updatedAt?: Date
 }
 
-export class UserProfile {
-	@ApiProperty()
-	id?: number
-	@ApiProperty()
-	serial: string
+export class UserProfile extends BaseEntity {
 	@ApiProperty()
 	name: string
+
 	@ApiProperty()
 	surname: string
+
 	@ApiProperty()
 	userId: string
+
 	@ApiProperty()
 	birthDate: Date
-	@ApiProperty()
-	createdAt?: Date
-	@ApiProperty()
-	updatedAt?: Date
 
 	constructor(props: UserProfileProps) {
-		this.id = props.id
-		this.serial = props.serial ?? ulid()
+		super({
+			id: props.id,
+			serial: props.serial,
+			createdAt: props.createdAt,
+			updatedAt: props.updatedAt,
+		})
 		this.name = props.name
 		this.surname = props.surname
 		this.userId = props.userId
 		this.birthDate = props.birthDate
-		this.createdAt = props.createdAt ?? new Date()
-		this.updatedAt = props.updatedAt ?? new Date()
 	}
 
 	static create(props: UserProfileProps): UserProfile {

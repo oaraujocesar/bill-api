@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { UserProfile } from './user-profile'
+import { UserProfile } from './user-profile.entity'
 
 export type UserProps = {
 	id: string

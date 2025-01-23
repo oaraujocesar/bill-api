@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { DateTime } from 'luxon'
 
 export type CategoryProps = {
 	id?: number
@@ -23,18 +24,18 @@ export class Category {
 	userId?: string
 
 	@ApiProperty()
-	createdAt: Date
+	createdAt: DateTime
 
 	@ApiProperty()
-	updatedAt: Date
+	updatedAt: DateTime
 
 	constructor(props: CategoryProps) {
 		this.id = props.id
 		this.name = props.name
 		this.iconName = props.iconName
 		this.userId = props.userId
-		this.createdAt = props.createdAt ?? new Date()
-		this.updatedAt = props.updatedAt ?? new Date()
+		this.createdAt = props.createdAt ? DateTime.fromJSDate(props.createdAt) : DateTime.now()
+		this.updatedAt = props.updatedAt ? DateTime.fromJSDate(props.updatedAt) : DateTime.now()
 	}
 
 	static create(props: CategoryProps): Category {
