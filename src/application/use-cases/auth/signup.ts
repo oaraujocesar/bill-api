@@ -80,7 +80,7 @@ export class SignupUseCase {
 			isSuperAdmin: false,
 		})
 
-		this.logger.log('user created on supabase')
+		this.logger.debug('user created on supabase')
 
 		userProfile = UserProfile.create({
 			name,
