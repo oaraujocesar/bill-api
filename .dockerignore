@@ -1,0 +1,15 @@
+node_modules
+npm-debug.log
+dist
+.git
+.env
+*.md
+.gitignore
+coverage
+.vscode
+*.txt
+.tool-versions
+supabase
+compose.yaml
+Dockerfile
+biome.json
