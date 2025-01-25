@@ -1,4 +1,4 @@
-import { User } from 'src/application/entities/user'
+import { User } from 'src/application/entities/user.entity'
 
 type UserDrizzleResponse = {
 	id: string

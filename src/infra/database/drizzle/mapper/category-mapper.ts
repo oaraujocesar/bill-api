@@ -16,8 +16,8 @@ export class CategoryMapper {
 			name: category.name,
 			iconName: category.iconName,
 			userId: category.userId,
-			updatedAt: category.updatedAt,
-			createdAt: category.createdAt,
+			updatedAt: category.updatedAt.toJSDate(),
+			createdAt: category.createdAt.toJSDate(),
 		}
 	}
 
