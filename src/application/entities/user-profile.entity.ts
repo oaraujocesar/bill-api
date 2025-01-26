@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { DateTime } from 'luxon'
 import { BaseEntity } from './helpers/base.entity'
 
 export type UserProfileProps = {
@@ -23,7 +24,7 @@ export class UserProfile extends BaseEntity {
 	userId: string
 
 	@ApiProperty()
-	birthDate: Date
+	birthDate: DateTime
 
 	constructor(props: UserProfileProps) {
 		super({
@@ -35,7 +36,7 @@ export class UserProfile extends BaseEntity {
 		this.name = props.name
 		this.surname = props.surname
 		this.userId = props.userId
-		this.birthDate = props.birthDate
+		this.birthDate = DateTime.fromJSDate(props.birthDate)
 	}
 
 	static create(props: UserProfileProps): UserProfile {

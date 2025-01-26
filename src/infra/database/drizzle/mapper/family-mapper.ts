@@ -15,9 +15,9 @@ export class FamilyMapper {
 			id: family.id,
 			name: family.name,
 			serial: family.serial,
-			createdAt: family.createdAt,
-			updatedAt: family.updatedAt,
-			deletedAt: family.deletedAt,
+			createdAt: family.createdAt.toJSDate(),
+			updatedAt: family.updatedAt.toJSDate(),
+			deletedAt: family.deletedAt?.toJSDate(),
 		}
 	}
 

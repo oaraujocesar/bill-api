@@ -18,10 +18,10 @@ export class AccountMapper {
 			id: account.id,
 			serial: account.serial,
 			userId: account.userId,
-			createdAt: account.createdAt,
-			updatedAt: account.updatedAt,
+			createdAt: account.createdAt.toJSDate(),
+			updatedAt: account.updatedAt.toJSDate(),
 			balance: account.balance.toString(),
-			deletedAt: account.deletedAt,
+			deletedAt: account.deletedAt?.toJSDate(),
 		}
 	}
 
