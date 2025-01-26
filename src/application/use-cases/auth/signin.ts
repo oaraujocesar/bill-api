@@ -26,7 +26,7 @@ export class SigninUseCase {
 			throw new Exception({
 				error,
 				message: error.message,
-				statusCode: error.status,
+				statusCode: error.status || HttpStatus.INTERNAL_SERVER_ERROR,
 				errors: [{ code: error.code }],
 			})
 		}

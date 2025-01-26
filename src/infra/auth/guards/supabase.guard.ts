@@ -7,7 +7,7 @@ import {
 	UnauthorizedException,
 } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { Request } from 'express'
+import { FastifyRequest } from 'fastify'
 import { RequestWithUser } from 'src/infra/http/types/authenticated-request'
 import { SupabaseService } from 'src/shared/services/supabase.service'
 
@@ -46,7 +46,7 @@ export class SupabaseGuard implements CanActivate {
 		return true
 	}
 
-	private extractTokenFromRequest(request: Request): string {
+	private extractTokenFromRequest(request: FastifyRequest): string {
 		const tokenInCookie = request.cookies['bill-auth-token']
 		const tokenInBearer = request.headers?.authorization?.replace('Bearer ', '')
 

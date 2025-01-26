@@ -17,7 +17,7 @@ export class UserProfileMapper {
 			serial: userProfile.serial,
 			name: userProfile.name,
 			surname: userProfile.surname,
-			birthDate: userProfile.birthDate.toISOString(),
+			birthDate: userProfile.birthDate.toISO(),
 			userId: userProfile.userId,
 		}
 	}

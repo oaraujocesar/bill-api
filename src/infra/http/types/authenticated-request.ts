@@ -1,7 +1,7 @@
 import { User } from '@supabase/supabase-js'
-import { Request } from 'express'
+import { FastifyRequest } from 'fastify'
 
-export type RequestWithUser = Request & {
+export type RequestWithUser = FastifyRequest & {
 	user?: UserAuthenticated
 }
 

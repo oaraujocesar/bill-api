@@ -27,7 +27,7 @@ export class FamilyMemberMapper {
 			familyId: familyMember.familyId,
 			userId: familyMember.userId,
 			isOwner: familyMember.isOwner,
-			createdAt: familyMember.createdAt,
+			createdAt: familyMember.createdAt.toJSDate(),
 		}
 	}
 

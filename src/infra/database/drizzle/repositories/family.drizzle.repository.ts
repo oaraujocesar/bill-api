@@ -1,5 +1,5 @@
 import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
-import { eq, sql } from 'drizzle-orm'
+import { and, eq, isNull, sql } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { Family } from 'src/application/entities/family.entity'
 import { FamilyRepository } from 'src/application/repositories/family.repository'
@@ -34,7 +34,7 @@ export class FamilyDrizzleRepository implements FamilyRepository {
 	async findBySerial(serial: string): Promise<Family | null> {
 		try {
 			const result = await this.database.query.families.findFirst({
-				where: eq(families.serial, serial),
+				where: and(eq(families.serial, serial), isNull(families.deletedAt)),
 			})
 
 			return result ? FamilyMapper.toDomain(result) : null

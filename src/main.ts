@@ -1,25 +1,22 @@
+import fastifyCookie from '@fastify/cookie'
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory, Reflector } from '@nestjs/core'
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import cookieParser from 'cookie-parser'
-import expressBasicAuth from 'express-basic-auth'
 import { AppModule } from './app.module'
 import { SupabaseGuard } from './infra/auth/guards/supabase.guard'
 import { HttpExceptionFilter } from './infra/http/filters/http-exception.filter'
 import { SupabaseService } from './shared/services/supabase.service'
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule)
+	const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter())
 
 	const config = app.get(ConfigService)
 	const reflector = app.get(Reflector)
 	const supabase = app.get(SupabaseService)
 
-	const swaggerPassword = config.getOrThrow('SWAGGER_PASSWORD')
-
-	app.use(['/docs', '/docs-json'], expressBasicAuth({ challenge: true, users: { admin: swaggerPassword } }))
-	app.use(cookieParser())
+	await app.register(fastifyCookie)
 
 	app.useGlobalGuards(new SupabaseGuard(reflector, supabase))
 

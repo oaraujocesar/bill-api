@@ -16,7 +16,12 @@ describe('UserProfile entity', () => {
 
 		const userProfile = UserProfile.create(input)
 
-		expect(userProfile).toEqual(expect.objectContaining(input))
+		expect(userProfile).toEqual(
+			expect.objectContaining({
+				...input,
+				birthDate: expect.any(DateTime),
+			}),
+		)
 	})
 
 	it('should generate serial and timestamps', () => {
@@ -33,6 +38,7 @@ describe('UserProfile entity', () => {
 			expect.objectContaining({
 				...input,
 				serial: expect.any(String),
+				birthDate: expect.any(DateTime),
 				createdAt: expect.any(DateTime),
 				updatedAt: expect.any(DateTime),
 			}),

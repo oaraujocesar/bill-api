@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Res } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { Response } from 'express'
+import { FastifyReply } from 'fastify'
 import { CreateFamilyMemberUseCase } from 'src/application/use-cases/family-member/create'
 import { DeleteFamilyMemberUseCase } from 'src/application/use-cases/family-member/delete'
 import { ListFamilyMembersUseCase } from 'src/application/use-cases/family-member/list'
@@ -27,19 +27,19 @@ export class FamilyMemberController {
 	@Get('/members')
 	@ListFamilyMembersDoc()
 	@ApiOperation({ summary: 'List all family members' })
-	async listFamilyMembers(@Param('familySerial') familySerial: string, @Res() response: Response) {
+	async listFamilyMembers(@Param('familySerial') familySerial: string, @Res() response: FastifyReply) {
 		this.logger.debug('[listFamilyMembers]: called.')
 
 		const { data, statusCode, message } = await this.listFamilyMembersUseCase.execute(familySerial)
 
-		return response.status(statusCode).json({ data: data.map(FamilyMemberViewModel.toHTTP), message })
+		return response.status(statusCode).send({ data: data.map(FamilyMemberViewModel.toHTTP), message })
 	}
 
 	@Post('/members')
 	@CreateFamilyMemberDoc()
 	@ApiOperation({ summary: 'Creates a family member' })
 	async createFamilyMember(
-		@Res() response: Response,
+		@Res() response: FastifyReply,
 		@Body() body: CreateFamilyMemberDto,
 		@Param('familySerial') familySerial: string,
 	) {
@@ -47,14 +47,14 @@ export class FamilyMemberController {
 
 		const { data, statusCode, message } = await this.createFamilyMemberUseCase.execute({ ...body, familySerial })
 
-		return response.status(statusCode).json({ data, message })
+		return response.status(statusCode).send({ data, message })
 	}
 
 	@Delete('/members/:userId')
 	@DeleteFamilyMemberDoc()
 	@ApiOperation({ summary: 'Deletes a family member' })
 	async deleteFamilyMember(
-		@Res() response: Response,
+		@Res() response: FastifyReply,
 		@User() user: UserAuthenticated,
 		@Param('userId') userId: string,
 	) {
@@ -62,6 +62,6 @@ export class FamilyMemberController {
 
 		const { data, statusCode, message } = await this.deleteFamilyMemberUseCase.execute({ userId, user })
 
-		return response.status(statusCode).json({ data, message })
+		return response.status(statusCode).send({ data, message })
 	}
 }
