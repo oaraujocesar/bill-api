@@ -1,16 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { ULID } from 'ulidx'
 import { BaseEntity } from './helpers/base.entity'
-import { User } from './user'
 
-type CardProps = {
+export type CardProps = {
 	id?: number
 	name: string
 	serial?: ULID
 	limit: number
 	dueDate: number
 	userId: string
-	user?: User
 	createdAt?: Date
 	updatedAt?: Date
 	deletedAt?: Date
@@ -29,8 +27,6 @@ export class Card extends BaseEntity {
 	@ApiProperty()
 	userId: string
 
-	user?: User
-
 	constructor(props: CardProps) {
 		super({
 			id: props.id,
@@ -44,7 +40,6 @@ export class Card extends BaseEntity {
 		this.limit = props.limit
 		this.dueDate = props.dueDate
 		this.userId = props.userId
-		this.user = props.user
 	}
 
 	static create(props: CardProps) {

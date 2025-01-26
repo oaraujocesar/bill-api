@@ -6,6 +6,8 @@ import { CategoryRepository } from 'src/application/repositories/category.reposi
 import { CATEGORY_REPOSITORY } from 'src/shared/tokens'
 import { CreateCategoriesUseCase } from './create.use-case'
 
+jest.mock('@nestjs/common/services/logger.service')
+
 describe('CreateCategoryUseCase', () => {
 	let useCase: CreateCategoriesUseCase
 	let categoryRepository: jest.Mocked<CategoryRepository>

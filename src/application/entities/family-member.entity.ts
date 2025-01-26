@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { UserProfile } from './user-profile'
+import { DateTime } from 'luxon'
+import { UserProfile } from './user-profile.entity'
 
 type FamilyMemberProps = {
 	id?: number
@@ -23,7 +24,7 @@ export class FamilyMember {
 	isOwner: boolean
 
 	@ApiProperty()
-	createdAt: Date
+	createdAt: DateTime
 
 	userProfile?: UserProfile
 
@@ -32,7 +33,7 @@ export class FamilyMember {
 		this.familyId = props.familyId
 		this.userId = props.userId
 		this.isOwner = props.isOwner
-		this.createdAt = props.createdAt ?? new Date()
+		this.createdAt = props.createdAt ? DateTime.fromJSDate(props.createdAt) : DateTime.now()
 	}
 
 	static create(props: FamilyMemberProps) {

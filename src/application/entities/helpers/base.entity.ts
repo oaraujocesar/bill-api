@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
+import { DateTime } from 'luxon'
 import { ULID, ulid } from 'ulidx'
 
 type BaseEntityProps = {
@@ -17,17 +18,17 @@ export class BaseEntity {
 	@ApiProperty()
 	serial: string
 	@ApiProperty()
-	createdAt?: Date
+	createdAt?: DateTime
 	@ApiProperty()
-	updatedAt?: Date
+	updatedAt?: DateTime
 	@ApiProperty()
-	deletedAt?: Date
+	deletedAt?: DateTime
 
 	constructor(props: BaseEntityProps) {
 		this.id = props.id
 		this.serial = props.serial ?? ulid()
-		this.createdAt = props.createdAt ?? new Date()
-		this.updatedAt = props.updatedAt ?? new Date()
-		this.deletedAt = props.deletedAt
+		this.createdAt = props.createdAt ? DateTime.fromJSDate(props.createdAt) : DateTime.now()
+		this.updatedAt = props.updatedAt ? DateTime.fromJSDate(props.updatedAt) : DateTime.now()
+		this.deletedAt = props.deletedAt ? DateTime.fromJSDate(props.deletedAt) : undefined
 	}
 }

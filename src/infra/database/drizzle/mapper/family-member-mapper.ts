@@ -1,5 +1,5 @@
 import { FamilyMember } from 'src/application/entities/family-member.entity'
-import { UserProfile } from 'src/application/entities/user-profile'
+import { UserProfile } from 'src/application/entities/user-profile.entity'
 
 export type DrizzleResultType = {
 	id: number

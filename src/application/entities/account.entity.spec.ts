@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker/.'
+import { DateTime } from 'luxon'
 import { isValid } from 'ulidx'
 import { Account } from './account.entity'
 
@@ -30,8 +31,8 @@ describe('Account entity', () => {
 			expect.objectContaining({
 				...input,
 				serial: expect.any(String),
-				createdAt: expect.any(Date),
-				updatedAt: expect.any(Date),
+				createdAt: expect.any(DateTime),
+				updatedAt: expect.any(DateTime),
 			}),
 		)
 

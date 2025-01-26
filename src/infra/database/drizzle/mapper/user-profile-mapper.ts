@@ -1,4 +1,4 @@
-import { UserProfile } from 'src/application/entities/user-profile'
+import { UserProfile } from 'src/application/entities/user-profile.entity'
 
 type DrizzleResultType = {
 	id: number

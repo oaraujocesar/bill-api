@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker/.'
+import { DateTime } from 'luxon'
 import { isValid } from 'ulidx'
 import { Family } from './family.entity'
 
@@ -7,16 +8,17 @@ describe('Family entity', () => {
 		const input = {
 			id: faker.number.int(),
 			serial: faker.string.ulid(),
-			name: faker.string.alpha({ length: 10 }),
+			name: faker.person.lastName(),
 			createdAt: faker.date.anytime(),
-			updatedAt: faker.date.anytime(),
-			deletedAt: null,
 		}
 
 		const family = Family.create(input)
 
 		expect(family).toMatchObject({
-			...input,
+			id: input.id,
+			serial: input.serial,
+			name: input.name,
+			createdAt: expect.any(DateTime),
 		})
 	})
 
@@ -31,8 +33,8 @@ describe('Family entity', () => {
 			expect.objectContaining({
 				...input,
 				serial: expect.any(String),
-				createdAt: expect.any(Date),
-				updatedAt: expect.any(Date),
+				createdAt: expect.any(DateTime),
+				updatedAt: expect.any(DateTime),
 			}),
 		)
 

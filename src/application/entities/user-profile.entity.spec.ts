@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
+import { DateTime } from 'luxon'
 import { isValid } from 'ulidx'
-import { UserProfile } from './user-profile'
+import { UserProfile } from './user-profile.entity'
 
 describe('UserProfile entity', () => {
 	it('should create user profile', () => {
@@ -32,8 +33,8 @@ describe('UserProfile entity', () => {
 			expect.objectContaining({
 				...input,
 				serial: expect.any(String),
-				createdAt: expect.any(Date),
-				updatedAt: expect.any(Date),
+				createdAt: expect.any(DateTime),
+				updatedAt: expect.any(DateTime),
 			}),
 		)
 

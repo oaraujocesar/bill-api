@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { ulid } from 'ulidx'
-import { User } from './user'
+import { BaseEntity } from './helpers/base.entity'
+import { User } from './user.entity'
 
 export type AccountProps = {
 	id?: number
@@ -14,13 +14,7 @@ export type AccountProps = {
 	user?: User
 }
 
-export class Account {
-	@ApiProperty()
-	id: number
-
-	@ApiProperty()
-	serial: string
-
+export class Account extends BaseEntity {
 	@ApiProperty()
 	name: string
 
@@ -30,28 +24,17 @@ export class Account {
 	@ApiProperty()
 	userId: string
 
-	@ApiProperty()
-	createdAt: Date
-
-	@ApiProperty()
-	updatedAt: Date
-
-	@ApiProperty()
-	deletedAt?: Date
-
-	@ApiProperty()
-	user?: User
-
 	constructor(props: AccountProps) {
-		this.id = props.id
-		this.serial = props.serial ?? ulid()
+		super({
+			id: props.id,
+			serial: props.serial,
+			createdAt: props.createdAt,
+			updatedAt: props.updatedAt,
+			deletedAt: props.deletedAt,
+		})
 		this.name = props.name
-		this.balance = props.balance
 		this.userId = props.userId
-		this.createdAt = props.createdAt ?? new Date()
-		this.updatedAt = props.updatedAt ?? new Date()
-		this.deletedAt = props.deletedAt
-		this.user = props.user
+		this.balance = props.balance
 	}
 
 	static create(props: AccountProps): Account {
