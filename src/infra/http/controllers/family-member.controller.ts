@@ -45,9 +45,12 @@ export class FamilyMemberController {
 	) {
 		this.logger.debug(`[createFamilyMember]: called with body ${JSON.stringify(body)}.`)
 
-		const { data, statusCode, message } = await this.createFamilyMemberUseCase.execute({ ...body, familySerial })
+		const { data, statusCode, message } = await this.createFamilyMemberUseCase.execute({
+			userId: body.user_id,
+			familySerial,
+		})
 
-		return response.status(statusCode).send({ data, message })
+		return response.status(statusCode).send({ data: FamilyMemberViewModel.toHTTP(data), message })
 	}
 
 	@Delete('/members/:userId')
@@ -60,8 +63,8 @@ export class FamilyMemberController {
 	) {
 		this.logger.debug(`[deleteFamilyMember]: called for userId: ${userId}.`)
 
-		const { data, statusCode, message } = await this.deleteFamilyMemberUseCase.execute({ userId, user })
+		const { statusCode, message } = await this.deleteFamilyMemberUseCase.execute({ userId, user })
 
-		return response.status(statusCode).send({ data, message })
+		return response.status(statusCode).send({ message })
 	}
 }

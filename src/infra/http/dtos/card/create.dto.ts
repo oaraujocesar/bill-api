@@ -18,5 +18,5 @@ export class CreateCardDto {
 	@IsPositive()
 	@Min(1)
 	@Max(30)
-	dueDate: number
+	due_date: number
 }

@@ -4,5 +4,5 @@ import { IsUUID } from 'class-validator'
 export class CreateFamilyMemberDto {
 	@IsUUID()
 	@ApiProperty()
-	userId: string
+	user_id: string
 }

@@ -10,6 +10,7 @@ import { DeleteFamilyDoc } from '../decorators/doc/family/delete-family-headers.
 import { ShowFamilyDoc } from '../decorators/doc/family/show-family-headers.doc'
 import { CreateFamilyDto } from '../dtos/family/create-family.dto'
 import { RequestWithUser } from '../types/authenticated-request'
+import { FamilyViewModel } from '../view-models/family.view-model'
 
 @ApiTags('Family')
 @ApiBearerAuth()
@@ -30,7 +31,7 @@ export class FamilyController {
 
 		const { data, statusCode, message } = await this.showFamilyUseCase.execute(serial)
 
-		return response.status(statusCode).send({ data, message })
+		return response.status(statusCode).send({ data: FamilyViewModel.toHTTP(data), message })
 	}
 
 	@Post()
@@ -41,7 +42,7 @@ export class FamilyController {
 
 		const { data, statusCode, message } = await this.createFamilyUseCase.execute(body, request.user.id)
 
-		return response.status(statusCode).send({ data, message })
+		return response.status(statusCode).send({ data: FamilyViewModel.toHTTP(data), message })
 	}
 
 	@Delete(':serial')
@@ -51,6 +52,6 @@ export class FamilyController {
 
 		const { data, statusCode, message } = await this.deleteFamilyUseCase.execute(serial)
 
-		return response.status(statusCode).send({ data, message })
+		return response.status(statusCode).send({ message })
 	}
 }

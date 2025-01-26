@@ -26,7 +26,7 @@ export class AuthController {
 	@ApiBearerAuth()
 	async refreshToken(@Body() body: RefreshTokenDto, @Res() response: FastifyReply) {
 		this.logger.debug('Refresh token called')
-		const { statusCode, data, message } = await this.refreshTokenUseCase.execute(body)
+		const { statusCode, data, message } = await this.refreshTokenUseCase.execute({ refreshToken: body.refresh_token })
 
 		return response
 			.status(statusCode)
@@ -76,7 +76,7 @@ export class AuthController {
 	async signup(@Body() body: SignupDto, @Res() response: FastifyReply) {
 		this.logger.debug('Signup called')
 
-		const { data, statusCode, message } = await this.signupUseCase.execute(body)
+		const { data, statusCode, message } = await this.signupUseCase.execute({ birthDate: body.birth_date, ...body })
 
 		return response.status(statusCode).send({ data, message })
 	}

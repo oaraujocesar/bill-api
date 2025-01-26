@@ -36,9 +36,10 @@ export class CardsController {
 		this.logger.debug('Create card controller executed')
 		const { data, message, statusCode } = await this.createCardUseCase.execute({
 			user,
+			dueDate: body.due_date,
 			...body,
 		})
 
-		return response.status(statusCode).send({ data, message })
+		return response.status(statusCode).send({ data: CardViewModel.toHTTP(data), message })
 	}
 }
