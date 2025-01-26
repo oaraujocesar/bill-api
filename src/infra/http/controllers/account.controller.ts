@@ -37,7 +37,10 @@ export class AccountController {
 	async createAccount(@Body() body: CreateAccountDto, @Res() response: FastifyReply, @Req() request: RequestWithUser) {
 		this.logger.debug(`[createAccount]: called with body ${JSON.stringify(body)}`)
 
-		const { data, statusCode, message } = await this.createAccountUseCase.execute(body, request.user.id)
+		const { data, statusCode, message } = await this.createAccountUseCase.execute(
+			{ initialBalance: body.initial_balance, ...body },
+			request.user.id,
+		)
 
 		return response.status(statusCode).send({ data: AccountViewModel.toHTTP(data), message })
 	}

@@ -6,6 +6,7 @@ import { ResponseBody, buildResponse } from 'src/shared/utils/build-response'
 
 type CreateAccountRequest = {
 	name: string
+	initialBalance: number
 }
 
 @Injectable()
@@ -14,10 +15,10 @@ export class CreateAccountUseCase {
 
 	constructor(@Inject(ACCOUNT_REPOSITORY) private readonly accountRepository: AccountRepository) {}
 
-	async execute({ name }: CreateAccountRequest, userId: string): Promise<ResponseBody<Account>> {
+	async execute({ name, initialBalance }: CreateAccountRequest, userId: string): Promise<ResponseBody<Account>> {
 		this.logger.debug('execution started')
 
-		let account = Account.create({ name, userId, balance: 0 })
+		let account = Account.create({ name, userId, balance: initialBalance })
 
 		account = await this.accountRepository.saveAccount(account)
 
