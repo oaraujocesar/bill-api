@@ -21,8 +21,6 @@ export class CreateAccountUseCase {
 
 		account = await this.accountRepository.saveAccount(account)
 
-		account.id = undefined
-
 		this.logger.debug(`account created ${JSON.stringify(account)}`)
 
 		return buildResponse({

@@ -43,7 +43,7 @@ describe('show non deleted family use case', () => {
 
 		const { statusCode, message, data } = await useCase.execute(familySerial)
 
-		expect(statusCode).toBe(HttpStatus.NO_CONTENT)
+		expect(statusCode).toBe(HttpStatus.NOT_FOUND)
 		expect(message).toBe('Family not found.')
 		expect(data).toBeUndefined()
 		expect(familyRepository.findBySerial).toHaveBeenCalledTimes(1)

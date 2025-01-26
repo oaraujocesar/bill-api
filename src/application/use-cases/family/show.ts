@@ -14,9 +14,8 @@ export class ShowFamilyUseCase {
 
 		if (!family) {
 			return buildResponse({
-				statusCode: HttpStatus.NO_CONTENT,
+				statusCode: HttpStatus.NOT_FOUND,
 				message: 'Family not found.',
-				errors: [{ code: 'BILL-204' }],
 			})
 		}
 
