@@ -1,7 +1,8 @@
-import { Body, Controller, Logger, Post, Res } from '@nestjs/common'
+import { Body, Controller, Get, Logger, Post, Res } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { FastifyReply } from 'fastify'
 import { CreateCategoriesUseCase } from 'src/application/use-cases/category/create.use-case'
+import { ListCategoriesUseCase } from 'src/application/use-cases/category/list.use-case'
 import { CreateCategoryDoc } from '../decorators/doc/category/create.doc'
 import { User } from '../decorators/user.decorator'
 import { CreateCategoryDto } from '../dtos/category/create.dto'
@@ -12,9 +13,21 @@ import { CategoryViewModel } from '../view-models/category.view-model'
 @ApiTags('Categories')
 @Controller('categories')
 export class CategoriesController {
-	constructor(private readonly createUseCase: CreateCategoriesUseCase) {}
+	constructor(
+		private readonly listUseCase: ListCategoriesUseCase,
+		private readonly createUseCase: CreateCategoriesUseCase,
+	) {}
 
 	private readonly logger = new Logger(CategoriesController.name)
+
+	@Get()
+	async listCategories(@User() user: UserAuthenticated, @Res() res: FastifyReply) {
+		this.logger.debug(`Listing categories for user ${user.id}`)
+
+		const { data, errors, message, statusCode } = await this.listUseCase.execute({ userId: user.id })
+
+		return res.status(statusCode).send({ data: data.map(CategoryViewModel.toHTTP), errors, message })
+	}
 
 	@Post()
 	@CreateCategoryDoc()

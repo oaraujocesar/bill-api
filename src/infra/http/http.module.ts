@@ -8,6 +8,7 @@ import { SignupUseCase } from 'src/application/use-cases/auth/signup'
 import { CreateCardUseCase } from 'src/application/use-cases/card/create.use-case'
 import { ListCardsUseCase } from 'src/application/use-cases/card/list.use-case'
 import { CreateCategoriesUseCase } from 'src/application/use-cases/category/create.use-case'
+import { ListCategoriesUseCase } from 'src/application/use-cases/category/list.use-case'
 import { CreateFamilyMemberUseCase } from 'src/application/use-cases/family-member/create'
 import { DeleteFamilyMemberUseCase } from 'src/application/use-cases/family-member/delete'
 import { ListFamilyMembersUseCase } from 'src/application/use-cases/family-member/list'
@@ -46,6 +47,7 @@ import { FamilyController } from './controllers/family.controller'
 		DeleteFamilyUseCase,
 		DeleteAccountUseCase,
 		CreateAccountUseCase,
+		ListCategoriesUseCase,
 		CreateCategoriesUseCase,
 		ListFamilyMembersUseCase,
 		CreateFamilyMemberUseCase,
