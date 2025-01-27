@@ -28,7 +28,7 @@ export function SignupDoc() {
 						type: 'string',
 						example: 'Doe',
 					},
-					birthDate: {
+					birth_date: {
 						type: 'string',
 						example: '1990-01-01',
 					},
