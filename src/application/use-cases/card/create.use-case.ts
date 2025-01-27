@@ -1,26 +1,57 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common'
+import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common'
 import { Card } from 'src/application/entities/card.entity'
 import { BaseUseCase } from 'src/application/interfaces/use-case.interface'
 import { CardRepository } from 'src/application/repositories/card.repository'
+import { FamilyRepository } from 'src/application/repositories/family.repository'
+import { FamilyRepo } from 'src/infra/database/drizzle/decorators/family.repository'
 import { UserAuthenticated } from 'src/infra/http/types/authenticated-request'
 import { CARD_REPOSITORY } from 'src/shared/tokens'
-import { buildResponse } from 'src/shared/utils/build-response'
+import { ResponseBody, buildResponse } from 'src/shared/utils/build-response'
 
 type CreateUseCaseInput = {
 	user: UserAuthenticated
 	name: string
 	limit: number
 	dueDate: number
+	familySerial?: string
 }
 
 @Injectable()
 export class CreateCardUseCase implements BaseUseCase {
-	constructor(@Inject(CARD_REPOSITORY) private readonly cardRepository: CardRepository) {}
+	constructor(
+		@Inject(CARD_REPOSITORY) private readonly cardRepository: CardRepository,
+		@FamilyRepo() private readonly familyRepository: FamilyRepository,
+	) {}
 
-	async execute({ user, dueDate, limit, name }: CreateUseCaseInput) {
-		let card = Card.create({ dueDate, limit, name, userId: user.id })
+	private readonly logger = new Logger(CreateCardUseCase.name)
 
-		card = await this.cardRepository.saveCard(card)
+	async execute({ user, dueDate, limit, name, familySerial }: CreateUseCaseInput): Promise<ResponseBody<Card>> {
+		let familyId: number | undefined
+		if (familySerial) {
+			const family = await this.familyRepository.findBySerial(familySerial)
+
+			if (!family) {
+				return buildResponse({
+					message: 'Family not found!',
+					statusCode: HttpStatus.NOT_FOUND,
+				})
+			}
+
+			this.logger.debug(`Creating card with family serial: ${familySerial}`)
+			familyId = family.id
+		}
+
+		const card = await this.cardRepository.saveCard(
+			Card.create({
+				name,
+				limit,
+				dueDate,
+				familyId,
+				userId: user.id,
+			}),
+		)
+
+		this.logger.debug(`Card created ${JSON.stringify(card)}`)
 
 		return buildResponse({
 			data: card,

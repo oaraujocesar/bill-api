@@ -9,6 +9,7 @@ export type CardProps = {
 	limit: number
 	dueDate: number
 	userId: string
+	familyId?: number
 	createdAt?: Date
 	updatedAt?: Date
 	deletedAt?: Date
@@ -25,6 +26,9 @@ export class Card extends BaseEntity {
 	dueDate: number
 
 	@ApiProperty()
+	familyId: number
+
+	@ApiProperty()
 	userId: string
 
 	constructor(props: CardProps) {
@@ -38,8 +42,9 @@ export class Card extends BaseEntity {
 
 		this.name = props.name
 		this.limit = props.limit
-		this.dueDate = props.dueDate
 		this.userId = props.userId
+		this.dueDate = props.dueDate
+		this.familyId = props.familyId
 	}
 
 	static create(props: CardProps) {

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsNumber, IsPositive, IsString, Max, Min } from 'class-validator'
+import { IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, Max, Min } from 'class-validator'
 
 export class CreateCardDto {
 	@ApiProperty()
@@ -19,4 +19,9 @@ export class CreateCardDto {
 	@Min(1)
 	@Max(30)
 	due_date: number
+
+	@ApiProperty()
+	@IsString()
+	@IsOptional()
+	family_serial?: string
 }

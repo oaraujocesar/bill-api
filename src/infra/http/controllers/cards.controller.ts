@@ -33,10 +33,11 @@ export class CardsController {
 	@Post()
 	@CreateCardDoc()
 	async createCard(@User() user: UserAuthenticated, @Body() body: CreateCardDto, @Res() response: FastifyReply) {
-		this.logger.debug('Create card controller executed')
+		this.logger.debug(`Create card controller executed with body ${JSON.stringify(body)}`)
 		const { data, message, statusCode } = await this.createCardUseCase.execute({
 			user,
 			dueDate: body.due_date,
+			familySerial: body.family_serial,
 			...body,
 		})
 

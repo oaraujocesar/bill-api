@@ -15,13 +15,23 @@ export class BaseEntity {
 	@Exclude()
 	@ApiProperty()
 	id?: number
+
 	@ApiProperty()
 	serial: string
-	@ApiProperty()
+
+	@ApiProperty({
+		example: new Date().toISOString(),
+	})
 	createdAt?: DateTime
-	@ApiProperty()
+
+	@ApiProperty({
+		example: new Date().toISOString(),
+	})
 	updatedAt?: DateTime
-	@ApiProperty()
+
+	@ApiProperty({
+		example: new Date().toISOString(),
+	})
 	deletedAt?: DateTime
 
 	constructor(props: BaseEntityProps) {

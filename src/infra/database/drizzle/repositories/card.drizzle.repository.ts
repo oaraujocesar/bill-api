@@ -33,7 +33,14 @@ export class CardDrizzleRepository implements CardRepository {
 			const [savedCard] = await this.database
 				.insert(cards)
 				// @ts-expect-error type is not working properly
-				.values({ dueDate: card.dueDate, name: card.name, serial: card.serial, userId: card.userId, limit: card.limit })
+				.values({
+					name: card.name,
+					limit: card.limit,
+					serial: card.serial,
+					userId: card.userId,
+					dueDate: card.dueDate,
+					familyId: card.familyId,
+				})
 				.returning()
 				.execute()
 

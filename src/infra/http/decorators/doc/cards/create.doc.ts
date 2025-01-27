@@ -1,11 +1,11 @@
 import { HttpStatus, applyDecorators } from '@nestjs/common'
 import { ApiCreatedResponse, ApiOperation, ApiProperty } from '@nestjs/swagger'
-import { Card } from 'src/application/entities/card.entity'
+import { CardViewModel } from 'src/infra/http/view-models/card.view-model'
 import { BadRequestResponse } from '../shared/bad-request-response.decorator'
 
 class CreatedCardResponse {
-	@ApiProperty({ type: Card })
-	data: Card
+	@ApiProperty({ type: CardViewModel })
+	data: CardViewModel
 
 	@ApiProperty({ example: HttpStatus.CREATED })
 	statusCode: number
