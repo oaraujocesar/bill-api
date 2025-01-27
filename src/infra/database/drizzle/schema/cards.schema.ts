@@ -1,6 +1,7 @@
 import { relations, sql } from 'drizzle-orm'
 import { decimal, index, integer, pgTable, serial, uniqueIndex, uuid, varchar } from 'drizzle-orm/pg-core'
 import { timestamps } from '../helpers/columns.helpers'
+import families from './family.schema'
 import user from './users.schema'
 
 const cards = pgTable(
@@ -14,6 +15,7 @@ const cards = pgTable(
 		userId: uuid()
 			.references(() => user.id, { onDelete: 'cascade' })
 			.notNull(),
+		familyId: integer().references(() => families.id, { onDelete: 'cascade' }),
 		...timestamps,
 	},
 	(table) => [uniqueIndex('card_serial_index').on(table.serial), index('user_id_index').on(table.userId)],
@@ -21,6 +23,7 @@ const cards = pgTable(
 
 export const cardsRelations = relations(cards, ({ one }) => ({
 	user: one(user, { fields: [cards.userId], references: [user.id] }),
+	family: one(families, { fields: [cards.familyId], references: [families.id] }),
 }))
 
 export default cards

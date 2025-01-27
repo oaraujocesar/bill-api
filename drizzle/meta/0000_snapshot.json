@@ -1,5 +1,5 @@
 {
-  "id": "1ca60187-0ab5-44f2-815d-d79d67246743",
+  "id": "f8fac684-cbd7-49e7-900c-2b47815f9b9e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -155,6 +155,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "family_id": {
+          "name": "family_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp",
@@ -216,6 +222,19 @@
           "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "cards_family_id_families_id_fk": {
+          "name": "cards_family_id_families_id_fk",
+          "tableFrom": "cards",
+          "tableTo": "families",
+          "columnsFrom": [
+            "family_id"
           ],
           "columnsTo": [
             "id"
