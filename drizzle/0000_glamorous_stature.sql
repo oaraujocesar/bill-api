@@ -1,3 +1,4 @@
+CREATE TYPE "public"."type" AS ENUM('income', 'expense');--> statement-breakpoint
 CREATE TABLE "accounts" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"serial" varchar(26) NOT NULL,

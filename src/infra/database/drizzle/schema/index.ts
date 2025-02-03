@@ -5,4 +5,4 @@ export { default as usersProfile, usersProfileRelations } from './users-profile.
 export { default as accounts, accountsRelations } from './accounts.schema'
 export { default as cards, cardsRelations } from './cards.schema'
 export { default as categories, categoriesRelations } from './categories.schema'
-export { default as entries, entriesRelations } from './entries.schema'
+export { default as entries, entriesRelations, entryType } from './entries.schema'

@@ -1,5 +1,5 @@
 {
-  "id": "f615d3ea-1d84-43c0-80b8-256140754ced",
+  "id": "7ff1023f-7683-427c-a0da-d7624f6d5590",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -760,7 +760,16 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.type": {
+      "name": "type",
+      "schema": "public",
+      "values": [
+        "income",
+        "expense"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},
