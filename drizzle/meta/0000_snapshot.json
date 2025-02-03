@@ -1,5 +1,5 @@
 {
-  "id": "7ff1023f-7683-427c-a0da-d7624f6d5590",
+  "id": "ba572dc0-9c22-4f5c-94cf-8b19c08294db",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -770,7 +770,9 @@
       ]
     }
   },
-  "schemas": {},
+  "schemas": {
+    "auth": "auth"
+  },
   "sequences": {},
   "roles": {},
   "policies": {},
