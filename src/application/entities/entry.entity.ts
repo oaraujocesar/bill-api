@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import { ULID } from 'ulidx'
+import { Category } from './category.entity'
 import { BaseEntity } from './helpers/base.entity'
 
 export enum EntryType {
@@ -7,15 +8,17 @@ export enum EntryType {
 	EXPENSE = 'expense',
 }
 
+type Type = 'income' | 'expense'
+
 export type EntryProps = {
 	id?: number
 	serial?: ULID
 	title: string
 	description?: string
 	amount: number
-	accountId: number
+	accountId?: number
 	installments?: number
-	type: EntryType
+	type: Type
 	categoryId: number
 	payday?: Date
 	paidAt?: Date
@@ -27,12 +30,14 @@ export class Entry extends BaseEntity {
 	title: string
 	description?: string
 	amount: number
-	accountId: number
+	accountId?: number
 	installments?: number
-	type: EntryType
+	type: Type
 	categoryId: number
 	payday?: DateTime
 	paidAt?: DateTime
+
+	category: Category
 
 	constructor(props: EntryProps) {
 		super({
@@ -55,5 +60,9 @@ export class Entry extends BaseEntity {
 
 	static create(props: EntryProps) {
 		return new Entry(props)
+	}
+
+	addCategory(category: Category) {
+		this.category = category
 	}
 }
