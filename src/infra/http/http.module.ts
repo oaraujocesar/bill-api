@@ -9,6 +9,7 @@ import { CreateCardUseCase } from 'src/application/use-cases/card/create.use-cas
 import { ListCardsUseCase } from 'src/application/use-cases/card/list.use-case'
 import { CreateCategoriesUseCase } from 'src/application/use-cases/category/create.use-case'
 import { ListCategoriesUseCase } from 'src/application/use-cases/category/list.use-case'
+import { CreateEntryUseCase } from 'src/application/use-cases/entry/create.use-case'
 import { CreateFamilyMemberUseCase } from 'src/application/use-cases/family-member/create'
 import { DeleteFamilyMemberUseCase } from 'src/application/use-cases/family-member/delete'
 import { ListFamilyMembersUseCase } from 'src/application/use-cases/family-member/list'
@@ -21,6 +22,7 @@ import { AccountController } from './controllers/account.controller'
 import { AuthController } from './controllers/auth.controller'
 import { CardsController } from './controllers/cards.controller'
 import { CategoriesController } from './controllers/categories.controller'
+import { EntryController } from './controllers/entry.controller'
 import { FamilyMemberController } from './controllers/family-member.controller'
 import { FamilyController } from './controllers/family.controller'
 
@@ -29,6 +31,7 @@ import { FamilyController } from './controllers/family.controller'
 	controllers: [
 		AuthController,
 		CardsController,
+		EntryController,
 		FamilyController,
 		AccountController,
 		CategoriesController,
@@ -41,6 +44,7 @@ import { FamilyController } from './controllers/family.controller'
 		ListCardsUseCase,
 		CreateCardUseCase,
 		ShowFamilyUseCase,
+		CreateEntryUseCase,
 		ListAccountsUseCase,
 		RefreshTokenUseCase,
 		CreateFamilyUseCase,

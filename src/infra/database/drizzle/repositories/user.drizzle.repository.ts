@@ -21,7 +21,6 @@ export class UserDrizzleRepository implements UserRepository {
 			const result = await this.database.query.users.findFirst({
 				where: eq(schema.users.email, email),
 			})
-
 			if (!result) return null
 
 			return UserMapper.toDomain(result)
