@@ -4,8 +4,10 @@ import { Account } from 'src/application/entities/account.entity'
 import { Entry, EntryType } from 'src/application/entities/entry.entity'
 import { BaseUseCase } from 'src/application/interfaces/use-case.interface'
 import { AccountRepository } from 'src/application/repositories/account.repository'
+import { CategoryRepository } from 'src/application/repositories/category.repository'
 import { TransactionRepository } from 'src/application/repositories/transactions.repository'
 import { AccountRepo } from 'src/infra/database/drizzle/decorators/account.repository'
+import { CategoryRepo } from 'src/infra/database/drizzle/decorators/category.repository'
 import { Transactions } from 'src/infra/database/drizzle/decorators/transactions.repository'
 import { Exception } from 'src/shared/exceptions/custom.exception'
 import { ResponseBody, buildResponse } from 'src/shared/utils/build-response'
@@ -15,7 +17,7 @@ type CreateEntryUseCaseInput = {
 	categoryId: number
 	amount: number
 	title: string
-	entryType: EntryType
+	entryType: keyof typeof EntryType
 	installments: number
 	description: string
 	userId: string
@@ -24,8 +26,9 @@ type CreateEntryUseCaseInput = {
 
 export class CreateEntryUseCase implements BaseUseCase {
 	constructor(
-		@AccountRepo() private readonly accountRepository: AccountRepository,
 		@Transactions() private readonly transaction: TransactionRepository,
+		@AccountRepo() private readonly accountRepository: AccountRepository,
+		@CategoryRepo() private readonly categoryRepository: CategoryRepository,
 	) {}
 
 	private readonly logger = new Logger(CreateEntryUseCase.name)
@@ -62,8 +65,25 @@ export class CreateEntryUseCase implements BaseUseCase {
 		const account = await this.accountRepository.findBySerial(accountSerial)
 		if (!account) {
 			this.logger.error(`account ${accountSerial} not found`)
-			return buildResponse({
-				message: 'account not found',
+			throw new Exception({
+				message: 'Account not found!',
+				statusCode: HttpStatus.NOT_FOUND,
+			})
+		}
+
+		const category = await this.categoryRepository.findById(categoryId)
+		if (!category) {
+			this.logger.error(`category ${categoryId} not found`)
+			throw new Exception({
+				message: 'Category not found!',
+				statusCode: HttpStatus.NOT_FOUND,
+			})
+		}
+
+		if (category?.userId && category.userId !== userId) {
+			this.logger.error(`category ${categoryId} does not belong to user ${userId}`)
+			throw new Exception({
+				message: 'Category not found!',
 				statusCode: HttpStatus.NOT_FOUND,
 			})
 		}

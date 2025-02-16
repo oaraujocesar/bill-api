@@ -3,12 +3,12 @@ import { ULID } from 'ulidx'
 import { Category } from './category.entity'
 import { BaseEntity } from './helpers/base.entity'
 
-export enum EntryType {
-	INCOME = 'income',
-	EXPENSE = 'expense',
-}
+export const EntryType = {
+	INCOME: 'INCOME',
+	EXPENSE: 'EXPENSE',
+} as const
 
-type Type = 'income' | 'expense'
+type Type = 'INCOME' | 'EXPENSE'
 
 export type EntryProps = {
 	id?: number

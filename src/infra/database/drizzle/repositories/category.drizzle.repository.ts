@@ -13,6 +13,19 @@ export class CategoryDrizzleRepository implements CategoryRepository {
 
 	private readonly logger = new Logger(CategoryDrizzleRepository.name)
 
+	async findById(id: number): Promise<Category> {
+		try {
+			const drizzleCategory = await this.database.query.categories
+				.findFirst({ where: and(eq(categories.id, id), isNull(categories.deletedAt)) })
+				.execute()
+
+			return drizzleCategory ? CategoryMapper.toDomain(drizzleCategory) : null
+		} catch (error) {
+			this.logger.error(error.stack)
+			throw new InternalServerErrorException()
+		}
+	}
+
 	async listByUserId(userId: string): Promise<Category[]> {
 		try {
 			const drizzleCategories = await this.database.query.categories
