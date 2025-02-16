@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { DateTime } from 'luxon'
 
 export type CategoryProps = {
@@ -11,22 +10,16 @@ export type CategoryProps = {
 }
 
 export class Category {
-	@ApiProperty()
 	id: number
 
-	@ApiProperty()
 	name: string
 
-	@ApiProperty()
 	iconName: string
 
-	@ApiProperty()
 	userId?: string
 
-	@ApiProperty()
 	createdAt: DateTime
 
-	@ApiProperty()
 	updatedAt: DateTime
 
 	constructor(props: CategoryProps) {

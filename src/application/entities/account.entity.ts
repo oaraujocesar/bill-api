@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { BaseEntity } from './helpers/base.entity'
 import { User } from './user.entity'
 
@@ -15,13 +14,10 @@ export type AccountProps = {
 }
 
 export class Account extends BaseEntity {
-	@ApiProperty()
 	name: string
 
-	@ApiProperty()
 	balance: number
 
-	@ApiProperty()
 	userId: string
 
 	constructor(props: AccountProps) {

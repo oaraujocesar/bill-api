@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
 import { DateTime } from 'luxon'
 import { ULID, ulid } from 'ulidx'
@@ -13,25 +12,14 @@ type BaseEntityProps = {
 
 export class BaseEntity {
 	@Exclude()
-	@ApiProperty()
 	id?: number
 
-	@ApiProperty()
 	serial: string
 
-	@ApiProperty({
-		example: new Date().toISOString(),
-	})
 	createdAt?: DateTime
 
-	@ApiProperty({
-		example: new Date().toISOString(),
-	})
 	updatedAt?: DateTime
 
-	@ApiProperty({
-		example: new Date().toISOString(),
-	})
 	deletedAt?: DateTime
 
 	constructor(props: BaseEntityProps) {

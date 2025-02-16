@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { UserProfile } from './user-profile.entity'
 
 export type UserProps = {
@@ -10,19 +9,14 @@ export type UserProps = {
 }
 
 export class User {
-	@ApiProperty()
 	id: string
 
-	@ApiProperty()
 	email: string
 
-	@ApiProperty()
 	emailConfirmedAt: Date
 
-	@ApiProperty()
 	isSuperAdmin: boolean
 
-	@ApiProperty()
 	profile?: UserProfile
 
 	constructor(props: UserProps) {

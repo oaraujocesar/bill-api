@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { DateTime } from 'luxon'
 import { BaseEntity } from './helpers/base.entity'
 
@@ -14,16 +13,12 @@ export type UserProfileProps = {
 }
 
 export class UserProfile extends BaseEntity {
-	@ApiProperty()
 	name: string
 
-	@ApiProperty()
 	surname: string
 
-	@ApiProperty()
 	userId: string
 
-	@ApiProperty()
 	birthDate: DateTime
 
 	constructor(props: UserProfileProps) {

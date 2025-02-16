@@ -5,6 +5,7 @@ import { CardRepository } from 'src/application/repositories/card.repository'
 import { FamilyRepository } from 'src/application/repositories/family.repository'
 import { FamilyRepo } from 'src/infra/database/drizzle/decorators/family.repository'
 import { UserAuthenticated } from 'src/infra/http/types/authenticated-request'
+import { Exception } from 'src/shared/exceptions/custom.exception'
 import { CARD_REPOSITORY } from 'src/shared/tokens'
 import { ResponseBody, buildResponse } from 'src/shared/utils/build-response'
 
@@ -31,7 +32,7 @@ export class CreateCardUseCase implements BaseUseCase {
 			const family = await this.familyRepository.findBySerial(familySerial)
 
 			if (!family) {
-				return buildResponse({
+				throw new Exception({
 					message: 'Family not found!',
 					statusCode: HttpStatus.NOT_FOUND,
 				})

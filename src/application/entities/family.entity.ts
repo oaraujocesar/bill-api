@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { ULID } from 'ulidx'
 import { BaseEntity } from './helpers/base.entity'
 
@@ -12,7 +11,6 @@ type FamilyProps = {
 }
 
 export class Family extends BaseEntity {
-	@ApiProperty()
 	name: string
 
 	constructor(props: FamilyProps) {

@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { DateTime } from 'luxon'
 import { UserProfile } from './user-profile.entity'
 
@@ -11,19 +10,14 @@ type FamilyMemberProps = {
 }
 
 export class FamilyMember {
-	@ApiProperty()
 	id: number
 
-	@ApiProperty()
 	userId: string
 
-	@ApiProperty()
 	familyId: number
 
-	@ApiProperty()
 	isOwner: boolean
 
-	@ApiProperty()
 	createdAt: DateTime
 
 	userProfile?: UserProfile
