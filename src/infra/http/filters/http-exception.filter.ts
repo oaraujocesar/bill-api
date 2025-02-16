@@ -10,13 +10,22 @@ export class HttpExceptionFilter implements ExceptionFilter {
 		const status = exception.getStatus()
 
 		if (status === HttpStatus.BAD_REQUEST) {
-			const exceptionResponse = exception.getResponse() as { message: string[] }
+			const exceptionResponse = exception.getResponse() as { message: string[] } | string
+			let message: string
+			let errors: string[]
+			if (typeof exceptionResponse === 'object') {
+				message = 'Validation failed.'
+				errors = exceptionResponse.message
+			} else if (typeof exceptionResponse === 'string') {
+				message = exceptionResponse as string
+				errors = []
+			}
 
 			return response.status(status).send(
 				buildResponse({
-					message: 'Validation failed',
+					message,
 					statusCode: status,
-					errors: exceptionResponse.message,
+					errors,
 				}),
 			)
 		}
