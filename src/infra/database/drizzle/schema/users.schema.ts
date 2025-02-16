@@ -6,7 +6,7 @@ import categories from './categories.schema'
 import familyMembers from './family-member.schema'
 import usersProfile from './users-profile.schema'
 
-const authSchema = pgSchema('auth')
+export const authSchema = pgSchema('auth')
 
 const user = authSchema.table('users', {
 	id: uuid('id').primaryKey(),

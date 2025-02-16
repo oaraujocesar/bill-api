@@ -15,7 +15,7 @@ export const DRIZZLE = Symbol('drizzle')
 				const databaseURL = configService.getOrThrow<string>('DATABASE_URL')
 				const pool = new Pool({ connectionString: databaseURL })
 
-				return drizzle(pool, { schema, casing: 'snake_case' }) as NodePgDatabase<typeof schema>
+				return drizzle(pool, { schema, casing: 'snake_case', logger: true }) as NodePgDatabase<typeof schema>
 			},
 		},
 	],
