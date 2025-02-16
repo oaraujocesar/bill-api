@@ -1,5 +1,5 @@
 {
-  "id": "ba572dc0-9c22-4f5c-94cf-8b19c08294db",
+  "id": "29fa635f-6f76-40aa-bbe4-972bc599c75f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -765,8 +765,8 @@
       "name": "type",
       "schema": "public",
       "values": [
-        "income",
-        "expense"
+        "INCOME",
+        "EXPENSE"
       ]
     }
   },

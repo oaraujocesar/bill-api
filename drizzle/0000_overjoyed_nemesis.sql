@@ -1,5 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS "auth";--> statement-breakpoint
-CREATE TYPE "public"."type" AS ENUM('income', 'expense');--> statement-breakpoint
+CREATE SCHEMA IF NOT EXISTS  "auth";
+--> statement-breakpoint
+CREATE TYPE "public"."type" AS ENUM('INCOME', 'EXPENSE');--> statement-breakpoint
 CREATE TABLE "accounts" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"serial" varchar(26) NOT NULL,

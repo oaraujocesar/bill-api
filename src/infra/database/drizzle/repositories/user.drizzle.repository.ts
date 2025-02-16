@@ -18,12 +18,13 @@ export class UserDrizzleRepository implements UserRepository {
 
 	async findByEmail(email: string): Promise<User | null> {
 		try {
-			const result = await this.database.query.users.findFirst({
-				where: eq(schema.users.email, email),
-			})
-			if (!result) return null
+			const [result] = await this.database.select().from(schema.users).where(eq(schema.users.email, email)).execute()
+			// const result = await this.database.query.users.findFirst({
+			// 	where: eq(schema.users.email, email),
+			// })
+			// if (!result) return null
 
-			return UserMapper.toDomain(result)
+			return result ? UserMapper.toDomain(result) : null
 		} catch (error) {
 			this.logger.error(error.stack)
 			throw new InternalServerErrorException()

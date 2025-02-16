@@ -7,7 +7,7 @@ type DrizzleEntry = {
 	description: string
 	amount: string
 	installments: number
-	type: 'income' | 'expense'
+	type: 'INCOME' | 'EXPENSE'
 	payday: Date
 	categoryId: number
 	serial: string

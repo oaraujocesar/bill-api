@@ -7,7 +7,7 @@ type EntryObject = {
 	description: string
 	amount: number
 	installments?: number
-	type: 'income' | 'expense'
+	type: 'INCOME' | 'EXPENSE'
 	category_id?: number
 	category_name?: string
 	category_icon?: string
@@ -34,7 +34,7 @@ export class EntryViewModel {
 	installments?: number
 
 	@ApiProperty({ enum: Object.values(EntryType) })
-	type: EntryType
+	type: keyof typeof EntryType
 
 	@ApiProperty()
 	category_id?: number

@@ -31,7 +31,7 @@ export class CreateEntryDto {
 	@IsEnum(EntryType)
 	@IsNotEmpty()
 	@ApiProperty({ enum: EntryType })
-	entry_type: EntryType
+	entry_type: keyof typeof EntryType
 
 	@IsNumber()
 	@IsNotEmpty()

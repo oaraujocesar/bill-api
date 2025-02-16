@@ -4,7 +4,7 @@ import { timestamps } from '../helpers/columns.helpers'
 import accounts from './accounts.schema'
 import categories from './categories.schema'
 
-export const entryType = pgEnum('type', ['income', 'expense'])
+export const entryType = pgEnum('type', ['INCOME', 'EXPENSE'])
 
 const entries = pgTable('entries', {
 	id: serial().primaryKey(),
