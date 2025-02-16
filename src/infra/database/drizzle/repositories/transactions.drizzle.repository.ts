@@ -22,6 +22,7 @@ export class TransactionsDrizzleRepository implements TransactionRepository {
 				// @ts-expect-error - TS complains about missing properties, but they are there
 				.values({
 					categoryId: entryDrizzle.categoryId,
+					accountId: account.id,
 					serial: entryDrizzle.serial,
 					title: entryDrizzle.title,
 					type: entryDrizzle.type,

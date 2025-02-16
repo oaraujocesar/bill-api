@@ -93,6 +93,7 @@ export class CreateEntryUseCase implements BaseUseCase {
 		}
 
 		const entry = Entry.create({
+			accountId: account.id,
 			amount,
 			categoryId,
 			description,
